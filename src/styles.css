@@ -1,0 +1,259 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: #ffffff;
+    color: #0f213d;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .section {
+    @apply mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply inline-flex rounded-full border border-aqua/25 bg-aqua/10 px-3 py-1 text-xs font-black uppercase tracking-wide text-navy;
+  }
+
+  .nav-link {
+    @apply text-sm font-semibold text-slate-600 transition hover:text-navy;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-aqua px-5 py-3 text-sm font-black text-navy shadow-glow transition hover:-translate-y-0.5 hover:bg-cyan-300;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-3 text-sm font-black text-navy shadow-sm transition hover:-translate-y-0.5 hover:border-aqua hover:bg-skysoft;
+  }
+
+  .soft-card {
+    @apply rounded-lg border border-slate-100 bg-white/85 p-6 shadow-soft backdrop-blur transition hover:-translate-y-1 hover:border-aqua/40;
+  }
+
+  .field-label {
+    @apply block text-sm font-bold text-navy;
+  }
+
+  .field {
+    @apply mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-navy outline-none transition placeholder:text-slate-400 focus:border-aqua focus:ring-4 focus:ring-aqua/15;
+  }
+
+  .contact-link {
+    @apply flex items-center gap-3 rounded-lg border border-slate-100 bg-white px-4 py-3 shadow-sm transition hover:border-aqua hover:text-navy;
+  }
+
+  .ai-gallery-section {
+    @apply relative overflow-hidden bg-navy;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(20, 211, 197, 0.28), transparent 28%),
+      radial-gradient(circle at 82% 22%, rgba(120, 255, 188, 0.15), transparent 26%),
+      linear-gradient(135deg, #07172f 0%, #092847 48%, #06111f 100%);
+  }
+
+  .ai-card-grid {
+    @apply grid gap-5 sm:grid-cols-2 xl:grid-cols-5;
+  }
+
+  .ai-assistant-card {
+    @apply relative flex min-h-[500px] flex-col overflow-visible rounded-2xl border border-white/10 bg-white/10 p-4 shadow-soft backdrop-blur-xl transition duration-500;
+    animation: float 7s ease-in-out infinite;
+  }
+
+  .ai-assistant-card:nth-child(2n) {
+    animation-delay: 0.8s;
+  }
+
+  .ai-assistant-card:nth-child(3n) {
+    animation-delay: 1.4s;
+  }
+
+  .ai-assistant-card::before {
+    content: "";
+    @apply absolute inset-0 opacity-80 transition duration-500;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.18), transparent 34%),
+      radial-gradient(circle at 50% 0%, rgba(20, 211, 197, 0.24), transparent 35%);
+  }
+
+  .ai-assistant-card:hover {
+    @apply border-aqua/50 shadow-glow;
+    transform: translateY(-4px) scale(1.005);
+  }
+
+  .ai-assistant-card:hover .assistant-image {
+    transform: scale(1.035);
+  }
+
+  .animated-border {
+    @apply pointer-events-none absolute -inset-24 opacity-55;
+    background: conic-gradient(from 0deg, transparent, rgba(20, 211, 197, 0.9), rgba(178, 255, 210, 0.7), transparent 34%);
+    animation: border-spin 8s linear infinite;
+  }
+
+  .animated-border::after {
+    content: "";
+    @apply absolute inset-24 rounded-2xl bg-navy/80;
+  }
+
+  .card-orbit {
+    @apply pointer-events-none absolute right-4 top-4 h-24 w-24 rounded-full border border-aqua/20 opacity-60;
+    box-shadow: inset 0 0 22px rgba(20, 211, 197, 0.22), 0 0 24px rgba(20, 211, 197, 0.16);
+  }
+
+  .assistant-media {
+    @apply relative z-10 h-64 overflow-hidden rounded-xl border border-white/15 shadow-glow sm:h-72;
+  }
+
+  .assistant-image {
+    @apply absolute inset-0 h-full w-full object-cover transition duration-700;
+  }
+
+  .hologram-grid {
+    @apply absolute inset-0;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      radial-gradient(circle at 55% 15%, rgba(255, 255, 255, 0.34), transparent 20%);
+    background-size: 22px 22px, 22px 22px, 100% 100%;
+    mix-blend-mode: screen;
+  }
+
+  .assistant-media-glow {
+    @apply pointer-events-none absolute inset-x-0 bottom-0 h-28;
+    background: linear-gradient(180deg, transparent, rgba(7, 23, 47, 0.78));
+  }
+
+  .assistant-image-title {
+    @apply pointer-events-none absolute inset-x-4 bottom-5 z-10 rounded-xl border border-white/10 px-4 py-3 text-white shadow-glow backdrop-blur-md;
+    background: rgba(7, 23, 47, 0.42);
+  }
+
+  .assistant-image-title span {
+    @apply block break-words text-lg font-black leading-tight sm:text-xl;
+  }
+
+  .assistant-category {
+    @apply inline-flex w-fit rounded-full border border-aqua/30 bg-aqua/10 px-3 py-1 text-[11px] font-black uppercase tracking-wide text-aqua;
+  }
+
+  .assistant-description {
+    @apply mt-3 flex-1 text-sm;
+    color: rgba(230, 250, 255, 0.88);
+    line-height: 1.6;
+  }
+
+  .portal-button {
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl border border-aqua/40 bg-aqua px-4 py-3 text-sm font-black text-navy shadow-glow transition duration-300;
+  }
+
+  .portal-button:hover {
+    @apply -translate-y-0.5 bg-cyan-200;
+  }
+
+  .portal-button-secondary {
+    @apply border-white/15 bg-white/10 text-cyan-50 shadow-none backdrop-blur-md;
+  }
+
+  .portal-button-secondary:hover {
+    @apply border-aqua/45 bg-white/15 text-white;
+  }
+
+  .portal-button::before {
+    content: "";
+    @apply absolute inset-y-0 -left-1/2 w-1/2 skew-x-[-20deg] bg-white/45 opacity-0 transition duration-500;
+  }
+
+  .portal-button:hover::before {
+    @apply left-full opacity-100;
+  }
+
+  .pixel-smoke {
+    @apply pointer-events-none absolute inset-0 opacity-0;
+    background:
+      radial-gradient(circle at 18% 42%, rgba(255, 255, 255, 0.9) 0 2px, transparent 3px),
+      radial-gradient(circle at 42% 28%, rgba(20, 211, 197, 0.95) 0 3px, transparent 4px),
+      radial-gradient(circle at 68% 54%, rgba(180, 255, 214, 0.95) 0 2px, transparent 3px),
+      radial-gradient(circle at 82% 35%, rgba(255, 255, 255, 0.85) 0 2px, transparent 3px);
+  }
+
+  .is-dissolving .pixel-smoke {
+    animation: pixel-dissolve 0.62s ease-out both;
+  }
+
+  .portal-halo {
+    @apply pointer-events-none absolute rounded-full blur-3xl;
+    animation: portal-pulse 6s ease-in-out infinite;
+  }
+
+  .portal-halo-one {
+    @apply -left-24 top-20 h-72 w-72 bg-aqua/20;
+  }
+
+  .portal-halo-two {
+    @apply bottom-10 right-0 h-80 w-80 bg-emerald-300/15;
+    animation-delay: 1.2s;
+  }
+
+  .particle-field {
+    @apply pointer-events-none absolute inset-0 overflow-hidden;
+  }
+
+  .particle-field span {
+    @apply absolute h-1.5 w-1.5 rounded-full bg-aqua/70 shadow-glow;
+    left: calc((var(--i) * 5.3%) + 4%);
+    top: calc(70% - (var(--i) * 2.6%));
+    animation: particle-drift 8s ease-in-out infinite;
+    animation-delay: calc(var(--i) * -0.34s);
+  }
+
+  .language-selector {
+    @apply flex w-full flex-col gap-2 rounded-2xl border border-white/10 bg-white/10 p-3 backdrop-blur-xl sm:w-52;
+  }
+
+  .language-select {
+    @apply rounded-xl border border-aqua/25 bg-navy/80 px-3 py-2 text-sm font-black text-white outline-none transition focus:border-aqua focus:ring-4 focus:ring-aqua/15;
+  }
+
+  .language-select option {
+    @apply bg-navy text-white;
+  }
+
+  .portal-navigation {
+    @apply relative mb-8 flex items-center gap-3 overflow-hidden rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-xs font-black uppercase tracking-wide text-cyan-50/70 backdrop-blur-xl;
+  }
+
+  .wormhole-ring {
+    @apply h-10 w-10 shrink-0 rounded-full border border-aqua/50;
+    background: radial-gradient(circle, transparent 38%, rgba(20, 211, 197, 0.42) 42%, transparent 58%);
+    box-shadow: 0 0 28px rgba(20, 211, 197, 0.38);
+    animation: border-spin 5s linear infinite;
+  }
+
+  .dna-spiral {
+    @apply grid h-10 w-10 place-items-center rounded-full bg-white/10 text-aqua;
+    animation: dna-spin 6s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
