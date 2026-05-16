@@ -197,7 +197,7 @@ export const assistants = [
       "AI assistant for pharmacies, wellness projects, FAQs and appointment-style requests.",
     accent: "from-emerald-300 via-cyan-300 to-blue-400",
     image: "/media/assistants/pigulkin.jpg",
-    imagePosition: "center top",
+    imageClass: "assistant-image-pigulkin",
   },
   {
     name: "АІ-Піццахот",
