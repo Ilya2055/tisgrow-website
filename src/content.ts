@@ -158,6 +158,14 @@ export const assistantGalleryCopy: Record<
 // Add, rename or remove assistant cards here as the product catalog grows.
 export const assistants = [
   {
+    name: "Sofia",
+    category: "AI Personal Assistant",
+    description:
+      "Intelligent AI assistant for customer support, scheduling, and personalized interactions.",
+    accent: "from-rose-300 via-pink-300 to-purple-300",
+    image: "/media/assistants/sofia.jpg",
+  },
+  {
     name: "АІ-Автологік",
     category: "Automotive AI",
     description:
