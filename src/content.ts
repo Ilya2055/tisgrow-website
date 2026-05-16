@@ -164,6 +164,7 @@ export const assistants = [
       "Intelligent AI assistant for customer support, scheduling, and personalized interactions.",
     accent: "from-rose-300 via-pink-300 to-purple-300",
     image: "/media/assistants/sofia.jpg",
+    imagePosition: "center top",
   },
   {
     name: "АІ-Автологік",
@@ -196,6 +197,7 @@ export const assistants = [
       "AI assistant for pharmacies, wellness projects, FAQs and appointment-style requests.",
     accent: "from-emerald-300 via-cyan-300 to-blue-400",
     image: "/media/assistants/pigulkin.jpg",
+    imagePosition: "center top",
   },
   {
     name: "АІ-Піццахот",
@@ -220,6 +222,7 @@ export const assistants = [
       "Careful AI assistant for clothing repair, client requests, service details and bookings.",
     accent: "from-fuchsia-300 via-aqua to-emerald-300",
     image: "/media/assistants/janis.jpg",
+    imagePosition: "center top",
   },
   {
     name: "АІ-Фотологік",
@@ -244,6 +247,7 @@ export const assistants = [
       "AI dental consultant for clinic FAQs, patient details and appointment requests.",
     accent: "from-sky-400 via-aqua to-white",
     image: "/media/assistants/tisgrow-dental.jpg",
+    imagePosition: "center top",
   },
 ];
 

@@ -120,11 +120,13 @@ function HeroVisual() {
           ))}
         </div>
 
-        <div className="mt-5 grid grid-cols-3 gap-2">
+        <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-3">
           {heroStats.map((stat) => (
-            <div key={stat.label} className="rounded-lg bg-skysoft p-3 text-center">
+            <div key={stat.label} className="min-w-0 rounded-lg bg-skysoft p-3 text-center">
               <p className="text-lg font-black text-navy">{stat.value}</p>
-              <p className="text-[11px] font-medium text-slate-500">{stat.label}</p>
+              <p className="text-[10px] leading-snug break-words whitespace-normal font-medium text-slate-500 sm:text-[11px] sm:leading-normal">
+                {stat.label}
+              </p>
             </div>
           ))}
         </div>
@@ -313,6 +315,7 @@ function Assistants() {
                   src={assistant.image}
                   alt={`${assistant.name} AI assistant`}
                   className="assistant-image"
+                  style={{ objectPosition: assistant.imagePosition || "center center" }}
                   onError={(event) => {
                     event.currentTarget.style.display = "none";
                   }}
