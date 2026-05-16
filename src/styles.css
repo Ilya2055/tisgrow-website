@@ -128,17 +128,18 @@
       min-height: 300px;
     }
 
+    /* Mobile-only positioning adjustments for selected assistant cards */
     .assistant-image-janis {
-      object-position: center 16%;
+      object-position: center 20%;
     }
 
     .assistant-image-dental {
-      object-position: center 22%;
+      object-position: center 12%;
     }
 
     .assistant-image-icecreambrown {
-      object-position: center 10%;
-      transform: scale(0.985);
+      object-position: center 18%;
+      transform: scale(0.95);
     }
   }
 
