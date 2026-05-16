@@ -142,11 +142,13 @@
     }
 
     .assistant-image-pigulkin {
-      object-position: center 92%;
+      object-position: center 70%;
+      transform: translateY(45px) scale(1.03);
     }
 
     .assistant-image-dental {
       object-position: center 0%;
+      transform: translateY(-30px) scale(1.03);
     }
 
     .assistant-image-icecreambrown {
