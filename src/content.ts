@@ -208,6 +208,20 @@ export const assistants = [
     image: "/media/assistants/pizzahot.jpg",
   },
   {
+    name: "АІ-Айскрімбраун",
+    key: "icecreambrown",
+    category: "AI для морозива та молочної продукції",
+    description:
+      "AI-помічник для кафе, виробників морозива, молочної продукції та десертів: консультує клієнтів, допомагає з асортиментом, замовленнями та частими питаннями.",
+    accent: "from-amber-300 via-pink-300 to-purple-300",
+    image: "/media/assistants/icecreambrown.jpg",
+    imagePosition: "center top",
+    demoVideo: "/media/demos/videos/icecreambrown-demo-ua.mp4",
+    presentationVideo: "/media/demos/videos/icecreambrown-presentation-ua.mp4",
+    pdf: "/media/demos/pdf/icecreambrown-presentation-ua.pdf",
+    thumbnail: "/media/demos/thumbnails/icecreambrown.jpg",
+  },
+  {
     name: "АІ-Макар",
     category: "Architecture AI",
     description:
