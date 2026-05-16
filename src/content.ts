@@ -164,7 +164,7 @@ export const assistants = [
       "Intelligent AI assistant for customer support, scheduling, and personalized interactions.",
     accent: "from-rose-300 via-pink-300 to-purple-300",
     image: "/media/assistants/sofia.jpg",
-    imagePosition: "center top",
+    imageClass: "assistant-image-sofia",
   },
   {
     name: "АІ-Автологік",

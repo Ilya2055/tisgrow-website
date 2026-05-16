@@ -122,6 +122,10 @@
     object-position: center center;
   }
 
+  .assistant-image-default {
+    object-position: center center;
+  }
+
   @media (max-width: 640px) {
     .assistant-media {
       height: 320px;
@@ -129,17 +133,21 @@
     }
 
     /* Mobile-only positioning adjustments for selected assistant cards */
+    .assistant-image-sofia {
+      object-position: center 18%;
+    }
+
     .assistant-image-janis {
-      object-position: center 20%;
+      object-position: center 16%;
     }
 
     .assistant-image-dental {
-      object-position: center 12%;
+      object-position: center 8%;
     }
 
     .assistant-image-icecreambrown {
-      object-position: center 18%;
-      transform: scale(0.95);
+      object-position: center 14%;
+      transform: scale(0.96);
     }
   }
 

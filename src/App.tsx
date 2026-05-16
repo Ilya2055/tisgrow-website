@@ -314,8 +314,7 @@ function Assistants() {
                 <img
                   src={assistant.image}
                   alt={`${assistant.name} AI assistant`}
-                  className={`assistant-image ${assistant.imageClass || ""}`}
-                  style={{ objectPosition: assistant.imagePosition || "center center" }}
+                  className={`assistant-image ${assistant.imageClass || "assistant-image-default"}`}
                   onError={(event) => {
                     event.currentTarget.style.display = "none";
                   }}
