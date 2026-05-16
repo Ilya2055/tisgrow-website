@@ -127,6 +127,19 @@
       height: 320px;
       min-height: 300px;
     }
+
+    .assistant-image-janis {
+      object-position: center 16%;
+    }
+
+    .assistant-image-dental {
+      object-position: center 22%;
+    }
+
+    .assistant-image-icecreambrown {
+      object-position: center 10%;
+      transform: scale(0.985);
+    }
   }
 
   .hologram-grid {

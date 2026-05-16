@@ -216,6 +216,7 @@ export const assistants = [
     accent: "from-amber-300 via-pink-300 to-purple-300",
     image: "/media/assistants/icecreambrown.jpg",
     imagePosition: "center top",
+    imageClass: "assistant-image-icecreambrown",
     demoVideo: "/media/demos/videos/icecreambrown-demo-ua.mp4",
     presentationVideo: "/media/demos/videos/icecreambrown-presentation-ua.mp4",
     pdf: "/media/demos/pdf/icecreambrown-presentation-ua.pdf",
@@ -237,6 +238,7 @@ export const assistants = [
     accent: "from-fuchsia-300 via-aqua to-emerald-300",
     image: "/media/assistants/janis.jpg",
     imagePosition: "center top",
+    imageClass: "assistant-image-janis",
   },
   {
     name: "АІ-Фотологік",
@@ -262,6 +264,7 @@ export const assistants = [
     accent: "from-sky-400 via-aqua to-white",
     image: "/media/assistants/tisgrow-dental.jpg",
     imagePosition: "center top",
+    imageClass: "assistant-image-dental",
   },
 ];
 
