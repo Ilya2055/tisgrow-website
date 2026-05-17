@@ -142,9 +142,9 @@
     }
 
     .assistant-image-pigulkin {
-      object-fit: contain;
-      object-position: center 58%;
-      transform: translateY(95px) scale(0.78);
+      object-fit: cover;
+      object-position: center 38%;
+      transform: scale(1.65);
     }
 
     .assistant-image-dental {
