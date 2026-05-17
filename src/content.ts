@@ -111,7 +111,23 @@ export const assistantGalleryCopy: Record<
       pricing: { eyebrow: string; title: string; text: string };
       contact: { eyebrow: string; title: string; text: string };
     };
-    industries: { title: string; text: string }[],
+    industries: { title: string; text: string }[];
+    heroVisual: {
+      onlineLabel: string;
+      channelsLabel: string;
+      status: string;
+    };
+    visualMessages: { role: "client" | "assistant"; from: string; text: string }[];
+    heroStats: { value: string; label: string }[];
+    videoCards: { title: string; placeholder: string }[];
+    portfolioExamples: { title: string; text: string }[];
+    pricingPlans: { name: string; price: string; details: string }[];
+    pricingDisclaimer: string;
+    channelLabels: string[];
+    capabilities: string[];
+    play: string;
+    homeAriaLabel: string;
+    toggleNavigation: string;
     cta: {
       title: string;
       primary: string;
@@ -126,6 +142,7 @@ export const assistantGalleryCopy: Record<
       videoPresentation: string;
       unavailable: string;
       close: string;
+      loading: string;
     };
     contactForm: {
       nameLabel: string;
@@ -138,13 +155,13 @@ export const assistantGalleryCopy: Record<
       instagram: string;
       email: string;
       emailSubject: string;
+      emailBodyIntro: string;
     };
     footer: {
       brandTitle: string;
       brandText: string;
     };
-  }
-> = {
+  }> = {
   uk: {
     eyebrow: "AI асистенти",
     title: "Розумні AI-помічники для вашого бізнесу",
@@ -190,18 +207,64 @@ export const assistantGalleryCopy: Record<
       },
     },
     industries: [
-      { title: "Beauty salons", text: "Bookings, service questions, price guidance and client reminders." },
-      { title: "Dental clinics", text: "FAQ, appointment requests, first-touch support and treatment guidance." },
-      { title: "Online stores", text: "Product consultation, order questions, recommendations and sales support." },
-      { title: "Construction and project companies", text: "Lead qualification, project details, estimate requests and manager handoff." },
-      { title: "Education projects", text: "Course selection, enrollment questions, scheduling and student support." },
-      { title: "Services and customer support", text: "Routine answers, request routing and support across popular messengers." },
+      { title: "Салони краси", text: "Запис, питання про послуги, орієнтація у ціні та нагадування клієнтам." },
+      { title: "Стоматології", text: "FAQ, запити на запис, первинна підтримка та рекомендації щодо лікування." },
+      { title: "Інтернет-магазини", text: "Консультації щодо товарів, питання замовлень, рекомендації та підтримка продажів." },
+      { title: "Будівництво та проекти", text: "Кваліфікація лідів, деталі проєктів, запити кошторисів і передача менеджеру." },
+      { title: "Освітні проєкти", text: "Вибір курсу, питання реєстрації, розклад і підтримка студентів." },
+      { title: "Сервіси і підтримка", text: "Рутинні відповіді, маршрутизація запитів і підтримка у популярних месенджерах." },
     ],
     cta: {
       title: "Хочете протестувати AI консультанта для вашого бізнесу?",
       primary: "Надіслати запит",
       secondary: "Дізнатися більше",
     },
+    homeAriaLabel: "Перейти на головну сторінку Tisgrow",
+    toggleNavigation: "Перемикнути навігацію",
+    heroVisual: {
+      onlineLabel: "AI консультант онлайн",
+      channelsLabel: "Чат сайту + месенджери",
+      status: "Активний",
+    },
+    visualMessages: [
+      { role: "client", from: "Клієнт", text: "Чи є вільна зустріч на завтра?" },
+      { role: "assistant", from: "AI консультант", text: "Так. Можу запропонувати 11:30 або 16:00. Що підходить?" },
+      { role: "client", from: "Клієнт", text: "16:00, будь ласка. Можна також ціну?" },
+      { role: "assistant", from: "AI консультант", text: "Звісно. Я збережу слот і надішлю деталі послуги." },
+    ],
+    heroStats: [
+      { value: "24/7", label: "відповіді клієнтам" },
+      { value: "5+", label: "каналів" },
+      { value: "Швидко", label: "відповідь на ліди" },
+    ],
+    videoCards: [
+      { title: "Сценарій бронювання для салону краси", placeholder: "Заміна плейсхолдеру на реальне відео або демонстрацію." },
+      { title: "FAQ стоматологічної клініки та запис на прийом", placeholder: "Заміна плейсхолдеру на реальне відео або демонстрацію." },
+      { title: "Консультант продуктів для інтернет-магазину", placeholder: "Заміна плейсхолдеру на реальне відео або демонстрацію." },
+    ],
+    portfolioExamples: [
+      { title: "Асистент запису для салону краси", text: "Супроводжує клієнта від вибору послуги до часу та підтвердження контакту." },
+      { title: "Асистент FAQ стоматології", text: "Відповідає на питання лікування і готує чисті запити для адміністраторів." },
+      { title: "Продуктовий консультант інтернет-магазину", text: "Рекомендує товари, відповідає на заперечення і допомагає до покупки." },
+      { title: "Асистент лідів для будівельних сервісів", text: "Збирає місце, обсяг, бюджет та терміни перед передачею менеджеру." },
+    ],
+    pricingPlans: [
+      { name: "Початковий", price: "від $100 настройки", details: "Стартова налаштування консультанта, основні підказки, простий сценарій та впровадження." },
+      { name: "Підтримка", price: "від $30/місяць", details: "Покращення, налаштування відповідей і легке щомісячне обслуговування." },
+      { name: "Індивідуальна автоматизація", price: "індивідуальна ціна", details: "Просунуті інтеграції і сценарії залежно від бізнес-завдань." },
+    ],
+    pricingDisclaimer: "Платні підписки на платформи, автоматизацію чи месенджери можуть оплачуватись окремо клієнтом.",
+    channelLabels: ["Сайт", "Telegram", "Instagram", "WhatsApp", "Передача менеджеру", "AI логіка"],
+    capabilities: [
+      "Відповіді клієнтам 24/7",
+      "Збирає ліди",
+      "Бронює записи",
+      "Консультує клієнтів",
+      "Допомагає продавати послуги та продукти",
+      "Працює у чаті сайту, Telegram, Instagram та WhatsApp",
+      "Передає складні запити менеджеру",
+    ],
+    play: "Відтворити",
     orderSimilarAssistant: "Замовити схожого асистента",
     demoMenu: {
       title: "Демо-меню",
@@ -211,6 +274,7 @@ export const assistantGalleryCopy: Record<
       videoPresentation: "Відеопрезентація",
       unavailable: "Матеріал скоро буде додано",
       close: "Закрити",
+      loading: "Завантаження...",
     },
     contactForm: {
       nameLabel: "Ім'я",
@@ -223,6 +287,7 @@ export const assistantGalleryCopy: Record<
       instagram: "Instagram",
       email: "Email",
       emailSubject: "Запит на демо Tisgrow",
+      emailBodyIntro: "Вітаю Tisgrow,",
     },
     footer: {
       brandTitle: "Tisgrow",
@@ -274,12 +339,12 @@ export const assistantGalleryCopy: Record<
       },
     },
     industries: [
-      { title: "Индустрии", text: "Записи, вопросы об услугах, цены и напоминания клиентам." },
-      { title: "Стоматологии", text: "FAQ, запросы на приём, первичная поддержка и рекомендации по лечению." },
-      { title: "Интернет-магазины", text: "Консультации по товарам, вопросы по заказам, рекомендации и поддержка продаж." },
-      { title: "Строительство и проекты", text: "Квалификация лидов, детали проектов, запросы смет и передача менеджеру." },
-      { title: "Образование", text: "Выбор курса, вопросы по зачислению, расписание и поддержка студентов." },
-      { title: "Сервисы и поддержка", text: "Рутинные ответы, маршрутизация запросов и поддержка в популярных мессенджерах." },
+      { title: "Beauty salons", text: "Bookings, service questions, price guidance and client reminders." },
+      { title: "Dental clinics", text: "FAQ, appointment requests, first-touch support and treatment guidance." },
+      { title: "Online stores", text: "Product consultation, order questions, recommendations and sales support." },
+      { title: "Construction and project companies", text: "Lead qualification, project details, estimate requests and manager handoff." },
+      { title: "Education projects", text: "Course selection, enrollment questions, scheduling and student support." },
+      { title: "Services and customer support", text: "Routine answers, request routing and support across popular messengers." },
     ],
     cta: {
       title: "Want to test an AI consultant for your business?",
@@ -295,6 +360,7 @@ export const assistantGalleryCopy: Record<
       videoPresentation: "Video Presentation",
       unavailable: "Material will be added soon",
       close: "Close",
+      loading: "Loading...",
     },
     contactForm: {
       nameLabel: "Name",
@@ -307,11 +373,58 @@ export const assistantGalleryCopy: Record<
       instagram: "Instagram",
       email: "Email",
       emailSubject: "Tisgrow demo request",
+      emailBodyIntro: "Hello Tisgrow,",
     },
     footer: {
       brandTitle: "Tisgrow",
       brandText: "AI consultants and AI agents that help modern businesses grow.",
     },
+    homeAriaLabel: "Go to the Tisgrow homepage",
+    toggleNavigation: "Toggle navigation",
+    heroVisual: {
+      onlineLabel: "AI consultant online",
+      channelsLabel: "Website chat + messengers",
+      status: "Active",
+    },
+    visualMessages: [
+      { role: "client", from: "Client", text: "Do you have an available appointment tomorrow?" },
+      { role: "assistant", from: "AI Consultant", text: "Yes. I can offer 11:30 or 16:00. Which works best?" },
+      { role: "client", from: "Client", text: "16:00, please. Can I get the price too?" },
+      { role: "assistant", from: "AI Consultant", text: "Of course. I’ll save the slot and send the service details." },
+    ],
+    heroStats: [
+      { value: "24/7", label: "client answers" },
+      { value: "5+", label: "channels" },
+      { value: "Fast", label: "lead response" },
+    ],
+    videoCards: [
+      { title: "Beauty booking scenario", placeholder: "Placeholder video block. Replace with a real embed or demo file." },
+      { title: "Dental FAQ and appointment flow", placeholder: "Placeholder video block. Replace with a real embed or demo file." },
+      { title: "Online store product consultation", placeholder: "Placeholder video block. Replace with a real embed or demo file." },
+    ],
+    portfolioExamples: [
+      { title: "Beauty salon booking assistant", text: "Guides clients from service choice to preferred time and contact confirmation." },
+      { title: "Dental clinic FAQ and appointment assistant", text: "Answers common treatment questions and prepares clean requests for administrators." },
+      { title: "Online store product consultant", text: "Recommends products, answers objections and helps customers move toward purchase." },
+      { title: "Construction service lead assistant", text: "Collects project location, scope, budget and timeline before a manager joins." },
+    ],
+    pricingPlans: [
+      { name: "Starter", price: "from $100 setup", details: "Initial consultant setup, core prompts, simple flow and launch guidance." },
+      { name: "Support", price: "from $30/month", details: "Ongoing improvements, answers tuning and light monthly maintenance." },
+      { name: "Custom automation", price: "individual price", details: "Advanced integrations and scenarios depending on business tasks." },
+    ],
+    pricingDisclaimer: "Platform subscriptions such as automation tools or messengers may be paid separately by the client.",
+    channelLabels: ["Website", "Telegram", "Instagram", "WhatsApp", "Human handoff", "AI logic"],
+    capabilities: [
+      "Answers clients 24/7",
+      "Collects leads",
+      "Books appointments",
+      "Consults clients",
+      "Helps sell services and products",
+      "Works in website chat, Telegram, Instagram and WhatsApp",
+      "Transfers complex requests to a human manager",
+    ],
+    play: "Play",
   },
   ru: {
     eyebrow: "AI ассистенты",
@@ -358,12 +471,12 @@ export const assistantGalleryCopy: Record<
       },
     },
     industries: [
-      { title: "Salones de belleza", text: "Reservas, preguntas sobre servicios, guía de precios y recordatorios." },
-      { title: "Clínicas dentales", text: "Preguntas frecuentes, solicitudes de cita, soporte inicial y guía de tratamientos." },
-      { title: "Tiendas online", text: "Consultas de productos, preguntas de pedidos, recomendaciones y soporte de ventas." },
-      { title: "Construcción y proyectos", text: "Calificación de leads, detalles de proyectos, solicitudes de presupuesto y traspaso a gestor." },
-      { title: "Proyectos educativos", text: "Selección de cursos, preguntas de inscripción, programación y soporte a estudiantes." },
-      { title: "Servicios y soporte", text: "Respuestas rutinarias, enrutamiento de solicitudes y soporte en mensajeros populares." },
+      { title: "Салоны красоты", text: "Запись, вопросы о сервисах, ценовые рекомендации и напоминания клиентам." },
+      { title: "Стоматологии", text: "FAQ, запросы на приём, первичная поддержка и рекомендации по лечению." },
+      { title: "Интернет-магазины", text: "Консультации по товарам, вопросы по заказам, рекомендации и поддержка продаж." },
+      { title: "Строительство и проекты", text: "Квалификация лидов, детали проектов, запросы смет и передача менеджеру." },
+      { title: "Образовательные проекты", text: "Выбор курса, вопросы по зачислению, расписание и поддержка студентов." },
+      { title: "Сервисы и поддержка", text: "Рутинные ответы, маршрутизация запросов и поддержка в популярных мессенджерах." },
     ],
     cta: {
       title: "Хотите протестировать AI консультанта для вашего бизнеса?",
@@ -379,6 +492,7 @@ export const assistantGalleryCopy: Record<
       videoPresentation: "Видеопрезентация",
       unavailable: "Материал скоро будет добавлен",
       close: "Закрыть",
+      loading: "Загрузка...",
     },
     contactForm: {
       nameLabel: "Имя",
@@ -391,11 +505,58 @@ export const assistantGalleryCopy: Record<
       instagram: "Instagram",
       email: "Email",
       emailSubject: "Запрос на демо Tisgrow",
+      emailBodyIntro: "Здравствуйте Tisgrow,",
     },
     footer: {
       brandTitle: "Tisgrow",
       brandText: "AI консультанты и AI агенты, которые помогают современному бизнесу расти.",
     },
+    homeAriaLabel: "Перейти на главную страницу Tisgrow",
+    toggleNavigation: "Переключить навигацию",
+    heroVisual: {
+      onlineLabel: "AI консультант онлайн",
+      channelsLabel: "Чат сайта + мессенджеры",
+      status: "Активен",
+    },
+    visualMessages: [
+      { role: "client", from: "Клиент", text: "Есть ли свободная встреча на завтра?" },
+      { role: "assistant", from: "AI консультант", text: "Да. Я могу предложить 11:30 или 16:00. Что вам подходит?" },
+      { role: "client", from: "Клиент", text: "16:00, пожалуйста. Можно также цену?" },
+      { role: "assistant", from: "AI консультант", text: "Конечно. Я сохраню слот и отправлю детали услуги." },
+    ],
+    heroStats: [
+      { value: "24/7", label: "ответы клиентам" },
+      { value: "5+", label: "каналов" },
+      { value: "Быстро", label: "ответ лидам" },
+    ],
+    videoCards: [
+      { title: "Сценарий бронирования красоты", placeholder: "Заполните реальным видео или демонстрацией." },
+      { title: "FAQ стоматологической клиники и запись", placeholder: "Заполните реальным видео или демонстрацией." },
+      { title: "Консультант товаров онлайн-магазина", placeholder: "Заполните реальным видео или демонстрацией." },
+    ],
+    portfolioExamples: [
+      { title: "Ассистент бронирования салона", text: "Помогает клиенту выбрать услугу, время и подтвердить контакт." },
+      { title: "FAQ ассистент стоматологии", text: "Отвечает на вопросы лечения и подготавливает чистые заявки для администраторов." },
+      { title: "Продуктовый консультант магазина", text: "Рекомендует товары, отвечает на возражения и помогает к покупке." },
+      { title: "Ассистент лидов для строительства", text: "Собирает место, объем, бюджет и сроки перед передачей менеджеру." },
+    ],
+    pricingPlans: [
+      { name: "Начальный", price: "от $100 настройки", details: "Начальная настройка консультанта, ключевые подсказки, простой сценарий и запуск." },
+      { name: "Поддержка", price: "от $30/месяц", details: "Постоянные улучшения, настройка ответов и легкое ежемесячное сопровождение." },
+      { name: "Индивидуальная автоматизация", price: "индивидуальная цена", details: "Продвинутые интеграции и сценарии в зависимости от бизнес-задач." },
+    ],
+    pricingDisclaimer: "Платные подписки на платформы, инструменты автоматизации или мессенджеры могут оплачиваться отдельно клиентом.",
+    channelLabels: ["Веб", "Telegram", "Instagram", "WhatsApp", "Передача менеджеру", "AI логика"],
+    capabilities: [
+      "Отвечает клиентам 24/7",
+      "Собирает лиды",
+      "Бронирует записи",
+      "Консультирует клиентов",
+      "Помогает продавать услуги и продукты",
+      "Работает в чате сайта, Telegram, Instagram и WhatsApp",
+      "Передаёт сложные запросы менеджеру",
+    ],
+    play: "Воспроизвести",
   },
   es: {
     eyebrow: "Asistentes AI",
@@ -442,12 +603,12 @@ export const assistantGalleryCopy: Record<
       },
     },
     industries: [
-      { title: "Salons de beauté", text: "Réservations, questions sur les services, guide des prix et rappels clients." },
-      { title: "Cliniques dentaires", text: "FAQ, demandes de rendez-vous, support de premier contact et recommandations de traitement." },
-      { title: "Boutiques en ligne", text: "Consultation de produits, questions de commande, recommandations et support des ventes." },
-      { title: "Construction et projets", text: "Qualification des leads, détails de projet, demandes de devis et transfert au gestionnaire." },
-      { title: "Projets éducatifs", text: "Choix de cours, questions d'inscription, planification et support aux étudiants." },
-      { title: "Services et support", text: "Réponses routinières, routage des demandes et support sur les messagers populaires." },
+      { title: "Salones de belleza", text: "Reservas, preguntas sobre servicios, guía de precios y recordatorios a clientes." },
+      { title: "Clínicas dentales", text: "Preguntas frecuentes, solicitudes de cita, soporte inicial y guía de tratamientos." },
+      { title: "Tiendas online", text: "Consultas de productos, preguntas de pedidos, recomendaciones y soporte de ventas." },
+      { title: "Construcción y proyectos", text: "Calificación de leads, detalles de proyectos, solicitudes de presupuesto y traspaso a gestor." },
+      { title: "Proyectos educativos", text: "Selección de cursos, preguntas de inscripción, programación y ayuda a estudiantes." },
+      { title: "Servicios y soporte", text: "Respuestas rutinarias, enrutamiento de solicitudes y soporte en mensajeros populares." },
     ],
     cta: {
       title: "¿Quieres probar un consultor de IA para tu negocio?",
@@ -463,6 +624,7 @@ export const assistantGalleryCopy: Record<
       videoPresentation: "Video de presentación",
       unavailable: "Material pronto estará disponible",
       close: "Cerrar",
+      loading: "Cargando...",
     },
     contactForm: {
       nameLabel: "Nombre",
@@ -475,11 +637,58 @@ export const assistantGalleryCopy: Record<
       instagram: "Instagram",
       email: "Email",
       emailSubject: "Solicitud de demo Tisgrow",
+      emailBodyIntro: "Hola Tisgrow,",
     },
     footer: {
       brandTitle: "Tisgrow",
       brandText: "Consultores y agentes de IA que ayudan a las empresas modernas a crecer.",
     },
+    homeAriaLabel: "Ir a la página principal de Tisgrow",
+    toggleNavigation: "Alternar navegación",
+    heroVisual: {
+      onlineLabel: "Consultor de IA en línea",
+      channelsLabel: "Chat del sitio + mensajeros",
+      status: "Activo",
+    },
+    visualMessages: [
+      { role: "client", from: "Cliente", text: "¿Tiene una cita disponible para mañana?" },
+      { role: "assistant", from: "Consultor IA", text: "Sí. Puedo ofrecer 11:30 o 16:00. ¿Cuál funciona mejor?" },
+      { role: "client", from: "Cliente", text: "16:00, por favor. ¿También puedo obtener el precio?" },
+      { role: "assistant", from: "Consultor IA", text: "Por supuesto. Guardaré el horario y enviaré los detalles del servicio." },
+    ],
+    heroStats: [
+      { value: "24/7", label: "respuestas al cliente" },
+      { value: "5+", label: "canales" },
+      { value: "Rápido", label: "respuesta a leads" },
+    ],
+    videoCards: [
+      { title: "Escenario de reserva de belleza", placeholder: "Bloque de video de marcador. Sustituye por un embed o demo real." },
+      { title: "Flujo de FAQ dental y cita", placeholder: "Bloque de video de marcador. Sustituye por un embed o demo real." },
+      { title: "Consulta de producto de tienda online", placeholder: "Bloque de video de marcador. Sustituye por un embed o demo real." },
+    ],
+    portfolioExamples: [
+      { title: "Asistente de reservas para salón de belleza", text: "Guía a los clientes desde la elección del servicio hasta la hora y la confirmación de contacto." },
+      { title: "Asistente FAQ de clínica dental", text: "Responde preguntas comunes de tratamiento y prepara solicitudes limpias para administradores." },
+      { title: "Consultor de producto de tienda online", text: "Recomienda productos, responde objeciones y ayuda a avanzar hacia la compra." },
+      { title: "Asistente de leads para construcción", text: "Recolecta ubicación, alcance, presupuesto y calendario antes de que se una un gerente." },
+    ],
+    pricingPlans: [
+      { name: "Inicial", price: "desde $100 de configuración", details: "Configuración inicial del consultor, prompts clave, flujo simple y guía de lanzamiento." },
+      { name: "Soporte", price: "desde $30/mes", details: "Mejoras continuas, afinación de respuestas y mantenimiento mensual ligero." },
+      { name: "Automatización personalizada", price: "precio individual", details: "Integraciones avanzadas y escenarios según tareas del negocio." },
+    ],
+    pricingDisclaimer: "Las suscripciones a plataformas, herramientas de automatización o mensajeros pueden pagarse por separado por el cliente.",
+    channelLabels: ["Sitio web", "Telegram", "Instagram", "WhatsApp", "Transferencia al humano", "Lógica IA"],
+    capabilities: [
+      "Responde clientes 24/7",
+      "Recopila leads",
+      "Reserva citas",
+      "Consulta clientes",
+      "Ayuda a vender servicios y productos",
+      "Funciona en chat del sitio, Telegram, Instagram y WhatsApp",
+      "Transfiere solicitudes complejas a un humano",
+    ],
+    play: "Reproducir",
   },
   fr: {
     eyebrow: "Assistants IA",
@@ -526,12 +735,12 @@ export const assistantGalleryCopy: Record<
       },
     },
     industries: [
-      { title: "الصالونات الجمالية", text: "الحجوزات، أسئلة الخدمة، إرشادات الأسعار وتذكيرات العملاء." },
-      { title: "عيادات الأسنان", text: "الأسئلة الشائعة، طلبات المواعيد، الدعم الأولي وإرشادات العلاج." },
-      { title: "المتاجر الإلكترونية", text: "استشارات المنتج، أسئلة الطلبات، التوصيات ودعم المبيعات." },
-      { title: "البناء والمشاريع", text: "تأهيل العملاء المحتملين، تفاصيل المشروع، طلبات التقدير وتسليمها للمدير." },
-      { title: "المشاريع التعليمية", text: "اختيار الدورات، أسئلة التسجيل، الجدولة ودعم الطلاب." },
-      { title: "الخدمات والدعم", text: "إجابات روتينية، توجيه الطلبات ودعم عبر الرسائل الشائعة." },
+      { title: "Salons de beauté", text: "Réservations, questions sur les services, guide des prix et rappels clients." },
+      { title: "Cliniques dentaires", text: "FAQ, demandes de rendez-vous, support initial et recommandations de traitement." },
+      { title: "Boutiques en ligne", text: "Conseil produit, questions de commande, recommandations et support commercial." },
+      { title: "Construction et projets", text: "Qualification des leads, détails de projet, demandes de devis et transfert au gestionnaire." },
+      { title: "Projets éducatifs", text: "Choix de cours, questions d'inscription, planification et accompagnement des étudiants." },
+      { title: "Services et support", text: "Réponses routinières, routage des demandes et support sur les messagers populaires." },
     ],
     cta: {
       title: "Vous souhaitez tester un consultant IA pour votre entreprise ?",
@@ -547,6 +756,7 @@ export const assistantGalleryCopy: Record<
       videoPresentation: "Vidéo de présentation",
       unavailable: "Le contenu sera bientôt ajouté",
       close: "Fermer",
+      loading: "Chargement...",
     },
     contactForm: {
       nameLabel: "Nom",
@@ -559,11 +769,58 @@ export const assistantGalleryCopy: Record<
       instagram: "Instagram",
       email: "Email",
       emailSubject: "Demande de démonstration Tisgrow",
+      emailBodyIntro: "Bonjour Tisgrow,",
     },
     footer: {
       brandTitle: "Tisgrow",
       brandText: "Consultants et agents IA qui aident les entreprises modernes à se développer.",
     },
+    homeAriaLabel: "Aller à la page d'accueil de Tisgrow",
+    toggleNavigation: "Basculer la navigation",
+    heroVisual: {
+      onlineLabel: "Consultant IA en ligne",
+      channelsLabel: "Chat du site + messagers",
+      status: "Actif",
+    },
+    visualMessages: [
+      { role: "client", from: "Client", text: "Avez-vous un rendez-vous disponible pour demain ?" },
+      { role: "assistant", from: "Consultant IA", text: "Oui. Je peux proposer 11h30 ou 16h00. Que préférez-vous ?" },
+      { role: "client", from: "Client", text: "16h00, s'il vous plaît. Puis-je aussi avoir le tarif ?" },
+      { role: "assistant", from: "Consultant IA", text: "Bien sûr. Je vais réserver le créneau et envoyer les détails du service." },
+    ],
+    heroStats: [
+      { value: "24/7", label: "réponses clients" },
+      { value: "5+", label: "canaux" },
+      { value: "Rapide", label: "réponse leads" },
+    ],
+    videoCards: [
+      { title: "Scénario de réservation beauté", placeholder: "Bloc vidéo de remplacement. Remplacez par un embed ou une démo réelle." },
+      { title: "FAQ dentaire et flux de rendez-vous", placeholder: "Bloc vidéo de remplacement. Remplacez par un embed ou une démo réelle." },
+      { title: "Consultant produit pour boutique en ligne", placeholder: "Bloc vidéo de remplacement. Remplacez par un embed ou une démo réelle." },
+    ],
+    portfolioExamples: [
+      { title: "Assistant de réservation salon beauté", text: "Guide le client du choix de service à la confirmation du contact." },
+      { title: "Assistant FAQ clinique dentaire", text: "Répond aux questions de traitement et prépare des demandes claires pour les administrateurs." },
+      { title: "Consultant produit boutique en ligne", text: "Recommande des produits, répond aux objections et facilite l'achat." },
+      { title: "Assistant leads construction", text: "Collecte lieu, volume, budget et calendrier avant l'intervention d'un manager." },
+    ],
+    pricingPlans: [
+      { name: "Début", price: "à partir de 100 $ de configuration", details: "Configuration initiale du consultant, prompts de base, flux simple et guide de lancement." },
+      { name: "Support", price: "à partir de 30 $/mois", details: "Améliorations continues, ajustement des réponses et maintenance mensuelle légère." },
+      { name: "Automatisation personnalisée", price: "prix individuel", details: "Intégrations avancées et scénarios selon les besoins métier." },
+    ],
+    pricingDisclaimer: "Les abonnements plateformes, outils d'automatisation ou messagers peuvent être payés séparément par le client.",
+    channelLabels: ["Site web", "Telegram", "Instagram", "WhatsApp", "Transfert humain", "Logique IA"],
+    capabilities: [
+      "Répond aux clients 24/7",
+      "Collecte des leads",
+      "Réserve des rendez-vous",
+      "Conseille les clients",
+      "Aide à vendre des services et produits",
+      "Fonctionne sur chat site, Telegram, Instagram et WhatsApp",
+      "Transfère les demandes complexes à un humain",
+    ],
+    play: "Lire",
   },
   ar: {
     eyebrow: "مساعدو الذكاء الاصطناعي",
@@ -610,12 +867,12 @@ export const assistantGalleryCopy: Record<
       },
     },
     industries: [
-      { title: "行业", text: "预订、服务问题、价格指南和客户提醒。" },
-      { title: "牙科诊所", text: "常见问题、预约请求、首次支持和治疗指南。" },
-      { title: "在线商店", text: "产品咨询、订单问题、推荐和销售支持。" },
-      { title: "建筑与项目公司", text: "线索资格、项目细节、估算请求和交接给经理。" },
-      { title: "教育项目", text: "课程选择、报名问题、排期和学生支持。" },
-      { title: "服务与客户支持", text: "常规回答、请求路由和在流行信使中的支持。" },
+      { title: "صالونات التجميل", text: "الحجوزات، أسئلة الخدمة، إرشادات الأسعار وتذكيرات العملاء." },
+      { title: "عيادات الأسنان", text: "الأسئلة الشائعة، طلبات المواعيد، الدعم الأولي وإرشادات العلاج." },
+      { title: "المتاجر الإلكترونية", text: "استشارات المنتجات، أسئلة الطلب، التوصيات ودعم المبيعات." },
+      { title: "البناء والمشاريع", text: "تأهيل العملاء المحتملين، تفاصيل المشروع، طلبات التقدير وتسليمها للمدير." },
+      { title: "المشاريع التعليمية", text: "اختيار الدورات، أسئلة التسجيل، الجدولة ودعم الطلاب." },
+      { title: "الخدمات والدعم", text: "إجابات روتينية، توجيه الطلبات ودعم عبر الرسائل الشائعة." },
     ],
     cta: {
       title: "هل تريد تجربة مستشار ذكاء اصطناعي لعملك؟",
@@ -631,6 +888,7 @@ export const assistantGalleryCopy: Record<
       videoPresentation: "عرض تقديمي بالفيديو",
       unavailable: "سيتم إضافة المحتوى قريبًا",
       close: "إغلاق",
+      loading: "جارٍ التحميل...",
     },
     contactForm: {
       nameLabel: "الاسم",
@@ -643,11 +901,58 @@ export const assistantGalleryCopy: Record<
       instagram: "Instagram",
       email: "Email",
       emailSubject: "طلب عرض Tisgrow التجريبي",
+      emailBodyIntro: "مرحبًا Tisgrow،",
     },
     footer: {
       brandTitle: "Tisgrow",
       brandText: "استشاريون ووكلاء الذكاء الاصطناعي الذين يساعدون الشركات الحديثة على النمو.",
     },
+    homeAriaLabel: "الانتقال إلى الصفحة الرئيسية لـ Tisgrow",
+    toggleNavigation: "تبديل التنقل",
+    heroVisual: {
+      onlineLabel: "مستشار AI عبر الإنترنت",
+      channelsLabel: "دردشة الموقع + المراسلات",
+      status: "نشط",
+    },
+    visualMessages: [
+      { role: "client", from: "عميل", text: "هل لديك موعد متاح غدًا؟" },
+      { role: "assistant", from: "مستشار AI", text: "نعم. يمكنني تقديم 11:30 أو 16:00. أيهما يناسب؟" },
+      { role: "client", from: "عميل", text: "16:00، من فضلك. هل يمكنني أيضًا معرفة السعر؟" },
+      { role: "assistant", from: "مستشار AI", text: "بالطبع. سأحجز الموعد وأرسل تفاصيل الخدمة." },
+    ],
+    heroStats: [
+      { value: "24/7", label: "إجابات للعملاء" },
+      { value: "5+", label: "القنوات" },
+      { value: "سريع", label: "استجابة العملاء المحتملين" },
+    ],
+    videoCards: [
+      { title: "سيناريو حجز صالون جمال", placeholder: "كتلة فيديو تجريبية. استبدلها بتضمين أو عرض توضيحي حقيقي." },
+      { title: "تدفق FAQ لعيادة الأسنان والمواعيد", placeholder: "كتلة فيديو تجريبية. استبدلها بتضمين أو عرض توضيحي حقيقي." },
+      { title: "مستشار منتجات متجر إلكتروني", placeholder: "كتلة فيديو تجريبية. استبدلها بتضمين أو عرض توضيحي حقيقي." },
+    ],
+    portfolioExamples: [
+      { title: "مساعد حجز صالون جمال", text: "يرشد العملاء من اختيار الخدمة إلى الوقت وتأكيد الاتصال." },
+      { title: "مساعد FAQ لعيادة الأسنان", text: "يجيب على الأسئلة الشائعة حول العلاج ويجهز طلبات واضحة للمسؤولين." },
+      { title: "مستشار منتجات متجر إلكتروني", text: "يوصي بالمنتجات، يرد على الاعتراضات ويساعد على التقدم نحو الشراء." },
+      { title: "مساعد العملاء المحتملين للبناء", text: "يجمع الموقع والنطاق والميزانية والجدول قبل انضمام المدير." },
+    ],
+    pricingPlans: [
+      { name: "البدء", price: "من 100 دولار إعداد", details: "إعداد استشاري أولي،prompts أساسية، تدفق بسيط ودليل إطلاق." },
+      { name: "الدعم", price: "من 30 دولار/شهريًا", details: "تحسينات مستمرة، ضبط الإجابات وصيانة شهرية خفيفة." },
+      { name: "الأتمتة المخصصة", price: "سعر فردي", details: "تكاملات متقدمة وسيناريوهات حسب مهام العمل." },
+    ],
+    pricingDisclaimer: "قد تدفع الاشتراكات على المنصات أو أدوات الأتمتة أو المراسلات بشكل منفصل من العميل.",
+    channelLabels: ["الموقع", "Telegram", "Instagram", "WhatsApp", "نقل إلى إنسان", "منطق AI"],
+    capabilities: [
+      "يجيب على العملاء 24/7",
+      "يجمع العملاء المحتملين",
+      "يحجز المواعيد",
+      "يستشير العملاء",
+      "يساعد على بيع الخدمات والمنتجات",
+      "يعمل في دردشة الموقع وTelegram وInstagram وWhatsApp",
+      "ينقل الطلبات المعقدة إلى إنسان",
+    ],
+    play: "تشغيل",
   },
   zh: {
     eyebrow: "AI 助手",
@@ -694,12 +999,12 @@ export const assistantGalleryCopy: Record<
       },
     },
     industries: [
-      { title: "ब्यूटी सैलून", text: "बुकिंग, सेवा प्रश्न, मूल्य मार्गदर्शन और ग्राहक अनुस्मारक." },
-      { title: "डेंटल क्लिनिक्स", text: "FAQ, अपॉइंटमेंट अनुरोध, प्रथम-संपर्क समर्थन और उपचार मार्गदर्शन." },
-      { title: "ऑनलाइन स्टोर्स", text: "उत्पाद परामर्शन, ऑर्डर प्रश्न, सिफारिशें और बिक्री समर्थन." },
-      { title: "निर्माण और प्रोजेक्ट कंपनियाँ", text: "लीड योग्यता, परियोजना विवरण, अनुमान अनुरोध और मैनेजर हैंडऑफ." },
-      { title: "शिक्षा प्रोजेक्ट", text: "कोर्स चयन, नामांकन प्रश्न, शेड्यूलिंग और छात्र सहायता." },
-      { title: "सेवाएँ और ग्राहक समर्थन", text: "नियमित उत्तर, अनुरोध रूटिंग और लोकप्रिय मैसेंजर्स में समर्थन." },
+      { title: "美容沙龙", text: "预约、服务问题、价格指南和客户提醒。" },
+      { title: "牙科诊所", text: "常见问题解答、预约请求、首次支持和治疗建议。" },
+      { title: "在线商店", text: "产品咨询、订单问题、推荐和销售支持。" },
+      { title: "建筑与项目公司", text: "线索资格、项目细节、报价请求和经理交接。" },
+      { title: "教育项目", text: "课程选择、报名问题、排期和学生支持。" },
+      { title: "服务与客户支持", text: "常规回复、请求路由和流行信使支持。" },
     ],
     cta: {
       title: "想测试适合您业务的 AI 顾问吗？",
@@ -715,6 +1020,7 @@ export const assistantGalleryCopy: Record<
       videoPresentation: "视频演示",
       unavailable: "材料即将添加",
       close: "关闭",
+      loading: "加载中...",
     },
     contactForm: {
       nameLabel: "姓名",
@@ -727,11 +1033,58 @@ export const assistantGalleryCopy: Record<
       instagram: "Instagram",
       email: "Email",
       emailSubject: "Tisgrow 演示请求",
+      emailBodyIntro: "你好 Tisgrow，",
     },
     footer: {
       brandTitle: "Tisgrow",
       brandText: "AI 顾问和 AI 代理，帮助现代企业成长。",
     },
+    homeAriaLabel: "转到 Tisgrow 主页",
+    toggleNavigation: "切换导航",
+    heroVisual: {
+      onlineLabel: "AI 顾问在线",
+      channelsLabel: "网站聊天 + 信使",
+      status: "在线",
+    },
+    visualMessages: [
+      { role: "client", from: "客户", text: "明天有可用的预约吗？" },
+      { role: "assistant", from: "AI 顾问", text: "有的。我可以提供11:30或16:00。哪个更合适？" },
+      { role: "client", from: "客户", text: "请定在16:00。也可以告诉我价格吗？" },
+      { role: "assistant", from: "AI 顾问", text: "当然。我会保存时间并发送服务详情。" },
+    ],
+    heroStats: [
+      { value: "24/7", label: "客户回复" },
+      { value: "5+", label: "渠道" },
+      { value: "快速", label: "潜在客户响应" },
+    ],
+    videoCards: [
+      { title: "美容预约场景", placeholder: "占位视频块。请替换为真实嵌入或演示文件。" },
+      { title: "牙科 FAQ 及预约流程", placeholder: "占位视频块。请替换为真实嵌入或演示文件。" },
+      { title: "在线商店产品咨询", placeholder: "占位视频块。请替换为真实嵌入或演示文件。" },
+    ],
+    portfolioExamples: [
+      { title: "美容院预约助手", text: "引导客户从服务选择到时间和联系方式确认。" },
+      { title: "牙科诊所 FAQ 助手", text: "回答常见治疗问题，并为管理员准备清晰请求。" },
+      { title: "在线商店产品顾问", text: "推荐产品、回答异议并帮助客户购买。" },
+      { title: "建筑服务线索助手", text: "收集地点、范围、预算和时程，然后转交给经理。" },
+    ],
+    pricingPlans: [
+      { name: "入门", price: "设置费从 $100 起", details: "初始顾问设置、核心提示、简单流程和上线指导。" },
+      { name: "支持", price: "每月 $30 起", details: "持续优化、答案调优和轻量月度维护。" },
+      { name: "定制自动化", price: "单独定价", details: "根据业务任务的高级集成和场景。" },
+    ],
+    pricingDisclaimer: "平台订阅、自动化工具或信使服务可能由客户单独付费。",
+    channelLabels: ["网站", "Telegram", "Instagram", "WhatsApp", "人工交接", "AI 逻辑"],
+    capabilities: [
+      "24/7 回答客户",
+      "收集线索",
+      "预订预约",
+      "咨询客户",
+      "帮助销售服务和产品",
+      "支持网站聊天、Telegram、Instagram 和 WhatsApp",
+      "将复杂请求转交人工处理",
+    ],
+    play: "播放",
   },
   hi: {
     eyebrow: "AI सहायक",
@@ -799,6 +1152,7 @@ export const assistantGalleryCopy: Record<
       videoPresentation: "वीडियो प्रस्तुति",
       unavailable: "सामग्री जल्द ही जोड़ी जाएगी",
       close: "बंद करें",
+      loading: "लोड हो रहा है...",
     },
     contactForm: {
       nameLabel: "नाम",
@@ -811,11 +1165,58 @@ export const assistantGalleryCopy: Record<
       instagram: "Instagram",
       email: "Email",
       emailSubject: "Tisgrow डेमो अनुरोध",
+      emailBodyIntro: "नमस्ते Tisgrow,",
     },
     footer: {
       brandTitle: "Tisgrow",
       brandText: "AI सलाहकार और एजेंट जो आधुनिक व्यवसायों को बढ़ने में मदद करते हैं।",
     },
+    homeAriaLabel: "Tisgrow होम पर जाएं",
+    toggleNavigation: "नेविगेशन टॉगल करें",
+    heroVisual: {
+      onlineLabel: "AI सलाहकार ऑनलाइन",
+      channelsLabel: "वेबसाइट चैट + मेसेंजर",
+      status: "ऑनलाइन",
+    },
+    visualMessages: [
+      { role: "client", from: "ग्राहक", text: "क्या कल अपॉइंटमेंट उपलब्ध है?" },
+      { role: "assistant", from: "AI सलाहकार", text: "हां। मैं 11:30 या 16:00 उपलब्ध कर सकता हूं। कौन सा ठीक रहेगा?" },
+      { role: "client", from: "ग्राहक", text: "16:00 पर बुक करें। क्या आप कीमत भी बता सकते हैं?" },
+      { role: "assistant", from: "AI सलाहकार", text: "बिल्कुल। मैं समय आरक्षित करूंगा और सेवा विवरण भेजूंगा।" },
+    ],
+    heroStats: [
+      { value: "24/7", label: "ग्राहक उत्तर" },
+      { value: "5+", label: "चैनल" },
+      { value: "त्वरित", label: "लीड प्रतिक्रिया" },
+    ],
+    videoCards: [
+      { title: "ब्यूटी अपॉइंटमेंट दृश्य", placeholder: "प्लेसहोल्डर वीडियो ब्लॉक। कृपया वास्तविक एम्बेड या डेमो फ़ाइल से बदलें।" },
+      { title: "डेंटल FAQ और अपॉइंटमेंट फ्लो", placeholder: "प्लेसहोल्डर वीडियो ब्लॉक। कृपया वास्तविक एम्बेड या डेमो फ़ाइल से बदलें।" },
+      { title: "ऑनलाइन स्टोर उत्पाद सलाह", placeholder: "प्लेसहोल्डर वीडियो ब्लॉक। कृपया वास्तविक एम्बेड या डेमो फ़ाइल से बदलें।" },
+    ],
+    portfolioExamples: [
+      { title: "ब्यूटी सैलून अपॉइंटमेंट असिस्टेंट", text: "ग्राहकों को सेवा चयन से लेकर समय और संपर्क पुष्टिकरण तक मार्गदर्शन करता है।" },
+      { title: "डेंटल क्लिनिक FAQ असिस्टेंट", text: "आम उपचार प्रश्नों का उत्तर देता है और प्रशासन के लिए स्पष्ट अनुरोध तैयार करता है।" },
+      { title: "ऑनलाइन स्टोर प्रॉडक्ट एडवाइजर", text: "उत्पाद की सिफारिश करता है, आपत्तियों का जवाब देता है और खरीदारी में मदद करता है।" },
+      { title: "कंस्ट्रक्शन लीड असिस्टेंट", text: "स्थान, दायरा, बजट और समय-सारणी एकत्र करता है, फिर मैनेजर को भेजता है।" },
+    ],
+    pricingPlans: [
+      { name: "प्रारंभ", price: "सेटअप शुल्क $100 से शुरू", details: "प्रारंभिक सलाहकार सेटअप, कोर प्रॉम्प्ट, सरल फ्लो और लॉन्च मार्गदर्शन।" },
+      { name: "सपोर्ट", price: "मासिक $30 से", details: "निरंतर अनुकूलन, उत्तर ट्यूनिंग, और हल्का मासिक रखरखाव।" },
+      { name: "कस्टम स्वचालन", price: "अलग मूल्य निर्धारण", details: "व्यवसाय कार्यों के लिए उन्नत एकीकरण और परिदृश्य।" },
+    ],
+    pricingDisclaimer: "प्लेटफ़ॉर्म सदस्यता, ऑटोमेशन टूल, या संदेश सेवा ग्राहक द्वारा अलग से भुगतान की जा सकती है।",
+    channelLabels: ["वेबसाइट", "Telegram", "Instagram", "WhatsApp", "मानव हस्तांतरण", "AI लॉजिक"],
+    capabilities: [
+      "24/7 ग्राहक उत्तर",
+      "लीड एकत्र करना",
+      "अपॉइंटमेंट बुक करना",
+      "ग्राहक मार्गदर्शन करना",
+      "सेवा और उत्पाद बिक्री में मदद करना",
+      "वेबसाइट चैट, Telegram, Instagram और WhatsApp का समर्थन करना",
+      "जटिल अनुरोधों को मानव के पास भेजना",
+    ],
+    play: "प्ले",
   },
 };
 
