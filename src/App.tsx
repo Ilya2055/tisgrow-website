@@ -30,6 +30,24 @@ import {
   visualMessages,
 } from "./content";
 
+type DemoMediaType = "demoVideo" | "pdfPresentation" | "screenshots" | "videoPresentation";
+
+function normalizeAssistantKey(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/gi, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+async function fileExists(url: string) {
+  try {
+    const response = await fetch(url, { method: "HEAD" });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
 function Header() {
   const [open, setOpen] = useState(false);
 
@@ -247,11 +265,76 @@ function Capabilities() {
 function Assistants() {
   const [language, setLanguage] = useState<LanguageCode>("uk");
   const [portalCard, setPortalCard] = useState<string | null>(null);
-  const copy = assistantGalleryCopy[language];
+  const [activeDemoAssistant, setActiveDemoAssistant] = useState<string | null>(null);
+  const [demoSplashAssistant, setDemoSplashAssistant] = useState<string | null>(null);
+  const [demoLoading, setDemoLoading] = useState<DemoMediaType | null>(null);
+  const [demoNotification, setDemoNotification] = useState<string | null>(null);
+  const copy = assistantGalleryCopy[language] ?? assistantGalleryCopy.en;
 
   function triggerPortal(name: string) {
     setPortalCard(name);
     window.setTimeout(() => setPortalCard(null), 620);
+  }
+
+  function closeDemoMenu() {
+    setActiveDemoAssistant(null);
+    setDemoNotification(null);
+    setDemoSplashAssistant(null);
+    setDemoLoading(null);
+  }
+
+  function openDemoMenu(assistantName: string) {
+    setDemoNotification(null);
+    setDemoLoading(null);
+    setDemoSplashAssistant(assistantName);
+    setTimeout(() => {
+      setDemoSplashAssistant(null);
+      setActiveDemoAssistant(assistantName);
+    }, 180);
+  }
+
+  function getAssistantKey(assistant: (typeof assistants)[number]) {
+    return assistant.key ?? normalizeAssistantKey(assistant.name);
+  }
+
+  async function resolveDemoMediaUrl(assistantKey: string, type: DemoMediaType) {
+    const buildUrl = (key: string, locale: string) => {
+      const base = `/media/demos/${key}`;
+      switch (type) {
+        case "demoVideo":
+          return `${base}-demo-${locale}.mp4`;
+        case "pdfPresentation":
+          return `${base}-presentation-${locale}.pdf`;
+        case "screenshots":
+          return `${base}-chat-${locale}-01.jpg`;
+        case "videoPresentation":
+          return `${base}-video-presentation-${locale}.mp4`;
+      }
+    };
+
+    const priorities = [language, "en", "uk"].filter((value, index, array) => array.indexOf(value) === index);
+    for (const locale of priorities) {
+      const url = buildUrl(assistantKey, locale);
+      if (await fileExists(url)) {
+        return url;
+      }
+    }
+
+    return null;
+  }
+
+  async function handleDemoAction(assistant: (typeof assistants)[number], type: DemoMediaType) {
+    const assistantKey = getAssistantKey(assistant);
+    setDemoLoading(type);
+    const url = await resolveDemoMediaUrl(assistantKey, type);
+    setDemoLoading(null);
+
+    if (url) {
+      window.open(url, "_blank");
+      return;
+    }
+
+    setDemoNotification(copy.demoMenu.unavailable);
   }
 
   return (
@@ -336,15 +419,15 @@ function Assistants() {
             </div>
 
             <div className="relative z-10 mt-6 grid gap-2">
-              <a
-                href="#videos"
+              <button
+                type="button"
                 data-sound="portal-open"
                 className="portal-button"
-                onClick={() => triggerPortal(assistant.name)}
+                onClick={() => openDemoMenu(assistant.name)}
               >
-                <span className="pixel-smoke" />
+                <span className={`pixel-smoke ${demoSplashAssistant === assistant.name ? "demo-splash-active" : ""}`} />
                 {copy.button} <ArrowRight size={16} />
-              </a>
+              </button>
               <a
                 href="#contact"
                 data-sound="soft-confirm"
@@ -355,6 +438,43 @@ function Assistants() {
                 Замовити схожого асистента
               </a>
             </div>
+            {activeDemoAssistant === assistant.name && (
+              <div className="assistant-demo-menu">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <p className="text-sm font-black uppercase tracking-wide text-cyan-100">
+                    {copy.demoMenu.title}
+                  </p>
+                  <button
+                    type="button"
+                    className="text-xs font-semibold uppercase tracking-wide text-cyan-100 transition hover:text-white"
+                    onClick={closeDemoMenu}
+                  >
+                    {copy.demoMenu.close}
+                  </button>
+                </div>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {[
+                    { type: "demoVideo" as DemoMediaType, label: copy.demoMenu.demoVideo },
+                    { type: "pdfPresentation" as DemoMediaType, label: copy.demoMenu.pdfPresentation },
+                    { type: "screenshots" as DemoMediaType, label: copy.demoMenu.screenshots },
+                    { type: "videoPresentation" as DemoMediaType, label: copy.demoMenu.videoPresentation },
+                  ].map((item) => (
+                    <button
+                      key={item.type}
+                      type="button"
+                      className="assistant-demo-option"
+                      disabled={demoLoading === item.type}
+                      onClick={() => handleDemoAction(assistant, item.type)}
+                    >
+                      {demoLoading === item.type ? "Loading..." : item.label}
+                    </button>
+                  ))}
+                </div>
+                {demoNotification && (
+                  <p className="mt-3 text-sm text-rose-100">{demoNotification}</p>
+                )}
+              </div>
+            )}
           </article>
         ))}
         </div>
