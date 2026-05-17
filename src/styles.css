@@ -147,8 +147,8 @@
     }
 
     .assistant-image-dental {
-      object-position: center top;
-      transform: translateY(-52px) scale(1.03);
+      object-position: center 0%;
+      transform: translateY(-90px) scale(1.05);
     }
 
     .assistant-image-icecreambrown {
