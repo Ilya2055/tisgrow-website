@@ -286,6 +286,7 @@ function Assistants() {
   const [demoSplashAssistant, setDemoSplashAssistant] = useState<string | null>(null);
   const [demoLoading, setDemoLoading] = useState<DemoMediaType | null>(null);
   const [demoNotification, setDemoNotification] = useState<string | null>(null);
+  const [screenshotGallery, setScreenshotGallery] = useState<string[] | null>(null);
 
   function triggerPortal(name: string) {
     setPortalCard(name);
@@ -297,11 +298,13 @@ function Assistants() {
     setDemoNotification(null);
     setDemoSplashAssistant(null);
     setDemoLoading(null);
+    setScreenshotGallery(null);
   }
 
   function openDemoMenu(assistantName: string) {
     setDemoNotification(null);
     setDemoLoading(null);
+    setScreenshotGallery(null);
     setDemoSplashAssistant(assistantName);
     setTimeout(() => {
       setDemoSplashAssistant(null);
@@ -313,26 +316,47 @@ function Assistants() {
     return assistant.key ?? normalizeAssistantKey(assistant.name);
   }
 
-  async function resolveDemoMediaUrl(assistantKey: string, type: DemoMediaType) {
-    const buildUrl = (key: string, locale: string) => {
-      const base = `/media/demos/${key}`;
-      switch (type) {
-        case "demoVideo":
-          return `${base}-demo-${locale}.mp4`;
-        case "pdfPresentation":
-          return `${base}-presentation-${locale}.pdf`;
-        case "screenshots":
-          return `${base}-chat-${locale}-01.jpg`;
-        case "videoPresentation":
-          return `${base}-video-presentation-${locale}.mp4`;
-      }
-    };
+  function buildDemoMediaUrl(assistantKey: string, type: Exclude<DemoMediaType, "screenshots">, locale: string) {
+    const base = `/media/demos/${assistantKey}`;
+    switch (type) {
+      case "demoVideo":
+        return `${base}-demo-${locale}.mp4`;
+      case "pdfPresentation":
+        return `${base}-presentation-${locale}.pdf`;
+      case "videoPresentation":
+        return `${base}-video-presentation-${locale}.mp4`;
+    }
+  }
 
+  async function resolveDemoMediaUrl(assistantKey: string, type: Exclude<DemoMediaType, "screenshots">) {
     const priorities = [language, "en", "uk"].filter((value, index, array) => array.indexOf(value) === index);
     for (const locale of priorities) {
-      const url = buildUrl(assistantKey, locale);
+      const url = buildDemoMediaUrl(assistantKey, type, locale);
       if (await fileExists(url)) {
         return url;
+      }
+    }
+
+    return null;
+  }
+
+  async function resolveScreenshotGalleryUrls(assistantKey: string) {
+    const priorities = [language, "en", "uk"].filter((value, index, array) => array.indexOf(value) === index);
+    for (const locale of priorities) {
+      const gallery: string[] = [];
+      for (let index = 1; index <= 8; index += 1) {
+        const fileName = `${assistantKey}-chat-${String(index).padStart(2, "0")}-${locale}.jpg`;
+        const url = `/media/demos/screenshot/${fileName}`;
+        if (await fileExists(url)) {
+          gallery.push(url);
+          continue;
+        }
+        if (gallery.length > 0) {
+          break;
+        }
+      }
+      if (gallery.length > 0) {
+        return gallery;
       }
     }
 
@@ -342,6 +366,19 @@ function Assistants() {
   async function handleDemoAction(assistant: (typeof assistants)[number], type: DemoMediaType) {
     const assistantKey = getAssistantKey(assistant);
     setDemoLoading(type);
+    setScreenshotGallery(null);
+
+    if (type === "screenshots") {
+      const gallery = await resolveScreenshotGalleryUrls(assistantKey);
+      setDemoLoading(null);
+      if (gallery) {
+        setScreenshotGallery(gallery);
+        return;
+      }
+      setDemoNotification(copy.demoMenu.unavailable);
+      return;
+    }
+
     const url = await resolveDemoMediaUrl(assistantKey, type);
     setDemoLoading(null);
 
@@ -487,12 +524,24 @@ function Assistants() {
                       disabled={demoLoading === item.type}
                       onClick={() => handleDemoAction(assistant, item.type)}
                     >
-                      {demoLoading === item.type ? "Loading..." : item.label}
+                      {demoLoading === item.type ? copy.demoMenu.loading : item.label}
                     </button>
                   ))}
                 </div>
                 {demoNotification && (
                   <p className="mt-3 text-sm text-rose-100">{demoNotification}</p>
+                )}
+                {screenshotGallery && (
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {screenshotGallery.map((url) => (
+                      <img
+                        key={url}
+                        src={url}
+                        alt={copy.demoMenu.screenshots}
+                        className="rounded-3xl border border-white/15 object-cover"
+                      />
+                    ))}
+                  </div>
                 )}
               </div>
             )}
