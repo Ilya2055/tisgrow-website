@@ -10,7 +10,7 @@ import {
   Send,
   X,
 } from "lucide-react";
-import { type CSSProperties, type FormEvent, useState } from "react";
+import { type CSSProperties, type FormEvent, useState, createContext, useContext } from "react";
 import {
   assistantGalleryCopy,
   assistants,
@@ -29,6 +29,20 @@ import {
   videos,
   visualMessages,
 } from "./content";
+
+type LanguageContextType = {
+  language: LanguageCode;
+  setLanguage: (code: LanguageCode) => void;
+  copy: (typeof assistantGalleryCopy)[LanguageCode & string];
+};
+
+const LanguageContext = createContext<LanguageContextType | null>(null);
+
+function useLang() {
+  const ctx = useContext(LanguageContext);
+  if (!ctx) throw new Error("useLang must be used within LanguageProvider");
+  return ctx;
+}
 
 type DemoMediaType = "demoVideo" | "pdfPresentation" | "screenshots" | "videoPresentation";
 
@@ -50,6 +64,7 @@ async function fileExists(url: string) {
 
 function Header() {
   const [open, setOpen] = useState(false);
+  const { copy } = useLang();
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/30 bg-white/80 backdrop-blur-xl">
@@ -62,7 +77,7 @@ function Header() {
         </a>
 
         <div className="hidden items-center gap-7 md:flex">
-          {navItems.map((item) => (
+          {copy.navItems.map((item) => (
             <a key={item.href} href={item.href} className="nav-link">
               {item.label}
             </a>
@@ -70,7 +85,7 @@ function Header() {
         </div>
 
         <a href="#contact" className="hidden rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-ink md:inline-flex">
-          Book a Demo
+          {copy.bookDemo}
         </a>
 
         <button
@@ -85,13 +100,13 @@ function Header() {
       {open && (
         <div className="border-t border-slate-100 bg-white px-4 py-4 shadow-soft md:hidden">
           <div className="flex flex-col gap-3">
-            {navItems.map((item) => (
+            {copy.navItems.map((item) => (
               <a key={item.href} href={item.href} className="nav-link py-2" onClick={() => setOpen(false)}>
                 {item.label}
               </a>
             ))}
             <a href="#contact" className="btn-primary mt-2 justify-center" onClick={() => setOpen(false)}>
-              Book a Demo
+              {copy.bookDemo}
             </a>
           </div>
         </div>
@@ -154,31 +169,33 @@ function HeroVisual() {
 }
 
 function Hero() {
+  const { copy } = useLang();
+
   return (
     <section id="home" className="relative overflow-hidden pt-28 sm:pt-32">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(20,211,197,0.18),transparent_30%),linear-gradient(180deg,#ffffff_0%,#eefaff_60%,#ffffff_100%)]" />
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-20 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pb-28">
         <div className="max-w-3xl">
-          <span className="eyebrow">AI consultants and agents for business</span>
+          <span className="eyebrow">{copy.hero.eyebrow}</span>
           <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight text-navy sm:text-5xl lg:text-6xl">
-            AI Consultants for Modern Business
+            {copy.hero.title}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
-            Automate customer communication with intelligent AI assistants.
+            {copy.hero.text}
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a href="#contact" className="btn-primary">
-              Book a Demo <ArrowRight size={18} />
+              {copy.hero.primary} <ArrowRight size={18} />
             </a>
             <a href="#assistants" className="btn-secondary">
-              View AI Consultants <ChevronRight size={18} />
+              {copy.hero.secondary} <ChevronRight size={18} />
             </a>
           </div>
           <p className="mt-6 max-w-2xl text-sm font-medium leading-6 text-slate-500">
-            For beauty salons, dentistry, online stores, construction, education and service businesses.
+            {copy.text}
           </p>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500">
-            Tisgrow helps businesses grow by automating customer communication, lead capture, booking, support and sales.
+            {copy.cta?.title ?? copy.text}
           </p>
         </div>
         <HeroVisual />
@@ -198,16 +215,17 @@ function SectionHeader({ eyebrow, title, text }: { eyebrow: string; title: strin
 }
 
 function Industries() {
+  const { copy } = useLang();
   return (
     <section id="industries" className="section">
       <SectionHeader
-        eyebrow="Industries"
-        title="Built for teams that talk to clients every day"
-        text="Tisgrow helps service, commerce and project-based companies respond faster without adding more routine work to their staff."
+        eyebrow={copy.sections.examples.eyebrow}
+        title={copy.sections.examples.title}
+        text={copy.sections.examples.text}
       />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {industries.map((industry) => {
-          const Icon = industry.icon;
+        {copy.industries?.map((industry, idx) => {
+          const Icon = industries[idx]?.icon ?? industries[0].icon;
           return (
             <article key={industry.title} className="soft-card group">
               <div className="mb-5 grid h-11 w-11 place-items-center rounded-lg bg-skysoft text-navy transition group-hover:bg-aqua group-hover:text-white">
@@ -224,17 +242,16 @@ function Industries() {
 }
 
 function Capabilities() {
+  const { copy } = useLang();
   return (
     <section className="section">
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <div>
-          <span className="eyebrow">What it can do</span>
+          <span className="eyebrow">{copy.sections.videos.eyebrow}</span>
           <h2 className="mt-4 text-3xl font-black tracking-tight text-navy sm:text-4xl">
-            A calm digital teammate for routine communication
+            {copy.sections.videos.title}
           </h2>
-          <p className="mt-5 text-base leading-7 text-slate-600">
-            Your AI consultant can answer common questions, guide clients through decisions, collect useful details and bring a human manager in when the request needs personal attention.
-          </p>
+          <p className="mt-5 text-base leading-7 text-slate-600">{copy.sections.videos.text}</p>
           <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3">
             {channelIcons.map((channel) => {
               const Icon = channel.icon;
@@ -263,13 +280,12 @@ function Capabilities() {
 }
 
 function Assistants() {
-  const [language, setLanguage] = useState<LanguageCode>("uk");
+  const { language, setLanguage, copy } = useLang();
   const [portalCard, setPortalCard] = useState<string | null>(null);
   const [activeDemoAssistant, setActiveDemoAssistant] = useState<string | null>(null);
   const [demoSplashAssistant, setDemoSplashAssistant] = useState<string | null>(null);
   const [demoLoading, setDemoLoading] = useState<DemoMediaType | null>(null);
   const [demoNotification, setDemoNotification] = useState<string | null>(null);
-  const copy = assistantGalleryCopy[language] ?? assistantGalleryCopy.en;
 
   function triggerPortal(name: string) {
     setPortalCard(name);
@@ -385,10 +401,15 @@ function Assistants() {
         </div>
 
         <div className="ai-card-grid">
-        {assistants.map((assistant) => (
+        {assistants.map((assistant) => {
+          const key = getAssistantKey(assistant);
+          const localizedName = assistant.i18n?.name ? ((assistant.i18n.name as any)[language] ?? (assistant.i18n.name as any).en ?? assistant.name) : assistant.name;
+          const localizedCategory = assistant.i18n?.category ? ((assistant.i18n.category as any)[language] ?? (assistant.i18n.category as any).en ?? (assistant as any).category) : (assistant as any).category;
+          const localizedDescription = assistant.i18n?.description ? ((assistant.i18n.description as any)[language] ?? (assistant.i18n.description as any).en ?? (assistant as any).description) : (assistant as any).description;
+          return (
           <article
-            key={assistant.name}
-            className={`ai-assistant-card ${portalCard === assistant.name ? "is-dissolving" : ""}`}
+            key={key}
+            className={`ai-assistant-card ${portalCard === key ? "is-dissolving" : ""}`}
           >
             <div className="animated-border" />
             <div className="card-orbit" />
@@ -396,7 +417,7 @@ function Assistants() {
               {assistant.image && (
                 <img
                   src={assistant.image}
-                  alt={`${assistant.name} AI assistant`}
+                  alt={`${localizedName} AI assistant`}
                   className={`assistant-image ${assistant.imageClass || "assistant-image-default"}`}
                   onError={(event) => {
                     event.currentTarget.style.display = "none";
@@ -406,16 +427,16 @@ function Assistants() {
               <div className="hologram-grid" />
               <div className="assistant-media-glow" />
               <div className="assistant-image-title">
-                <span>{assistant.name}</span>
+                <span>{localizedName}</span>
               </div>
             </div>
 
             <div className="relative z-10 mt-5 flex flex-1 flex-col">
-              <p className="assistant-category">{assistant.category}</p>
+              <p className="assistant-category">{localizedCategory}</p>
               <h3 className="mt-2 break-words text-[1.45rem] font-black leading-tight tracking-tight text-white sm:text-2xl">
-                {assistant.name}
+                {localizedName}
               </h3>
-              <p className="assistant-description">{assistant.description}</p>
+              <p className="assistant-description">{localizedDescription}</p>
             </div>
 
             <div className="relative z-10 mt-6 grid gap-2">
@@ -423,22 +444,22 @@ function Assistants() {
                 type="button"
                 data-sound="portal-open"
                 className="portal-button"
-                onClick={() => openDemoMenu(assistant.name)}
+                onClick={() => openDemoMenu(key)}
               >
-                <span className={`pixel-smoke ${demoSplashAssistant === assistant.name ? "demo-splash-active" : ""}`} />
+                <span className={`pixel-smoke ${demoSplashAssistant === key ? "demo-splash-active" : ""}`} />
                 {copy.button} <ArrowRight size={16} />
               </button>
               <a
                 href="#contact"
                 data-sound="soft-confirm"
                 className="portal-button portal-button-secondary"
-                onClick={() => triggerPortal(assistant.name)}
+                onClick={() => triggerPortal(key)}
               >
                 <span className="pixel-smoke" />
-                Замовити схожого асистента
+                {copy.orderSimilarAssistant}
               </a>
             </div>
-            {activeDemoAssistant === assistant.name && (
+            {activeDemoAssistant === key && (
               <div className="assistant-demo-menu">
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <p className="text-sm font-black uppercase tracking-wide text-cyan-100">
@@ -476,7 +497,8 @@ function Assistants() {
               </div>
             )}
           </article>
-        ))}
+        );
+        })}
         </div>
       </div>
     </section>
@@ -484,11 +506,13 @@ function Assistants() {
 }
 
 function Videos() {
+  const { copy } = useLang();
   return (
     <section id="videos" className="section">
       <SectionHeader
-        eyebrow="Video presentations"
-        title="Watch how AI consultants communicate with clients in real business scenarios."
+        eyebrow={copy.sections.videos.eyebrow}
+        title={copy.sections.videos.title}
+        text={copy.sections.videos.text}
       />
       <div className="grid gap-4 lg:grid-cols-3">
         {videos.map((video) => (
@@ -511,12 +535,13 @@ function Videos() {
 }
 
 function Portfolio() {
+  const { copy } = useLang();
   return (
     <section className="section bg-navy text-white">
       <SectionHeader
-        eyebrow="Examples"
-        title="Practical automation for common client conversations"
-        text="Each scenario can be connected to the channels and tools your business already uses."
+        eyebrow={copy.sections.examples.eyebrow}
+        title={copy.sections.examples.title}
+        text={copy.sections.examples.text}
       />
       <div className="grid gap-4 md:grid-cols-2">
         {examples.map((example, index) => (
@@ -532,12 +557,13 @@ function Portfolio() {
 }
 
 function Pricing() {
+  const { copy } = useLang();
   return (
     <section id="pricing" className="section">
       <SectionHeader
-        eyebrow="Pricing"
-        title="Simple starting points, flexible automation"
-        text="Choose a compact launch package or build a custom assistant flow around your business process."
+        eyebrow={copy.sections.pricing.eyebrow}
+        title={copy.sections.pricing.title}
+        text={copy.sections.pricing.text}
       />
       <div className="grid gap-4 lg:grid-cols-3">
         {pricing.map((plan) => (
@@ -556,18 +582,18 @@ function Pricing() {
 }
 
 function CTA() {
+  const { copy } = useLang();
   return (
     <section className="px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl rounded-lg bg-[linear-gradient(135deg,#07172f,#0f88a5)] px-6 py-12 text-center text-white shadow-glow sm:px-10">
-        <h2 className="text-3xl font-black tracking-tight sm:text-4xl">
-          Want to test an AI consultant for your business?
-        </h2>
+        <h2 className="text-3xl font-black tracking-tight sm:text-4xl">{copy.cta.title}</h2>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          {ctaActions.map((action) => {
+          {ctaActions.map((action, idx) => {
             const Icon = action.icon;
+            const label = [copy.contactForm.telegram, copy.contactForm.whatsapp, copy.contactForm.instagram, copy.contactForm.email][idx] ?? action.label;
             return (
-              <a key={action.label} href={action.href} className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-navy transition hover:-translate-y-0.5 hover:bg-skysoft">
-                <Icon size={18} /> {action.label}
+              <a key={action.href} href={action.href} className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-navy transition hover:-translate-y-0.5 hover:bg-skysoft">
+                <Icon size={18} /> {label}
               </a>
             );
           })}
@@ -596,46 +622,43 @@ function Contact() {
     )}&body=${encodeURIComponent(body)}`;
   }
 
+  const { copy } = useLang();
   return (
     <section id="contact" className="section">
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div>
-          <span className="eyebrow">Contact</span>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-navy sm:text-4xl">
-            Tell us what your team wants to automate
-          </h2>
-          <p className="mt-5 text-base leading-7 text-slate-600">
-            The form is prepared as a simple no-backend placeholder. Until a backend is connected, the button opens an email request with the right structure.
-          </p>
+          <span className="eyebrow">{copy.sections.contact.eyebrow}</span>
+          <h2 className="mt-4 text-3xl font-black tracking-tight text-navy sm:text-4xl">{copy.sections.contact.title}</h2>
+          <p className="mt-5 text-base leading-7 text-slate-600">{copy.sections.contact.text}</p>
           <div className="mt-7 grid gap-3 text-sm font-semibold text-slate-600">
-            <a href={contactLinks.telegram} className="contact-link"><Send size={18} /> Contact on Telegram</a>
-            <a href={contactLinks.whatsapp} className="contact-link"><Send size={18} /> Contact on WhatsApp</a>
-            <a href={contactLinks.instagram} className="contact-link"><Send size={18} /> Instagram</a>
-            <a href={contactLinks.email} className="contact-link"><Mail size={18} /> Email</a>
+            <a href={contactLinks.telegram} className="contact-link"><Send size={18} /> {copy.contactForm.telegram}</a>
+            <a href={contactLinks.whatsapp} className="contact-link"><Send size={18} /> {copy.contactForm.whatsapp}</a>
+            <a href={contactLinks.instagram} className="contact-link"><Send size={18} /> {copy.contactForm.instagram}</a>
+            <a href={contactLinks.email} className="contact-link"><Mail size={18} /> {copy.contactForm.email}</a>
           </div>
         </div>
 
         <form className="soft-card" onSubmit={handleSubmit}>
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="field-label">
-              Name
-              <input className="field" name="name" placeholder="Your name" />
+              {copy.contactForm.nameLabel}
+              <input className="field" name="name" placeholder={copy.contactForm.nameLabel} />
             </label>
             <label className="field-label">
-              Business type
-              <input className="field" name="business" placeholder="Beauty salon, clinic, store..." />
+              {copy.contactForm.businessLabel}
+              <input className="field" name="business" placeholder={copy.contactForm.businessLabel} />
             </label>
           </div>
           <label className="field-label mt-4">
-            Messenger/contact
-            <input className="field" name="contact" placeholder="@telegram, phone, email..." />
+            {copy.contactForm.contactLabel}
+            <input className="field" name="contact" placeholder={copy.contactForm.contactLabel} />
           </label>
           <label className="field-label mt-4">
-            Message
-            <textarea className="field min-h-36 resize-y" name="message" placeholder="What should your AI consultant help with?" />
+            {copy.contactForm.messageLabel}
+            <textarea className="field min-h-36 resize-y" name="message" placeholder={copy.contactForm.messageLabel} />
           </label>
           <button type="submit" className="btn-primary mt-5 w-full justify-center">
-            Send a Request <ArrowRight size={18} />
+            {copy.contactForm.sendButton} <ArrowRight size={18} />
           </button>
         </form>
       </div>
@@ -644,17 +667,16 @@ function Contact() {
 }
 
 function Footer() {
+  const { copy } = useLang();
   return (
     <footer className="border-t border-slate-100 bg-white px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-lg font-black text-navy">Tisgrow</p>
-          <p className="mt-2 text-sm text-slate-500">
-            AI consultants and AI agents that help modern businesses grow.
-          </p>
+          <p className="text-lg font-black text-navy">{copy.footer.brandTitle}</p>
+          <p className="mt-2 text-sm text-slate-500">{copy.footer.brandText}</p>
         </div>
         <div className="flex flex-wrap gap-4">
-          {footerLinks.map((item) => (
+          {copy.navItems.map((item) => (
             <a key={item.href} href={item.href} className="nav-link">
               {item.label}
             </a>
@@ -666,8 +688,11 @@ function Footer() {
 }
 
 export function App() {
+  const [language, setLanguage] = useState<LanguageCode>("uk");
+  const copy = assistantGalleryCopy[language] ?? assistantGalleryCopy.en;
+
   return (
-    <>
+    <LanguageContext.Provider value={{ language, setLanguage, copy }}>
       <Header />
       <main>
         <Hero />
@@ -681,6 +706,6 @@ export function App() {
         <Contact />
       </main>
       <Footer />
-    </>
+    </LanguageContext.Provider>
   );
 }

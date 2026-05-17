@@ -111,6 +111,7 @@ export const assistantGalleryCopy: Record<
       pricing: { eyebrow: string; title: string; text: string };
       contact: { eyebrow: string; title: string; text: string };
     };
+    industries: { title: string; text: string }[],
     cta: {
       title: string;
       primary: string;
@@ -188,6 +189,14 @@ export const assistantGalleryCopy: Record<
         text: "Форма підготовлена як простий заповнювач без бекенду. Поки бекенд не підключено, кнопка відкриває email-запит.",
       },
     },
+    industries: [
+      { title: "Beauty salons", text: "Bookings, service questions, price guidance and client reminders." },
+      { title: "Dental clinics", text: "FAQ, appointment requests, first-touch support and treatment guidance." },
+      { title: "Online stores", text: "Product consultation, order questions, recommendations and sales support." },
+      { title: "Construction and project companies", text: "Lead qualification, project details, estimate requests and manager handoff." },
+      { title: "Education projects", text: "Course selection, enrollment questions, scheduling and student support." },
+      { title: "Services and customer support", text: "Routine answers, request routing and support across popular messengers." },
+    ],
     cta: {
       title: "Хочете протестувати AI консультанта для вашого бізнесу?",
       primary: "Надіслати запит",
@@ -264,6 +273,14 @@ export const assistantGalleryCopy: Record<
         text: "The form is prepared as a simple no-backend placeholder. Until a backend is connected, the button opens an email request with the right structure.",
       },
     },
+    industries: [
+      { title: "Индустрии", text: "Записи, вопросы об услугах, цены и напоминания клиентам." },
+      { title: "Стоматологии", text: "FAQ, запросы на приём, первичная поддержка и рекомендации по лечению." },
+      { title: "Интернет-магазины", text: "Консультации по товарам, вопросы по заказам, рекомендации и поддержка продаж." },
+      { title: "Строительство и проекты", text: "Квалификация лидов, детали проектов, запросы смет и передача менеджеру." },
+      { title: "Образование", text: "Выбор курса, вопросы по зачислению, расписание и поддержка студентов." },
+      { title: "Сервисы и поддержка", text: "Рутинные ответы, маршрутизация запросов и поддержка в популярных мессенджерах." },
+    ],
     cta: {
       title: "Want to test an AI consultant for your business?",
       primary: "Send a Request",
@@ -340,6 +357,14 @@ export const assistantGalleryCopy: Record<
         text: "Форма подготовлена как простой заполнитель без бэкенда. Пока бэкенд не подключен, кнопка открывает email-запрос.",
       },
     },
+    industries: [
+      { title: "Salones de belleza", text: "Reservas, preguntas sobre servicios, guía de precios y recordatorios." },
+      { title: "Clínicas dentales", text: "Preguntas frecuentes, solicitudes de cita, soporte inicial y guía de tratamientos." },
+      { title: "Tiendas online", text: "Consultas de productos, preguntas de pedidos, recomendaciones y soporte de ventas." },
+      { title: "Construcción y proyectos", text: "Calificación de leads, detalles de proyectos, solicitudes de presupuesto y traspaso a gestor." },
+      { title: "Proyectos educativos", text: "Selección de cursos, preguntas de inscripción, programación y soporte a estudiantes." },
+      { title: "Servicios y soporte", text: "Respuestas rutinarias, enrutamiento de solicitudes y soporte en mensajeros populares." },
+    ],
     cta: {
       title: "Хотите протестировать AI консультанта для вашего бизнеса?",
       primary: "Отправить запрос",
@@ -416,6 +441,14 @@ export const assistantGalleryCopy: Record<
         text: "El formulario está preparado como un marcador de posición sin backend. Hasta que se conecte un backend, el botón abre una solicitud por correo electrónico.",
       },
     },
+    industries: [
+      { title: "Salons de beauté", text: "Réservations, questions sur les services, guide des prix et rappels clients." },
+      { title: "Cliniques dentaires", text: "FAQ, demandes de rendez-vous, support de premier contact et recommandations de traitement." },
+      { title: "Boutiques en ligne", text: "Consultation de produits, questions de commande, recommandations et support des ventes." },
+      { title: "Construction et projets", text: "Qualification des leads, détails de projet, demandes de devis et transfert au gestionnaire." },
+      { title: "Projets éducatifs", text: "Choix de cours, questions d'inscription, planification et support aux étudiants." },
+      { title: "Services et support", text: "Réponses routinières, routage des demandes et support sur les messagers populaires." },
+    ],
     cta: {
       title: "¿Quieres probar un consultor de IA para tu negocio?",
       primary: "Enviar solicitud",
@@ -492,6 +525,14 @@ export const assistantGalleryCopy: Record<
         text: "Le formulaire est préparé comme un simple placeholder sans backend. Tant qu'un backend n'est pas connecté, le bouton ouvre une demande par email.",
       },
     },
+    industries: [
+      { title: "الصالونات الجمالية", text: "الحجوزات، أسئلة الخدمة، إرشادات الأسعار وتذكيرات العملاء." },
+      { title: "عيادات الأسنان", text: "الأسئلة الشائعة، طلبات المواعيد، الدعم الأولي وإرشادات العلاج." },
+      { title: "المتاجر الإلكترونية", text: "استشارات المنتج، أسئلة الطلبات، التوصيات ودعم المبيعات." },
+      { title: "البناء والمشاريع", text: "تأهيل العملاء المحتملين، تفاصيل المشروع، طلبات التقدير وتسليمها للمدير." },
+      { title: "المشاريع التعليمية", text: "اختيار الدورات، أسئلة التسجيل، الجدولة ودعم الطلاب." },
+      { title: "الخدمات والدعم", text: "إجابات روتينية، توجيه الطلبات ودعم عبر الرسائل الشائعة." },
+    ],
     cta: {
       title: "Vous souhaitez tester un consultant IA pour votre entreprise ?",
       primary: "Envoyer une demande",
@@ -568,6 +609,14 @@ export const assistantGalleryCopy: Record<
         text: "النموذج مُعد كعنصر نائب بسيط بدون خلفية. حتى يتم توصيل الخلفية، يفتح الزر طلبًا عبر البريد الإلكتروني.",
       },
     },
+    industries: [
+      { title: "行业", text: "预订、服务问题、价格指南和客户提醒。" },
+      { title: "牙科诊所", text: "常见问题、预约请求、首次支持和治疗指南。" },
+      { title: "在线商店", text: "产品咨询、订单问题、推荐和销售支持。" },
+      { title: "建筑与项目公司", text: "线索资格、项目细节、估算请求和交接给经理。" },
+      { title: "教育项目", text: "课程选择、报名问题、排期和学生支持。" },
+      { title: "服务与客户支持", text: "常规回答、请求路由和在流行信使中的支持。" },
+    ],
     cta: {
       title: "هل تريد تجربة مستشار ذكاء اصطناعي لعملك؟",
       primary: "إرسال الطلب",
@@ -644,6 +693,14 @@ export const assistantGalleryCopy: Record<
         text: "该表单已设置为简单的无后端占位。直到连接后端，按钮将打开电子邮件请求。",
       },
     },
+    industries: [
+      { title: "ब्यूटी सैलून", text: "बुकिंग, सेवा प्रश्न, मूल्य मार्गदर्शन और ग्राहक अनुस्मारक." },
+      { title: "डेंटल क्लिनिक्स", text: "FAQ, अपॉइंटमेंट अनुरोध, प्रथम-संपर्क समर्थन और उपचार मार्गदर्शन." },
+      { title: "ऑनलाइन स्टोर्स", text: "उत्पाद परामर्शन, ऑर्डर प्रश्न, सिफारिशें और बिक्री समर्थन." },
+      { title: "निर्माण और प्रोजेक्ट कंपनियाँ", text: "लीड योग्यता, परियोजना विवरण, अनुमान अनुरोध और मैनेजर हैंडऑफ." },
+      { title: "शिक्षा प्रोजेक्ट", text: "कोर्स चयन, नामांकन प्रश्न, शेड्यूलिंग और छात्र सहायता." },
+      { title: "सेवाएँ और ग्राहक समर्थन", text: "नियमित उत्तर, अनुरोध रूटिंग और लोकप्रिय मैसेंजर्स में समर्थन." },
+    ],
     cta: {
       title: "想测试适合您业务的 AI 顾问吗？",
       primary: "发送请求",
@@ -720,6 +777,14 @@ export const assistantGalleryCopy: Record<
         text: "फॉर्म को सादे बिना-बैकएंड प्लेसहोल्डर के रूप में तैयार किया गया है। जब तक बैकएंड कनेक्ट नहीं होता, बटन ईमेल अनुरोध खोलता है।",
       },
     },
+    industries: [
+      { title: "ब्यूटी सैलून", text: "बुकिंग, सेवा प्रश्न, मूल्य मार्गदर्शन और ग्राहक अनुस्मारक." },
+      { title: "डेंटल क्लिनिक्स", text: "FAQ, अपॉइंटमेंट अनुरोध, प्रथम-संपर्क समर्थन और उपचार मार्गदर्शन." },
+      { title: "ऑनलाइन स्टोर्स", text: "उत्पाद परामर्शन, ऑर्डर प्रश्न, सिफारिशें और बिक्री समर्थन." },
+      { title: "निर्माण और प्रोजेक्ट कंपनियाँ", text: "लीड योग्यता, परियोजना विवरण, अनुमान अनुरोध और मैनेजर हैंडऑफ." },
+      { title: "शिक्षा प्रोजेक्ट", text: "कोर्स चयन, नामांकन प्रश्न, शेड्यूलिंग और छात्र सहायता." },
+      { title: "सेवाएँ और ग्राहक समर्थन", text: "नियमित उत्तर, अनुरोध रूटिंग और लोकप्रिय मैसेंजर्स में समर्थन." },
+    ],
     cta: {
       title: "क्या आप अपने व्यवसाय के लिए AI सलाहकार का परीक्षण करना चाहते हैं?",
       primary: "अनुरोध भेजें",
@@ -759,9 +824,11 @@ export const assistants = [
   {
     key: "sofia",
     name: "Sofia",
-    category: "AI Personal Assistant",
-    description:
-      "Intelligent AI assistant for customer support, scheduling, and personalized interactions.",
+    i18n: {
+      name: { uk: "AI-Софія", en: "AI-Sofia", ru: "AI-Sofia", es: "AI Sofia", fr: "AI Sofia", ar: "AI Sofia", zh: "AI Sofia", hi: "AI Sofia" },
+      category: { uk: "Персональний AI-помічник", en: "AI Personal Assistant" },
+      description: { uk: "Розумний AI-помічник для підтримки клієнтів, планування та персоналізованих взаємодій.", en: "Intelligent AI assistant for customer support, scheduling, and personalized interactions." },
+    },
     accent: "from-rose-300 via-pink-300 to-purple-300",
     image: "/media/assistants/sofia.jpg",
     imageClass: "assistant-image-sofia",
@@ -769,36 +836,44 @@ export const assistants = [
   {
     key: "avtologik",
     name: "АІ-Автологік",
-    category: "Automotive AI",
-    description:
-      "Calm AI consultant for car services, diagnostics, bookings and client questions.",
+    i18n: {
+      name: { uk: "AI-Автологік", en: "AI-Autologic", zh: "AI Autologic" },
+      category: { uk: "AI для автомобільних сервісів", en: "Automotive AI" },
+      description: { uk: "Спокійний AI консультант для сервісів, діагностики, записів та питань клієнтів.", en: "Calm AI consultant for car services, diagnostics, bookings and client questions." },
+    },
     accent: "from-aqua via-emerald-300 to-cyan-300",
     image: "/media/assistants/avtologik.jpg",
   },
   {
     key: "waterstop",
     name: "АІ-Вотерстоп",
-    category: "Water Systems AI",
-    description:
-      "Helpful AI assistant for water systems, plumbing requests, estimates and service leads.",
+    i18n: {
+      name: { uk: "AI-Вотерстоп", en: "AI-Waterstop", zh: "AI Waterstop" },
+      category: { uk: "AI для водних систем", en: "Water Systems AI" },
+      description: { uk: "Допоміжний AI для водних систем, запитів сантехніки, оцінок і заявок на сервіс.", en: "Helpful AI assistant for water systems, plumbing requests, estimates and service leads." },
+    },
     accent: "from-sky-300 via-aqua to-emerald-300",
     image: "/media/assistants/waterstop.jpg",
   },
   {
     key: "levka",
     name: "АІ-Левко",
-    category: "Online Store AI",
-    description:
-      "Friendly AI consultant for online stores, product questions, order support and lead capture.",
+    i18n: {
+      name: { uk: "AI-Левко", en: "AI-Levko", zh: "AI Levko" },
+      category: { uk: "AI для інтернет-магазинів", en: "Online Store AI" },
+      description: { uk: "Дружній AI консультант для інтернет-магазинів: питання про товари, підтримка замовлень та збір лідів.", en: "Friendly AI consultant for online stores, product questions, order support and lead capture." },
+    },
     accent: "from-lime-300 via-aqua to-sky-400",
     image: "/media/assistants/levko.jpg",
   },
   {
     key: "pigulkin",
     name: "АІ-Пігулкін",
-    category: "Health Support AI",
-    description:
-      "AI assistant for pharmacies, wellness projects, FAQs and appointment-style requests.",
+    i18n: {
+      name: { uk: "AI-Пігулкін", en: "AI-Pigulkin", zh: "AI Pigulkin" },
+      category: { uk: "AI для аптек та здоров'я", en: "Health Support AI" },
+      description: { uk: "AI помічник для аптек, wellness-проєктів, FAQ та запитів у форматі запису на прийом.", en: "AI assistant for pharmacies, wellness projects, FAQs and appointment-style requests." },
+    },
     accent: "from-emerald-300 via-cyan-300 to-blue-400",
     image: "/media/assistants/pigulkin.jpg",
     imageClass: "assistant-image-pigulkin",
@@ -806,18 +881,22 @@ export const assistants = [
   {
     key: "pizzahot",
     name: "АІ-Піццахот",
-    category: "Food Delivery AI",
-    description:
-      "AI ordering helper for menus, delivery questions, upsells and fast customer replies.",
+    i18n: {
+      name: { uk: "AI-Піццахот", en: "AI-PizzaHot", zh: "AI PizzaHot" },
+      category: { uk: "AI для доставки їжі", en: "Food Delivery AI" },
+      description: { uk: "AI помічник з прийому замовлень: меню, питання про доставку, апсели та швидкі відповіді клієнтам.", en: "AI ordering helper for menus, delivery questions, upsells and fast customer replies." },
+    },
     accent: "from-orange-300 via-aqua to-emerald-300",
     image: "/media/assistants/pizzahot.jpg",
   },
   {
     key: "icecreambrown",
     name: "АІ-Айскрімбраун",
-    category: "AI для морозива та молочної продукції",
-    description:
-      "AI-помічник для кафе, виробників морозива, молочної продукції та десертів: консультує клієнтів, допомагає з асортиментом, замовленнями та частими питаннями.",
+    i18n: {
+      name: { uk: "AI-Айскрімбраун", en: "AI-IceCreamBrown", zh: "AI IceCreamBrown" },
+      category: { uk: "AI для морозива та молочної продукції", en: "AI for ice cream and dairy" },
+      description: { uk: "AI-помічник для кафе та виробників морозива: допомагає з асортиментом, замовленнями та частими питаннями.", en: "AI assistant for cafes, ice cream and dairy producers: helps with assortment, orders and FAQs." },
+    },
     accent: "from-amber-300 via-pink-300 to-purple-300",
     image: "/media/assistants/icecreambrown.jpg",
     imagePosition: "center top",
@@ -830,18 +909,22 @@ export const assistants = [
   {
     key: "makar",
     name: "АІ-Макар",
-    category: "Architecture AI",
-    description:
-      "AI assistant for construction, architecture and project service lead qualification.",
+    i18n: {
+      name: { uk: "AI-Макар", en: "AI-Makar", zh: "AI Makar" },
+      category: { uk: "AI для архітектури", en: "Architecture AI" },
+      description: { uk: "AI помічник для будівництва, архітектури та кваліфікації лідів проєктних сервісів.", en: "AI assistant for construction, architecture and project service lead qualification." },
+    },
     accent: "from-blue-500 via-aqua to-emerald-300",
     image: "/media/assistants/makar.jpg",
   },
   {
     key: "janis",
     name: "АІ-Дженіс",
-    category: "Clothing Repair AI",
-    description:
-      "Careful AI assistant for clothing repair, client requests, service details and bookings.",
+    i18n: {
+      name: { uk: "AI-Дженіс", en: "AI-Janis", zh: "AI Janis" },
+      category: { uk: "AI для ремонту одягу", en: "Clothing Repair AI" },
+      description: { uk: "Уважний AI для ремонту одягу: приймає запити клієнтів, уточнює деталі послуги і записує на ремонт.", en: "Careful AI assistant for clothing repair, client requests, service details and bookings." },
+    },
     accent: "from-fuchsia-300 via-aqua to-emerald-300",
     image: "/media/assistants/janis.jpg",
     imagePosition: "center top",
@@ -850,27 +933,33 @@ export const assistants = [
   {
     key: "photologic",
     name: "АІ-Фотологік",
-    category: "Photography AI",
-    description:
-      "AI assistant for studios, photographers, packages, scheduling and client preparation.",
+    i18n: {
+      name: { uk: "AI-Фотологік", en: "AI-Photologic", zh: "AI Photologic" },
+      category: { uk: "AI для фотографії", en: "Photography AI" },
+      description: { uk: "AI помічник для студій та фотографів: допомагає з пакетами, розкладом та підготовкою клієнтів.", en: "AI assistant for studios, photographers, packages, scheduling and client preparation." },
+    },
     accent: "from-violet-300 via-cyan-300 to-aqua",
     image: "/media/assistants/photologic.jpg",
   },
   {
     key: "chiprepair",
     name: "АІ-Репіер",
-    category: "Electronics Repair AI",
-    description:
-      "AI consultant for repair shops, device triage, price questions and service bookings.",
+    i18n: {
+      name: { uk: "AI-Репіер", en: "AI-Repair", zh: "AI Repair" },
+      category: { uk: "AI для ремонту електроніки", en: "Electronics Repair AI" },
+      description: { uk: "AI консультант для майстерень: триаж пристроїв, питання ціни та запис на сервіс.", en: "AI consultant for repair shops, device triage, price questions and service bookings." },
+    },
     accent: "from-slate-400 via-aqua to-lime-300",
     image: "/media/assistants/chiprepair.jpg",
   },
   {
     key: "tisgrow-dental",
     name: "АІ-Тісгроу Dental",
-    category: "Dental AI",
-    description:
-      "AI dental consultant for clinic FAQs, patient details and appointment requests.",
+    i18n: {
+      name: { uk: "AI-Тісгроу Dental", en: "AI-Tisgrow Dental", zh: "AI Tisgrow Dental" },
+      category: { uk: "AI для стоматології", en: "Dental AI" },
+      description: { uk: "AI стоматологічний консультант для FAQ, інформації про пацієнтів та запитів на прийом.", en: "AI dental consultant for clinic FAQs, patient details and appointment requests." },
+    },
     accent: "from-sky-400 via-aqua to-white",
     image: "/media/assistants/tisgrow-dental.jpg",
     imagePosition: "center top",
@@ -953,3 +1042,33 @@ export const channelIcons = [
   { label: "Human handoff", icon: UserRoundCheck },
   { label: "AI logic", icon: Bot },
 ];
+
+// POSTS / ARTICLES structure (future-ready)
+// Each post should contain per-language fields. Missing translations follow
+// the fallback rule: selected -> en -> uk. Automatic translation is NOT
+// implemented here and would require a backend/API to perform safely.
+export type LocalizedText = Partial<Record<LanguageCode, string>>;
+
+export type Post = {
+  id: string; // stable slug
+  title: LocalizedText; // e.g. { en: 'Hello', uk: 'Привіт', zh: '你好' }
+  body: LocalizedText; // rich text or markdown per locale
+  date: string; // ISO date
+  tags?: string[];
+};
+
+// Example placeholder posts array. Fill with real posts later.
+export const posts: Post[] = [
+  {
+    id: "welcome",
+    title: { en: "Welcome to Tisgrow", uk: "Ласкаво просимо до Tisgrow", zh: "欢迎使用 Tisgrow" },
+    body: { en: "Initial article body in English.", uk: "Початковий текст статті українською.", zh: "初始文章内容（中文）。" },
+    date: new Date().toISOString(),
+    tags: ["news"],
+  },
+];
+
+// NOTE: To add automatic machine translation in the future, wire a backend
+// endpoint that accepts a Post and target language, calls a translation API
+// and stores translated strings in the `posts` object. Keep human review
+// workflow to avoid incorrect public content.
