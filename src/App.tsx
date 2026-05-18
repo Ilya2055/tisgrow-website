@@ -10,7 +10,7 @@ import {
   Send,
   X,
 } from "lucide-react";
-import { type CSSProperties, type FormEvent, useState, createContext, useContext } from "react";
+import { type CSSProperties, type FormEvent, useEffect, useState, createContext, useContext } from "react";
 import {
   assistantGalleryCopy,
   assistants,
@@ -286,7 +286,13 @@ function Assistants() {
   const [demoSplashAssistant, setDemoSplashAssistant] = useState<string | null>(null);
   const [demoLoading, setDemoLoading] = useState<DemoMediaType | null>(null);
   const [demoNotification, setDemoNotification] = useState<string | null>(null);
-  const [screenshotGallery, setScreenshotGallery] = useState<string[] | null>(null);
+  const [mediaModal, setMediaModal] = useState<{
+    type: Exclude<DemoMediaType, "screenshots">;
+    url: string;
+    title: string;
+  } | null>(null);
+  const [galleryModal, setGalleryModal] = useState<{ urls: string[]; index: number; title: string } | null>(null);
+  const [pdfPreviewFailed, setPdfPreviewFailed] = useState(false);
 
   function triggerPortal(name: string) {
     setPortalCard(name);
@@ -298,13 +304,47 @@ function Assistants() {
     setDemoNotification(null);
     setDemoSplashAssistant(null);
     setDemoLoading(null);
-    setScreenshotGallery(null);
+    closeMediaModal();
   }
+
+  function closeMediaModal() {
+    setMediaModal(null);
+    setGalleryModal(null);
+    setPdfPreviewFailed(false);
+  }
+
+  useEffect(() => {
+    if (mediaModal || galleryModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        closeMediaModal();
+      }
+    }
+
+    if (mediaModal || galleryModal) {
+      window.addEventListener("keydown", handleEscape);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "";
+    };
+  }, [mediaModal, galleryModal]);
+
+  useEffect(() => {
+    if (pdfPreviewFailed && mediaModal?.type === "pdfPresentation" && mediaModal.url) {
+      window.open(mediaModal.url, "_blank", "noopener,noreferrer");
+      closeMediaModal();
+    }
+  }, [pdfPreviewFailed, mediaModal]);
 
   function openDemoMenu(assistantName: string) {
     setDemoNotification(null);
     setDemoLoading(null);
-    setScreenshotGallery(null);
     setDemoSplashAssistant(assistantName);
     setTimeout(() => {
       setDemoSplashAssistant(null);
@@ -314,6 +354,10 @@ function Assistants() {
 
   function getAssistantKey(assistant: (typeof assistants)[number]) {
     return assistant.key ?? normalizeAssistantKey(assistant.name);
+  }
+
+  function localeSuffix(code: LanguageCode) {
+    return code === "uk" ? "ua" : code;
   }
 
   function buildDemoMediaUrl(assistantKey: string, type: Exclude<DemoMediaType, "screenshots">, locale: string) {
@@ -329,7 +373,10 @@ function Assistants() {
   }
 
   async function resolveDemoMediaUrl(assistantKey: string, type: Exclude<DemoMediaType, "screenshots">) {
-    const priorities = [language, "en", "uk"].filter((value, index, array) => array.indexOf(value) === index);
+    const priorities = ([language, "en", "uk"] as const)
+      .map(localeSuffix)
+      .filter((value, index, array) => array.indexOf(value) === index);
+
     for (const locale of priorities) {
       const url = buildDemoMediaUrl(assistantKey, type, locale);
       if (await fileExists(url)) {
@@ -341,18 +388,17 @@ function Assistants() {
   }
 
   async function resolveScreenshotGalleryUrls(assistantKey: string) {
-    const priorities = [language, "en", "uk"].filter((value, index, array) => array.indexOf(value) === index);
+    const priorities = ([language, "en", "uk"] as const)
+      .map(localeSuffix)
+      .filter((value, index, array) => array.indexOf(value) === index);
+
     for (const locale of priorities) {
       const gallery: string[] = [];
-      for (let index = 1; index <= 8; index += 1) {
+      for (let index = 1; index <= 16; index += 1) {
         const fileName = `${assistantKey}-chat-${String(index).padStart(2, "0")}-${locale}.jpg`;
         const url = `/media/demos/screenshot/${fileName}`;
         if (await fileExists(url)) {
           gallery.push(url);
-          continue;
-        }
-        if (gallery.length > 0) {
-          break;
         }
       }
       if (gallery.length > 0) {
@@ -365,14 +411,18 @@ function Assistants() {
 
   async function handleDemoAction(assistant: (typeof assistants)[number], type: DemoMediaType) {
     const assistantKey = getAssistantKey(assistant);
+    const localizedTitle = assistant.i18n?.name
+      ? ((assistant.i18n.name as any)[language] ?? (assistant.i18n.name as any).en ?? assistant.name)
+      : assistant.name;
+
     setDemoLoading(type);
-    setScreenshotGallery(null);
+    setDemoNotification(null);
 
     if (type === "screenshots") {
       const gallery = await resolveScreenshotGalleryUrls(assistantKey);
       setDemoLoading(null);
       if (gallery) {
-        setScreenshotGallery(gallery);
+        setGalleryModal({ urls: gallery, index: 0, title: localizedTitle });
         return;
       }
       setDemoNotification(copy.demoMenu.unavailable);
@@ -383,7 +433,8 @@ function Assistants() {
     setDemoLoading(null);
 
     if (url) {
-      window.open(url, "_blank");
+      setMediaModal({ type, url, title: localizedTitle });
+      setPdfPreviewFailed(false);
       return;
     }
 
@@ -531,18 +582,6 @@ function Assistants() {
                 {demoNotification && (
                   <p className="mt-3 text-sm text-rose-100">{demoNotification}</p>
                 )}
-                {screenshotGallery && (
-                  <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    {screenshotGallery.map((url) => (
-                      <img
-                        key={url}
-                        src={url}
-                        alt={copy.demoMenu.screenshots}
-                        className="rounded-3xl border border-white/15 object-cover"
-                      />
-                    ))}
-                  </div>
-                )}
               </div>
             )}
           </article>
@@ -550,6 +589,106 @@ function Assistants() {
         })}
         </div>
       </div>
+
+      {(mediaModal || galleryModal) && (
+        <div className="media-modal-overlay" role="dialog" aria-modal="true">
+          <div className={`media-modal-card ${galleryModal ? "media-modal-card-gallery" : ""}`}>
+            <div className="media-modal-header">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-wide text-cyan-200">
+                  {galleryModal
+                    ? copy.demoMenu.screenshots
+                    : mediaModal?.type === "pdfPresentation"
+                    ? copy.demoMenu.pdfPresentation
+                    : mediaModal?.type === "demoVideo"
+                    ? copy.demoMenu.demoVideo
+                    : copy.demoMenu.videoPresentation}
+                </p>
+                <h3 className="mt-2 text-2xl font-black text-white">
+                  {galleryModal?.title ?? mediaModal?.title}
+                </h3>
+                {galleryModal && (
+                  <p className="mt-2 text-sm text-slate-300">
+                    {galleryModal.index + 1} / {galleryModal.urls.length}
+                  </p>
+                )}
+              </div>
+              <button type="button" className="media-modal-close" onClick={closeMediaModal} aria-label={copy.demoMenu.close}>
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="media-modal-body">
+              {galleryModal ? (
+                <img
+                  src={galleryModal.urls[galleryModal.index]}
+                  alt={`${galleryModal.title} screenshot ${galleryModal.index + 1}`}
+                  className="gallery-image"
+                />
+              ) : mediaModal?.type === "pdfPresentation" ? (
+                <iframe
+                  key={mediaModal.url}
+                  src={mediaModal.url}
+                  title={mediaModal.title}
+                  className="media-player"
+                  onError={() => setPdfPreviewFailed(true)}
+                />
+              ) : (
+                <video
+                  key={mediaModal?.url}
+                  src={mediaModal?.url}
+                  className="media-player"
+                  controls
+                  preload="metadata"
+                  playsInline
+                />
+              )}
+            </div>
+
+            <div className="media-modal-footer">
+              {galleryModal ? (
+                <div className="gallery-controls">
+                  <button
+                    type="button"
+                    className="media-system-button"
+                    onClick={() =>
+                      galleryModal.index > 0 && setGalleryModal({ ...galleryModal, index: galleryModal.index - 1 })
+                    }
+                    disabled={galleryModal.index === 0}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    className="media-system-button"
+                    onClick={() =>
+                      galleryModal.index < galleryModal.urls.length - 1 &&
+                      setGalleryModal({ ...galleryModal, index: galleryModal.index + 1 })
+                    }
+                    disabled={galleryModal.index === galleryModal.urls.length - 1}
+                  >
+                    Next
+                  </button>
+                </div>
+              ) : null}
+
+              <div className="flex flex-wrap items-center gap-3">
+                <a
+                  href={galleryModal ? galleryModal.urls[galleryModal.index] : mediaModal?.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="media-system-button"
+                >
+                  Open in new tab
+                </a>
+                <button type="button" className="media-system-button media-system-button-secondary" onClick={closeMediaModal}>
+                  {copy.demoMenu.close}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
