@@ -10,7 +10,7 @@ import {
   Send,
   X,
 } from "lucide-react";
-import { type CSSProperties, type FormEvent, useEffect, useState, createContext, useContext } from "react";
+import { type CSSProperties, type Dispatch, type FormEvent, type SetStateAction, useEffect, useState, createContext, useContext } from "react";
 import {
   assistantGalleryCopy,
   assistants,
@@ -45,6 +45,70 @@ function useLang() {
 }
 
 type DemoMediaType = "demoVideo" | "pdfPresentation" | "screenshots" | "videoPresentation";
+
+type DemoMediaModalState = {
+  type: Exclude<DemoMediaType, "screenshots">;
+  url: string;
+  title: string;
+};
+
+type DemoGalleryModalState = {
+  urls: string[];
+  index: number;
+  title: string;
+};
+
+function localeSuffix(code: LanguageCode) {
+  return code === "uk" ? "ua" : code;
+}
+
+function buildDemoMediaUrl(assistantKey: string, type: Exclude<DemoMediaType, "screenshots">, locale: string) {
+  switch (type) {
+    case "demoVideo":
+      return `/media/demos/videos/${assistantKey}-demo-${locale}.mp4`;
+    case "pdfPresentation":
+      return `/media/demos/pdf/${assistantKey}-presentation-${locale}.pdf`;
+    case "videoPresentation":
+      return `/media/demos/videos/${assistantKey}-video-presentation-${locale}.mp4`;
+  }
+}
+
+async function resolveDemoMediaUrl(assistantKey: string, type: Exclude<DemoMediaType, "screenshots">, language: LanguageCode) {
+  const priorities = ([language, "en", "uk"] as const)
+    .map(localeSuffix)
+    .filter((value, index, array) => array.indexOf(value) === index);
+
+  for (const locale of priorities) {
+    const url = buildDemoMediaUrl(assistantKey, type, locale);
+    if (await fileExists(url)) {
+      return url;
+    }
+  }
+
+  return null;
+}
+
+async function resolveScreenshotGalleryUrls(assistantKey: string, language: LanguageCode) {
+  const priorities = ([language, "en", "uk"] as const)
+    .map(localeSuffix)
+    .filter((value, index, array) => array.indexOf(value) === index);
+
+  for (const locale of priorities) {
+    const gallery: string[] = [];
+    for (let index = 1; index <= 16; index += 1) {
+      const fileName = `${assistantKey}-chat-${String(index).padStart(2, "0")}-${locale}.jpg`;
+      const url = `/media/demos/screenshot/${fileName}`;
+      if (await fileExists(url)) {
+        gallery.push(url);
+      }
+    }
+    if (gallery.length > 0) {
+      return gallery;
+    }
+  }
+
+  return null;
+}
 
 function normalizeAssistantKey(name: string) {
   return name
@@ -112,6 +176,154 @@ function Header() {
         </div>
       )}
     </header>
+  );
+}
+
+function DemoMediaModal({
+  mediaModal,
+  galleryModal,
+  copy,
+  setGalleryModal,
+  onClose,
+}: {
+  mediaModal: DemoMediaModalState | null;
+  galleryModal: DemoGalleryModalState | null;
+  copy: (typeof assistantGalleryCopy)[LanguageCode & string];
+  setGalleryModal: Dispatch<SetStateAction<DemoGalleryModalState | null>>;
+  onClose: () => void;
+}) {
+  const [videoLoading, setVideoLoading] = useState(false);
+  const [showVideoFallback, setShowVideoFallback] = useState(false);
+  const [mediaError, setMediaError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!mediaModal) {
+      setVideoLoading(false);
+      setShowVideoFallback(false);
+      setMediaError(null);
+      return;
+    }
+
+    setVideoLoading(true);
+    setShowVideoFallback(false);
+    setMediaError(null);
+    const timeoutId = window.setTimeout(() => setShowVideoFallback(true), 5000);
+    return () => window.clearTimeout(timeoutId);
+  }, [mediaModal?.url]);
+
+  function handleLoadedMetadata() {
+    setVideoLoading(false);
+    setShowVideoFallback(false);
+  }
+
+  return (
+    <div className="media-modal-overlay" role="dialog" aria-modal="true">
+      <div className={`media-modal-card ${galleryModal ? "media-modal-card-gallery" : ""}`}>
+        <div className="media-modal-header">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-cyan-200">
+              {galleryModal
+                ? copy.demoMenu.screenshots
+                : mediaModal?.type === "demoVideo"
+                ? copy.demoMenu.demoVideo
+                : copy.demoMenu.videoPresentation}
+            </p>
+            <h3 className="mt-2 text-2xl font-black text-white">{galleryModal?.title ?? mediaModal?.title}</h3>
+            {galleryModal && (
+              <p className="mt-2 text-sm text-slate-300">
+                {galleryModal.index + 1} / {galleryModal.urls.length}
+              </p>
+            )}
+          </div>
+          <button type="button" className="media-modal-close" onClick={onClose} aria-label={copy.demoMenu.close}>
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="media-modal-body">
+          {galleryModal ? (
+            <img
+              src={galleryModal.urls[galleryModal.index]}
+              alt={`${galleryModal.title} screenshot ${galleryModal.index + 1}`}
+              className="gallery-image"
+            />
+          ) : mediaError ? (
+            <div className="media-error-message">
+              <p>{mediaError}</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <video
+                key={mediaModal?.url}
+                src={mediaModal?.url}
+                className="media-player"
+                controls
+                preload="metadata"
+                playsInline
+                onLoadedMetadata={handleLoadedMetadata}
+                onError={() => setMediaError(copy.demoMenu.videoFailedToLoad)}
+              />
+              {videoLoading && (
+                <p className="text-sm text-slate-200">Loading video metadata...</p>
+              )}
+              {showVideoFallback && mediaModal && (
+                <div className="rounded-3xl border border-white/15 bg-white/10 p-4 text-sm text-slate-100">
+                  <p className="mb-3 text-sm text-slate-200">{copy.demoMenu.openVideoInNewTab}</p>
+                  <a
+                    href={mediaModal.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="media-system-button"
+                  >
+                    {copy.demoMenu.openVideoInNewTab}
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="media-modal-footer">
+          {galleryModal ? (
+            <div className="gallery-controls">
+              <button
+                type="button"
+                className="media-system-button"
+                onClick={() => galleryModal.index > 0 && setGalleryModal({ ...galleryModal, index: galleryModal.index - 1 })}
+                disabled={galleryModal.index === 0}
+              >
+                Previous
+              </button>
+              <button
+                type="button"
+                className="media-system-button"
+                onClick={() =>
+                  galleryModal.index < galleryModal.urls.length - 1 &&
+                  setGalleryModal({ ...galleryModal, index: galleryModal.index + 1 })
+                }
+                disabled={galleryModal.index === galleryModal.urls.length - 1}
+              >
+                Next
+              </button>
+            </div>
+          ) : null}
+
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href={galleryModal ? galleryModal.urls[galleryModal.index] : mediaModal?.url}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="media-system-button"
+            >
+              {copy.demoMenu.openVideoInNewTab}
+            </a>
+            <button type="button" className="media-system-button media-system-button-secondary" onClick={onClose}>
+              {copy.demoMenu.close}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -279,7 +491,7 @@ function Capabilities() {
   );
 }
 
-function Assistants() {
+function Assistants({ navigateTo }: { navigateTo: (path: string) => void }) {
   const { language, setLanguage, copy } = useLang();
   const [portalCard, setPortalCard] = useState<string | null>(null);
   const [activeDemoAssistant, setActiveDemoAssistant] = useState<string | null>(null);
@@ -295,6 +507,8 @@ function Assistants() {
   const [pdfOpenBlocked, setPdfOpenBlocked] = useState(false);
   const [pendingPdfUrl, setPendingPdfUrl] = useState<string | null>(null);
   const [mediaError, setMediaError] = useState<string | null>(null);
+  const [videoLoading, setVideoLoading] = useState(false);
+  const [videoFallbackVisible, setVideoFallbackVisible] = useState(false);
 
   function triggerPortal(name: string) {
     setPortalCard(name);
@@ -339,6 +553,19 @@ function Assistants() {
     };
   }, [mediaModal, galleryModal]);
 
+  useEffect(() => {
+    if (!mediaModal) {
+      setVideoLoading(false);
+      setVideoFallbackVisible(false);
+      return;
+    }
+
+    setVideoLoading(true);
+    setVideoFallbackVisible(false);
+    const timeoutId = window.setTimeout(() => setVideoFallbackVisible(true), 5000);
+    return () => window.clearTimeout(timeoutId);
+  }, [mediaModal?.url]);
+
   function openDemoMenu(assistantName: string) {
     setDemoNotification(null);
     setDemoLoading(null);
@@ -351,58 +578,6 @@ function Assistants() {
 
   function getAssistantKey(assistant: (typeof assistants)[number]) {
     return assistant.key ?? normalizeAssistantKey(assistant.name);
-  }
-
-  function localeSuffix(code: LanguageCode) {
-    return code === "uk" ? "ua" : code;
-  }
-
-  function buildDemoMediaUrl(assistantKey: string, type: Exclude<DemoMediaType, "screenshots">, locale: string) {
-    switch (type) {
-      case "demoVideo":
-        return `/media/demos/videos/${assistantKey}-demo-${locale}.mp4`;
-      case "pdfPresentation":
-        return `/media/demos/pdf/${assistantKey}-presentation-${locale}.pdf`;
-      case "videoPresentation":
-        return `/media/demos/videos/${assistantKey}-video-presentation-${locale}.mp4`;
-    }
-  }
-
-  async function resolveDemoMediaUrl(assistantKey: string, type: Exclude<DemoMediaType, "screenshots">) {
-    const priorities = ([language, "en", "uk"] as const)
-      .map(localeSuffix)
-      .filter((value, index, array) => array.indexOf(value) === index);
-
-    for (const locale of priorities) {
-      const url = buildDemoMediaUrl(assistantKey, type, locale);
-      if (await fileExists(url)) {
-        return url;
-      }
-    }
-
-    return null;
-  }
-
-  async function resolveScreenshotGalleryUrls(assistantKey: string) {
-    const priorities = ([language, "en", "uk"] as const)
-      .map(localeSuffix)
-      .filter((value, index, array) => array.indexOf(value) === index);
-
-    for (const locale of priorities) {
-      const gallery: string[] = [];
-      for (let index = 1; index <= 16; index += 1) {
-        const fileName = `${assistantKey}-chat-${String(index).padStart(2, "0")}-${locale}.jpg`;
-        const url = `/media/demos/screenshot/${fileName}`;
-        if (await fileExists(url)) {
-          gallery.push(url);
-        }
-      }
-      if (gallery.length > 0) {
-        return gallery;
-      }
-    }
-
-    return null;
   }
 
   async function handleDemoAction(assistant: (typeof assistants)[number], type: DemoMediaType) {
@@ -544,6 +719,13 @@ function Assistants() {
                 <span className={`pixel-smoke ${demoSplashAssistant === key ? "demo-splash-active" : ""}`} />
                 {copy.button} <ArrowRight size={16} />
               </button>
+              <button
+                type="button"
+                className="portal-button portal-button-secondary"
+                onClick={() => navigateTo(`/assistants/${key}`)}
+              >
+                {copy.openAssistantPage}
+              </button>
               <a
                 href="#contact"
                 data-sound="soft-confirm"
@@ -648,15 +830,41 @@ function Assistants() {
                   <p>{mediaError}</p>
                 </div>
               ) : (
-                <video
-                  key={mediaModal?.url}
-                  src={mediaModal?.url}
-                  className="media-player"
-                  controls
-                  preload="metadata"
-                  playsInline
-                  onError={() => setMediaError(copy.demoMenu.videoFailedToLoad)}
-                />
+                <div className="space-y-4">
+                  <video
+                    key={mediaModal?.url}
+                    src={mediaModal?.url}
+                    className="media-player"
+                    controls
+                    preload="metadata"
+                    playsInline
+                    onLoadedMetadata={() => {
+                      setVideoLoading(false);
+                      setVideoFallbackVisible(false);
+                    }}
+                    onError={() => {
+                      setVideoLoading(false);
+                      setVideoFallbackVisible(false);
+                      setMediaError(copy.demoMenu.videoFailedToLoad);
+                    }}
+                  />
+                  {videoLoading && (
+                    <p className="text-sm text-slate-200">Loading video metadata...</p>
+                  )}
+                  {videoFallbackVisible && mediaModal && (
+                    <div className="rounded-3xl border border-white/15 bg-white/10 p-4 text-sm text-slate-100">
+                      <p className="mb-3 text-sm text-slate-200">{copy.demoMenu.openVideoInNewTab}</p>
+                      <a
+                        href={mediaModal.url}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="media-system-button"
+                      >
+                        {copy.demoMenu.openVideoInNewTab}
+                      </a>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
 
@@ -669,6 +877,292 @@ function Assistants() {
                     onClick={() =>
                       galleryModal.index > 0 && setGalleryModal({ ...galleryModal, index: galleryModal.index - 1 })
                     }
+                    disabled={galleryModal.index === 0}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    className="media-system-button"
+                    onClick={() =>
+                      galleryModal.index < galleryModal.urls.length - 1 &&
+                      setGalleryModal({ ...galleryModal, index: galleryModal.index + 1 })
+                    }
+                    disabled={galleryModal.index === galleryModal.urls.length - 1}
+                  >
+                    Next
+                  </button>
+                </div>
+              ) : null}
+
+              <div className="flex flex-wrap items-center gap-3">
+                <a
+                  href={galleryModal ? galleryModal.urls[galleryModal.index] : mediaModal?.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="media-system-button"
+                >
+                  {copy.demoMenu.openVideoInNewTab}
+                </a>
+                <button type="button" className="media-system-button media-system-button-secondary" onClick={closeMediaModal}>
+                  {copy.demoMenu.close}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function AssistantPage({ assistant, onBack }: { assistant: (typeof assistants)[number]; onBack: () => void }) {
+  const { language, copy } = useLang();
+  const [demoLoading, setDemoLoading] = useState<DemoMediaType | null>(null);
+  const [demoNotification, setDemoNotification] = useState<string | null>(null);
+  const [mediaModal, setMediaModal] = useState<DemoMediaModalState | null>(null);
+  const [galleryModal, setGalleryModal] = useState<DemoGalleryModalState | null>(null);
+  const [pdfOpenBlocked, setPdfOpenBlocked] = useState(false);
+  const [pendingPdfUrl, setPendingPdfUrl] = useState<string | null>(null);
+  const [mediaError, setMediaError] = useState<string | null>(null);
+  const [videoLoading, setVideoLoading] = useState(false);
+  const [videoFallbackVisible, setVideoFallbackVisible] = useState(false);
+
+  function closeMediaModal() {
+    setMediaModal(null);
+    setGalleryModal(null);
+    setPdfOpenBlocked(false);
+    setPendingPdfUrl(null);
+    setMediaError(null);
+    setVideoLoading(false);
+    setVideoFallbackVisible(false);
+  }
+
+  useEffect(() => {
+    if (!mediaModal) {
+      setVideoLoading(false);
+      setVideoFallbackVisible(false);
+      return;
+    }
+
+    setVideoLoading(true);
+    setVideoFallbackVisible(false);
+    const timeoutId = window.setTimeout(() => setVideoFallbackVisible(true), 5000);
+    return () => window.clearTimeout(timeoutId);
+  }, [mediaModal?.url]);
+
+  function getAssistantKey(assistant: (typeof assistants)[number]) {
+    return assistant.key ?? normalizeAssistantKey(assistant.name);
+  }
+
+  const localizedName = assistant.i18n?.name
+    ? ((assistant.i18n.name as any)[language] ?? (assistant.i18n.name as any).en ?? assistant.name)
+    : assistant.name;
+  const localizedCategory = assistant.i18n?.category
+    ? ((assistant.i18n.category as any)[language] ?? (assistant.i18n.category as any).en ?? "")
+    : "";
+  const localizedDescription = assistant.i18n?.description
+    ? ((assistant.i18n.description as any)[language] ?? (assistant.i18n.description as any).en ?? "")
+    : "";
+
+  async function handleDemoAction(assistant: (typeof assistants)[number], type: DemoMediaType) {
+    const assistantKey = getAssistantKey(assistant);
+    setDemoLoading(type);
+    setDemoNotification(null);
+    setPdfOpenBlocked(false);
+    setPendingPdfUrl(null);
+    setMediaError(null);
+
+    if (type === "screenshots") {
+      const gallery = await resolveScreenshotGalleryUrls(assistantKey, language);
+      setDemoLoading(null);
+      if (gallery) {
+        setGalleryModal({ urls: gallery, index: 0, title: localizedName });
+        return;
+      }
+      setDemoNotification(copy.demoMenu.unavailable);
+      return;
+    }
+
+    const url = await resolveDemoMediaUrl(assistantKey, type, language);
+    setDemoLoading(null);
+
+    if (!url) {
+      setDemoNotification(copy.demoMenu.unavailable);
+      return;
+    }
+
+    if (type === "pdfPresentation") {
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
+      if (!opened) {
+        setPdfOpenBlocked(true);
+        setPendingPdfUrl(url);
+      }
+      return;
+    }
+
+    setMediaModal({ type, url, title: localizedName });
+  }
+
+  return (
+    <section className="section">
+      <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <p className="eyebrow">{localizedCategory}</p>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-navy sm:text-5xl">
+            {localizedName}
+          </h1>
+          <p className="mt-5 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg">
+            {localizedDescription}
+          </p>
+        </div>
+        <button type="button" className="btn-secondary" onClick={onBack}>
+          {copy.backToHome}
+        </button>
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="rounded-[2rem] border border-slate-100 bg-white/85 p-0 shadow-soft">
+          <img
+            src={assistant.image}
+            alt={localizedName}
+            className="h-full w-full min-h-[20rem] rounded-[2rem] object-cover"
+          />
+        </div>
+
+        <div className="grid gap-6">
+          <div className="soft-card">
+            <p className="text-sm font-semibold uppercase tracking-wide text-cyan-100">{copy.demoMenu.title}</p>
+            <div className="mt-5 grid gap-2 sm:grid-cols-2">
+              {[
+                { type: "demoVideo" as DemoMediaType, label: copy.demoMenu.demoVideo },
+                { type: "pdfPresentation" as DemoMediaType, label: copy.demoMenu.pdfPresentation },
+                { type: "screenshots" as DemoMediaType, label: copy.demoMenu.screenshots },
+                { type: "videoPresentation" as DemoMediaType, label: copy.demoMenu.videoPresentation },
+              ].map((item) => (
+                <button
+                  key={item.type}
+                  type="button"
+                  className="assistant-demo-option"
+                  disabled={demoLoading === item.type}
+                  onClick={() => handleDemoAction(assistant, item.type)}
+                >
+                  {demoLoading === item.type ? copy.demoMenu.loading : item.label}
+                </button>
+              ))}
+            </div>
+            {demoNotification && <p className="mt-4 text-sm text-rose-100">{demoNotification}</p>}
+            {pdfOpenBlocked && pendingPdfUrl && (
+              <div className="mt-3 rounded-3xl border border-white/15 bg-white/10 p-4 text-sm text-slate-100">
+                <p className="mb-3 text-sm text-slate-200">{copy.demoMenu.openPdfInNewTab}</p>
+                <a
+                  href={pendingPdfUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="media-system-button"
+                >
+                  {copy.demoMenu.openPdfInNewTab}
+                </a>
+              </div>
+            )}
+          </div>
+
+          <div className="soft-card">
+            <p className="text-sm font-semibold uppercase tracking-wide text-cyan-100">{copy.sections.contact.eyebrow}</p>
+            <h2 className="mt-3 text-2xl font-black text-navy">{copy.sections.contact.title}</h2>
+            <p className="mt-4 text-sm leading-6 text-slate-600">{copy.sections.contact.text}</p>
+            <div className="mt-6 grid gap-3">
+              <a href={contactLinks.telegram} className="contact-link"><Send size={18} /> {copy.contactForm.telegram}</a>
+              <a href={contactLinks.whatsapp} className="contact-link"><Send size={18} /> {copy.contactForm.whatsapp}</a>
+              <a href={contactLinks.instagram} className="contact-link"><Send size={18} /> {copy.contactForm.instagram}</a>
+              <a href={contactLinks.email} className="contact-link"><Mail size={18} /> {copy.contactForm.email}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {(mediaModal || galleryModal) && (
+        <div className="media-modal-overlay" role="dialog" aria-modal="true">
+          <div className={`media-modal-card ${galleryModal ? "media-modal-card-gallery" : ""}`}>
+            <div className="media-modal-header">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-wide text-cyan-200">
+                  {galleryModal
+                    ? copy.demoMenu.screenshots
+                    : mediaModal?.type === "demoVideo"
+                    ? copy.demoMenu.demoVideo
+                    : copy.demoMenu.videoPresentation}
+                </p>
+                <h3 className="mt-2 text-2xl font-black text-white">{galleryModal?.title ?? mediaModal?.title}</h3>
+                {galleryModal && (
+                  <p className="mt-2 text-sm text-slate-300">
+                    {galleryModal.index + 1} / {galleryModal.urls.length}
+                  </p>
+                )}
+              </div>
+              <button type="button" className="media-modal-close" onClick={closeMediaModal} aria-label={copy.demoMenu.close}>
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="media-modal-body">
+              {galleryModal ? (
+                <img
+                  src={galleryModal.urls[galleryModal.index]}
+                  alt={`${galleryModal.title} screenshot ${galleryModal.index + 1}`}
+                  className="gallery-image"
+                />
+              ) : mediaError ? (
+                <div className="media-error-message">
+                  <p>{mediaError}</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <video
+                    key={mediaModal?.url}
+                    src={mediaModal?.url}
+                    className="media-player"
+                    controls
+                    preload="metadata"
+                    playsInline
+                    onLoadedMetadata={() => {
+                      setVideoLoading(false);
+                      setVideoFallbackVisible(false);
+                      setMediaError(null);
+                    }}
+                    onError={() => {
+                      setVideoLoading(false);
+                      setVideoFallbackVisible(false);
+                      setMediaError(copy.demoMenu.videoFailedToLoad);
+                    }}
+                  />
+                  {videoLoading && (
+                    <p className="text-sm text-slate-200">Loading video metadata...</p>
+                  )}
+                  {videoFallbackVisible && mediaModal && (
+                    <div className="rounded-3xl border border-white/15 bg-white/10 p-4 text-sm text-slate-100">
+                      <p className="mb-3 text-sm text-slate-200">{copy.demoMenu.openVideoInNewTab}</p>
+                      <a
+                        href={mediaModal.url}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="media-system-button"
+                      >
+                        {copy.demoMenu.openVideoInNewTab}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="media-modal-footer">
+              {galleryModal ? (
+                <div className="gallery-controls">
+                  <button
+                    type="button"
+                    className="media-system-button"
+                    onClick={() => galleryModal.index > 0 && setGalleryModal({ ...galleryModal, index: galleryModal.index - 1 })}
                     disabled={galleryModal.index === 0}
                   >
                     Previous
@@ -892,21 +1386,45 @@ function Footer() {
 
 export function App() {
   const [language, setLanguage] = useState<LanguageCode>("uk");
+  const [routePath, setRoutePath] = useState<string>(window.location.pathname);
   const copy = assistantGalleryCopy[language] ?? assistantGalleryCopy.en;
+
+  useEffect(() => {
+    const handlePopState = () => setRoutePath(window.location.pathname);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const navigateTo = (path: string) => {
+    if (path !== window.location.pathname) {
+      window.history.pushState({}, "", path);
+    }
+    setRoutePath(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const assistantRouteKey = routePath.startsWith("/assistants/") ? routePath.split("/")[2] : null;
+  const assistantRoute = assistantRouteKey ? assistants.find((assistant) => assistant.key === assistantRouteKey) : null;
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, copy }}>
       <Header />
       <main>
-        <Hero />
-        <Industries />
-        <Capabilities />
-        <Assistants />
-        <Videos />
-        <Portfolio />
-        <Pricing />
-        <CTA />
-        <Contact />
+        {assistantRoute ? (
+          <AssistantPage assistant={assistantRoute} onBack={() => navigateTo("/")} />
+        ) : (
+          <>
+            <Hero />
+            <Industries />
+            <Capabilities />
+            <Assistants navigateTo={navigateTo} />
+            <Videos />
+            <Portfolio />
+            <Pricing />
+            <CTA />
+            <Contact />
+          </>
+        )}
       </main>
       <Footer />
     </LanguageContext.Provider>

@@ -134,6 +134,8 @@ export const assistantGalleryCopy: Record<
       secondary: string;
     };
     orderSimilarAssistant: string;
+    openAssistantPage: string;
+    backToHome: string;
     demoMenu: {
       title: string;
       demoVideo: string;
@@ -269,6 +271,8 @@ export const assistantGalleryCopy: Record<
     ],
     play: "Відтворити",
     orderSimilarAssistant: "Замовити схожого асистента",
+    openAssistantPage: "Відкрити сторінку асистента",
+    backToHome: "Повернутися на головну",
     demoMenu: {
       title: "Демо-меню",
       demoVideo: "Відео роботи",
@@ -358,6 +362,8 @@ export const assistantGalleryCopy: Record<
       secondary: "Learn More",
     },
     orderSimilarAssistant: "Order similar assistant",
+    openAssistantPage: "Open assistant page",
+    backToHome: "Back to home",
     demoMenu: {
       title: "Demo menu",
       demoVideo: "Demo Video",
@@ -493,6 +499,8 @@ export const assistantGalleryCopy: Record<
       secondary: "Узнать больше",
     },
     orderSimilarAssistant: "Заказать похожего ассистента",
+    openAssistantPage: "Открыть страницу ассистента",
+    backToHome: "Вернуться на главную",
     demoMenu: {
       title: "Меню демо",
       demoVideo: "Видео работы",
@@ -628,6 +636,8 @@ export const assistantGalleryCopy: Record<
       secondary: "Aprender más",
     },
     orderSimilarAssistant: "Pedir un asistente similar",
+    openAssistantPage: "Abrir página del asistente",
+    backToHome: "Volver al inicio",
     demoMenu: {
       title: "Menú demo",
       demoVideo: "Video de demostración",
@@ -763,6 +773,8 @@ export const assistantGalleryCopy: Record<
       secondary: "En savoir plus",
     },
     orderSimilarAssistant: "Commander un assistant similaire",
+    openAssistantPage: "Ouvrir la page de l'assistant",
+    backToHome: "Retour à l'accueil",
     demoMenu: {
       title: "Menu démo",
       demoVideo: "Vidéo de démo",
@@ -898,6 +910,8 @@ export const assistantGalleryCopy: Record<
       secondary: "اعرف أكثر",
     },
     orderSimilarAssistant: "طلب مساعد مشابه",
+    openAssistantPage: "فتح صفحة المساعد",
+    backToHome: "العودة إلى الصفحة الرئيسية",
     demoMenu: {
       title: "قائمة العرض التوضيحي",
       demoVideo: "فيديو العرض",
@@ -1168,6 +1182,8 @@ export const assistantGalleryCopy: Record<
       secondary: "और जानें",
     },
     orderSimilarAssistant: "समान सहायक का ऑर्डर करें",
+    openAssistantPage: "सहायक पृष्ठ खोलें",
+    backToHome: "मुखपृष्ठ पर लौटें",
     demoMenu: {
       title: "डेमो मेनू",
       demoVideo: "डेमो वीडियो",
@@ -1260,6 +1276,19 @@ export const assistants = [
     accent: "from-rose-300 via-pink-300 to-purple-300",
     image: "/media/assistants/sofia.jpg",
     imageClass: "assistant-image-sofia",
+  },
+  {
+    key: "tisgrow",
+    name: "АІ-Тісгроу Dental",
+    i18n: {
+      name: { uk: "AI-Тісгроу Dental", en: "AI-Tisgrow Dental", zh: "AI Tisgrow Dental" },
+      category: { uk: "AI для стоматології", en: "Dental AI" },
+      description: { uk: "AI стоматологічний консультант для FAQ, інформації про пацієнтів та запитів на прийом.", en: "AI dental consultant for clinic FAQs, patient details and appointment requests." },
+    },
+    accent: "from-sky-400 via-aqua to-white",
+    image: "/media/assistants/tisgrow-dental.jpg",
+    imagePosition: "center top",
+    imageClass: "assistant-image-dental",
   },
   {
     key: "avtologik",
