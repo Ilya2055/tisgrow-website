@@ -292,7 +292,9 @@ function Assistants() {
     title: string;
   } | null>(null);
   const [galleryModal, setGalleryModal] = useState<{ urls: string[]; index: number; title: string } | null>(null);
-  const [pdfPreviewFailed, setPdfPreviewFailed] = useState(false);
+  const [pdfOpenBlocked, setPdfOpenBlocked] = useState(false);
+  const [pendingPdfUrl, setPendingPdfUrl] = useState<string | null>(null);
+  const [mediaError, setMediaError] = useState<string | null>(null);
 
   function triggerPortal(name: string) {
     setPortalCard(name);
@@ -310,7 +312,9 @@ function Assistants() {
   function closeMediaModal() {
     setMediaModal(null);
     setGalleryModal(null);
-    setPdfPreviewFailed(false);
+    setPdfOpenBlocked(false);
+    setPendingPdfUrl(null);
+    setMediaError(null);
   }
 
   useEffect(() => {
@@ -335,13 +339,6 @@ function Assistants() {
     };
   }, [mediaModal, galleryModal]);
 
-  useEffect(() => {
-    if (pdfPreviewFailed && mediaModal?.type === "pdfPresentation" && mediaModal.url) {
-      window.open(mediaModal.url, "_blank", "noopener,noreferrer");
-      closeMediaModal();
-    }
-  }, [pdfPreviewFailed, mediaModal]);
-
   function openDemoMenu(assistantName: string) {
     setDemoNotification(null);
     setDemoLoading(null);
@@ -361,14 +358,13 @@ function Assistants() {
   }
 
   function buildDemoMediaUrl(assistantKey: string, type: Exclude<DemoMediaType, "screenshots">, locale: string) {
-    const base = `/media/demos/${assistantKey}`;
     switch (type) {
       case "demoVideo":
-        return `${base}-demo-${locale}.mp4`;
+        return `/media/demos/videos/${assistantKey}-demo-${locale}.mp4`;
       case "pdfPresentation":
-        return `${base}-presentation-${locale}.pdf`;
+        return `/media/demos/pdf/${assistantKey}-presentation-${locale}.pdf`;
       case "videoPresentation":
-        return `${base}-video-presentation-${locale}.mp4`;
+        return `/media/demos/videos/${assistantKey}-presentation-${locale}.mp4`;
     }
   }
 
@@ -417,6 +413,9 @@ function Assistants() {
 
     setDemoLoading(type);
     setDemoNotification(null);
+    setPdfOpenBlocked(false);
+    setPendingPdfUrl(null);
+    setMediaError(null);
 
     if (type === "screenshots") {
       const gallery = await resolveScreenshotGalleryUrls(assistantKey);
@@ -432,13 +431,21 @@ function Assistants() {
     const url = await resolveDemoMediaUrl(assistantKey, type);
     setDemoLoading(null);
 
-    if (url) {
-      setMediaModal({ type, url, title: localizedTitle });
-      setPdfPreviewFailed(false);
+    if (!url) {
+      setDemoNotification(copy.demoMenu.unavailable);
       return;
     }
 
-    setDemoNotification(copy.demoMenu.unavailable);
+    if (type === "pdfPresentation") {
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
+      if (!opened) {
+        setPdfOpenBlocked(true);
+        setPendingPdfUrl(url);
+      }
+      return;
+    }
+
+    setMediaModal({ type, url, title: localizedTitle });
   }
 
   return (
@@ -582,6 +589,19 @@ function Assistants() {
                 {demoNotification && (
                   <p className="mt-3 text-sm text-rose-100">{demoNotification}</p>
                 )}
+                {pdfOpenBlocked && pendingPdfUrl && (
+                  <div className="mt-3 rounded-3xl border border-white/15 bg-white/10 p-4 text-sm text-slate-100">
+                    <p className="mb-3 text-sm text-slate-200">{copy.demoMenu.openPdfInNewTab}</p>
+                    <a
+                      href={pendingPdfUrl}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="media-system-button"
+                    >
+                      {copy.demoMenu.openPdfInNewTab}
+                    </a>
+                  </div>
+                )}
               </div>
             )}
           </article>
@@ -598,8 +618,6 @@ function Assistants() {
                 <p className="text-sm font-semibold uppercase tracking-wide text-cyan-200">
                   {galleryModal
                     ? copy.demoMenu.screenshots
-                    : mediaModal?.type === "pdfPresentation"
-                    ? copy.demoMenu.pdfPresentation
                     : mediaModal?.type === "demoVideo"
                     ? copy.demoMenu.demoVideo
                     : copy.demoMenu.videoPresentation}
@@ -625,14 +643,10 @@ function Assistants() {
                   alt={`${galleryModal.title} screenshot ${galleryModal.index + 1}`}
                   className="gallery-image"
                 />
-              ) : mediaModal?.type === "pdfPresentation" ? (
-                <iframe
-                  key={mediaModal.url}
-                  src={mediaModal.url}
-                  title={mediaModal.title}
-                  className="media-player"
-                  onError={() => setPdfPreviewFailed(true)}
-                />
+              ) : mediaError ? (
+                <div className="media-error-message">
+                  <p>{mediaError}</p>
+                </div>
               ) : (
                 <video
                   key={mediaModal?.url}
@@ -641,6 +655,7 @@ function Assistants() {
                   controls
                   preload="metadata"
                   playsInline
+                  onError={() => setMediaError(copy.demoMenu.videoFailedToLoad)}
                 />
               )}
             </div>
@@ -679,7 +694,7 @@ function Assistants() {
                   rel="noreferrer noopener"
                   className="media-system-button"
                 >
-                  Open in new tab
+                  {copy.demoMenu.openVideoInNewTab}
                 </a>
                 <button type="button" className="media-system-button media-system-button-secondary" onClick={closeMediaModal}>
                   {copy.demoMenu.close}

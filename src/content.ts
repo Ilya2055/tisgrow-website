@@ -143,6 +143,9 @@ export const assistantGalleryCopy: Record<
       unavailable: string;
       close: string;
       loading: string;
+      openPdfInNewTab: string;
+      openVideoInNewTab: string;
+      videoFailedToLoad: string;
     };
     contactForm: {
       nameLabel: string;
@@ -275,6 +278,9 @@ export const assistantGalleryCopy: Record<
       unavailable: "Матеріал скоро буде додано",
       close: "Закрити",
       loading: "Завантаження...",
+      openPdfInNewTab: "Відкрити PDF у новій вкладці",
+      openVideoInNewTab: "Відкрити відео у новій вкладці",
+      videoFailedToLoad: "Не вдалося завантажити відео",
     },
     contactForm: {
       nameLabel: "Ім'я",
@@ -361,6 +367,9 @@ export const assistantGalleryCopy: Record<
       unavailable: "Material will be added soon",
       close: "Close",
       loading: "Loading...",
+      openPdfInNewTab: "Open PDF in new tab",
+      openVideoInNewTab: "Open video in new tab",
+      videoFailedToLoad: "Video failed to load",
     },
     contactForm: {
       nameLabel: "Name",
@@ -493,6 +502,9 @@ export const assistantGalleryCopy: Record<
       unavailable: "Материал скоро будет добавлен",
       close: "Закрыть",
       loading: "Загрузка...",
+      openPdfInNewTab: "Открыть PDF в новой вкладке",
+      openVideoInNewTab: "Открыть видео в новой вкладке",
+      videoFailedToLoad: "Не удалось загрузить видео",
     },
     contactForm: {
       nameLabel: "Имя",
@@ -625,6 +637,9 @@ export const assistantGalleryCopy: Record<
       unavailable: "Material pronto estará disponible",
       close: "Cerrar",
       loading: "Cargando...",
+      openPdfInNewTab: "Abrir PDF en una nueva pestaña",
+      openVideoInNewTab: "Abrir video en una nueva pestaña",
+      videoFailedToLoad: "Error al cargar el video",
     },
     contactForm: {
       nameLabel: "Nombre",
@@ -757,6 +772,9 @@ export const assistantGalleryCopy: Record<
       unavailable: "Le contenu sera bientôt ajouté",
       close: "Fermer",
       loading: "Chargement...",
+      openPdfInNewTab: "Ouvrir le PDF dans un nouvel onglet",
+      openVideoInNewTab: "Ouvrir la vidéo dans un nouvel onglet",
+      videoFailedToLoad: "Impossible de charger la vidéo",
     },
     contactForm: {
       nameLabel: "Nom",
@@ -889,6 +907,9 @@ export const assistantGalleryCopy: Record<
       unavailable: "سيتم إضافة المحتوى قريبًا",
       close: "إغلاق",
       loading: "جارٍ التحميل...",
+      openPdfInNewTab: "افتح PDF في علامة تبويب جديدة",
+      openVideoInNewTab: "افتح الفيديو في علامة تبويب جديدة",
+      videoFailedToLoad: "فشل تحميل الفيديو",
     },
     contactForm: {
       nameLabel: "الاسم",
@@ -1021,6 +1042,9 @@ export const assistantGalleryCopy: Record<
       unavailable: "材料即将添加",
       close: "关闭",
       loading: "加载中...",
+      openPdfInNewTab: "在新标签页中打开 PDF",
+      openVideoInNewTab: "在新标签页中打开视频",
+      videoFailedToLoad: "视频加载失败",
     },
     contactForm: {
       nameLabel: "姓名",
@@ -1153,6 +1177,9 @@ export const assistantGalleryCopy: Record<
       unavailable: "सामग्री जल्द ही जोड़ी जाएगी",
       close: "बंद करें",
       loading: "लोड हो रहा है...",
+      openPdfInNewTab: "PDF को नए टैब में खोलें",
+      openVideoInNewTab: "वीडियो को नए टैब में खोलें",
+      videoFailedToLoad: "वीडियो लोड करने में विफल रहा",
     },
     contactForm: {
       nameLabel: "नाम",
