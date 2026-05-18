@@ -364,7 +364,7 @@ function Assistants() {
       case "pdfPresentation":
         return `/media/demos/pdf/${assistantKey}-presentation-${locale}.pdf`;
       case "videoPresentation":
-        return `/media/demos/videos/${assistantKey}-presentation-${locale}.mp4`;
+        return `/media/demos/videos/${assistantKey}-video-presentation-${locale}.mp4`;
     }
   }
 
