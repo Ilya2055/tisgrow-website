@@ -1291,6 +1291,24 @@ export const assistants = [
     image: "/media/assistants/tisgrow-dental.jpg",
     imagePosition: "center top",
     imageClass: "assistant-image-dental",
+    media: {
+      demoVideo: {
+        uk: "/media/demos/videos/tisgrow-demo-ua.mp4",
+        en: "/media/demos/videos/tisgrow-demo-en.mp4",
+      },
+      videoPresentation: {
+        uk: "/media/demos/videos/tisgrow-video-presentation-ua.mp4",
+        en: "/media/demos/videos/tisgrow-video-presentation-en.mp4",
+      },
+      pdfPresentation: {
+        uk: "/media/demos/pdf/tisgrow-presentation-ua.pdf",
+        en: "/media/demos/pdf/tisgrow-presentation-en.pdf",
+      },
+      screenshots: [
+        "/media/demos/screenshot/tisgrow-chat-01-ua.jpg",
+        "/media/demos/screenshot/tisgrow-chat-02-ua.jpg",
+      ],
+    },
     demoVideo: "/media/demos/videos/tisgrow-demo-ua.mp4",
     presentationVideo: "/media/demos/videos/tisgrow-video-presentation-ua.mp4",
     pdf: "/media/demos/pdf/tisgrow-presentation-ua.pdf",

@@ -110,6 +110,30 @@ async function resolveScreenshotGalleryUrls(assistantKey: string, language: Lang
   return null;
 }
 
+function getAssistantExplicitMediaUrl(assistant: any, type: Exclude<DemoMediaType, "screenshots">, language: LanguageCode) {
+  const media = assistant?.media;
+  if (!media) return null;
+
+  const explicit = media[type];
+  if (!explicit) return null;
+
+  if (typeof explicit === "string") {
+    return explicit;
+  }
+
+  if (typeof explicit === "object") {
+    return explicit[language] ?? explicit.en ?? explicit.uk ?? null;
+  }
+
+  return null;
+}
+
+function getAssistantExplicitScreenshots(assistant: any) {
+  const media = assistant?.media;
+  if (!media?.screenshots) return null;
+  return Array.isArray(media.screenshots) ? media.screenshots : null;
+}
+
 function normalizeAssistantKey(name: string) {
   return name
     .toLowerCase()
@@ -598,7 +622,8 @@ function Assistants({ navigateTo }: { navigateTo: (path: string) => void }) {
     }
 
     if (type === "screenshots") {
-      const gallery = await resolveScreenshotGalleryUrls(assistantKey, language);
+      const explicitScreenshots = getAssistantExplicitScreenshots(assistant);
+      const gallery = explicitScreenshots ?? await resolveScreenshotGalleryUrls(assistantKey, language);
       setDemoLoading(null);
       if (gallery) {
         setGalleryModal({ urls: gallery, index: 0, title: localizedTitle });
@@ -611,7 +636,8 @@ function Assistants({ navigateTo }: { navigateTo: (path: string) => void }) {
       return;
     }
 
-    const url = await resolveDemoMediaUrl(assistantKey, type, language);
+    const explicitUrl = getAssistantExplicitMediaUrl(assistant, type, language);
+    const url = explicitUrl ?? await resolveDemoMediaUrl(assistantKey, type, language);
     setDemoLoading(null);
 
     if (!url) {
