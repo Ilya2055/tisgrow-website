@@ -1078,6 +1078,8 @@ export const assistantGalleryCopy: Record<
       brandText: "AI 顾问和 AI 代理，帮助现代企业成长。",
     },
     homeAriaLabel: "转到 Tisgrow 主页",
+    openAssistantPage: "打开助手页面",
+    backToHome: "返回首页",
     toggleNavigation: "切换导航",
     heroVisual: {
       onlineLabel: "AI 顾问在线",
@@ -1289,6 +1291,10 @@ export const assistants = [
     image: "/media/assistants/tisgrow-dental.jpg",
     imagePosition: "center top",
     imageClass: "assistant-image-dental",
+    demoVideo: "/media/demos/videos/tisgrow-demo-ua.mp4",
+    presentationVideo: "/media/demos/videos/tisgrow-video-presentation-ua.mp4",
+    pdf: "/media/demos/pdf/tisgrow-presentation-ua.pdf",
+    thumbnail: "/media/demos/thumbnails/tisgrow-dental.jpg",
   },
   {
     key: "avtologik",
@@ -1408,19 +1414,6 @@ export const assistants = [
     },
     accent: "from-slate-400 via-aqua to-lime-300",
     image: "/media/assistants/chiprepair.jpg",
-  },
-  {
-    key: "tisgrow-dental",
-    name: "АІ-Тісгроу Dental",
-    i18n: {
-      name: { uk: "AI-Тісгроу Dental", en: "AI-Tisgrow Dental", zh: "AI Tisgrow Dental" },
-      category: { uk: "AI для стоматології", en: "Dental AI" },
-      description: { uk: "AI стоматологічний консультант для FAQ, інформації про пацієнтів та запитів на прийом.", en: "AI dental consultant for clinic FAQs, patient details and appointment requests." },
-    },
-    accent: "from-sky-400 via-aqua to-white",
-    image: "/media/assistants/tisgrow-dental.jpg",
-    imagePosition: "center top",
-    imageClass: "assistant-image-dental",
   },
 ];
 

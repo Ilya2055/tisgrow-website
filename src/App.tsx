@@ -592,28 +592,40 @@ function Assistants({ navigateTo }: { navigateTo: (path: string) => void }) {
     setPendingPdfUrl(null);
     setMediaError(null);
 
+    let pdfWindow: Window | null = null;
+    if (type === "pdfPresentation") {
+      pdfWindow = window.open("", "_blank");
+    }
+
     if (type === "screenshots") {
-      const gallery = await resolveScreenshotGalleryUrls(assistantKey);
+      const gallery = await resolveScreenshotGalleryUrls(assistantKey, language);
       setDemoLoading(null);
       if (gallery) {
         setGalleryModal({ urls: gallery, index: 0, title: localizedTitle });
         return;
       }
+      if (pdfWindow) {
+        pdfWindow.close();
+      }
       setDemoNotification(copy.demoMenu.unavailable);
       return;
     }
 
-    const url = await resolveDemoMediaUrl(assistantKey, type);
+    const url = await resolveDemoMediaUrl(assistantKey, type, language);
     setDemoLoading(null);
 
     if (!url) {
+      if (pdfWindow) {
+        pdfWindow.close();
+      }
       setDemoNotification(copy.demoMenu.unavailable);
       return;
     }
 
     if (type === "pdfPresentation") {
-      const opened = window.open(url, "_blank", "noopener,noreferrer");
-      if (!opened) {
+      if (pdfWindow) {
+        pdfWindow.location.href = url;
+      } else {
         setPdfOpenBlocked(true);
         setPendingPdfUrl(url);
       }
