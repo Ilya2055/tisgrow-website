@@ -55,7 +55,7 @@
   }
 
   .soft-card {
-    @apply rounded-lg border border-slate-100 bg-white/85 p-6 shadow-soft backdrop-blur transition hover:-translate-y-1 hover:border-aqua/40;
+    @apply rounded-lg border border-slate-200/60 bg-white/90 p-6 shadow-soft backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:border-aqua/40;
   }
 
   .field-label {
@@ -67,7 +67,7 @@
   }
 
   .contact-link {
-    @apply flex items-center gap-3 rounded-lg border border-slate-100 bg-white px-4 py-3 shadow-sm transition hover:border-aqua hover:text-navy;
+    @apply flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-navy shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-aqua hover:bg-cyan-50 hover:text-navy;
   }
 
   .ai-gallery-section {
@@ -222,7 +222,7 @@
   }
 
   .assistant-demo-option {
-    @apply rounded-3xl border border-white/15 bg-white/10 px-4 py-3 text-left text-sm font-semibold text-white transition hover:border-aqua/40 hover:bg-aqua/10 hover:text-white;
+    @apply rounded-3xl border border-slate-200/70 bg-white/90 px-4 py-3 text-left text-sm font-semibold text-navy shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-aqua/60 hover:bg-cyan-50 hover:text-navy focus:outline-none focus:ring-2 focus:ring-aqua/30;
     min-height: 52px;
   }
 
@@ -273,11 +273,11 @@
   }
 
   .media-system-button {
-    @apply inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-cyan-200 hover:bg-cyan-500/10;
+    @apply inline-flex items-center justify-center rounded-full border border-slate-200/70 bg-white/90 px-4 py-2 text-sm font-semibold text-navy shadow-sm transition duration-300 hover:border-aqua hover:bg-cyan-50 hover:text-navy;
   }
 
   .media-system-button-secondary {
-    @apply bg-white/10 text-cyan-50 hover:bg-white/15;
+    @apply border-slate-200/70 bg-white/90 text-navy hover:bg-cyan-50 hover:text-navy;
   }
 
   .demo-splash-active {
@@ -285,11 +285,11 @@
   }
 
   .portal-button-secondary {
-    @apply border-white/15 bg-white/10 text-cyan-50 shadow-none backdrop-blur-md;
+    @apply border-slate-200/70 bg-white/90 text-navy shadow-sm backdrop-blur-md transition duration-300;
   }
 
   .portal-button-secondary:hover {
-    @apply border-aqua/45 bg-white/15 text-white;
+    @apply border-aqua/60 bg-cyan-50 text-navy;
   }
 
   @keyframes demo-splash {

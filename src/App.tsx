@@ -1075,7 +1075,7 @@ function AssistantPage({ assistant, onBack }: { assistant: (typeof assistants)[n
 
         <div className="grid gap-6">
           <div className="soft-card">
-            <p className="text-sm font-semibold uppercase tracking-wide text-cyan-100">{copy.demoMenu.title}</p>
+            <p className="text-sm font-semibold uppercase tracking-wide text-cyan-900">{copy.demoMenu.title}</p>
             <div className="mt-5 grid gap-2 sm:grid-cols-2">
               {[
                 { type: "demoVideo" as DemoMediaType, label: copy.demoMenu.demoVideo },
@@ -1111,7 +1111,7 @@ function AssistantPage({ assistant, onBack }: { assistant: (typeof assistants)[n
           </div>
 
           <div className="soft-card">
-            <p className="text-sm font-semibold uppercase tracking-wide text-cyan-100">{copy.sections.contact.eyebrow}</p>
+            <p className="text-sm font-semibold uppercase tracking-wide text-cyan-900">{copy.sections.contact.eyebrow}</p>
             <h2 className="mt-3 text-2xl font-black text-navy">{copy.sections.contact.title}</h2>
             <p className="mt-4 text-sm leading-6 text-slate-600">{copy.sections.contact.text}</p>
             <div className="mt-6 grid gap-3">
