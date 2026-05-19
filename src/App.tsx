@@ -425,8 +425,8 @@ function Hero() {
             {copy.hero.text}
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href="#contact" className="btn-primary">
-              {copy.hero.primary} <ArrowRight size={18} />
+            <a href="/request" className="btn-primary">
+              {copy.requestPage.ctaButtonLabel} <ArrowRight size={18} />
             </a>
             <a href="#assistants" className="btn-secondary">
               {copy.hero.secondary} <ChevronRight size={18} />
@@ -961,6 +961,7 @@ function Assistants({ navigateTo }: { navigateTo: (path: string) => void }) {
 
 function AssistantPage({ assistant, onBack }: { assistant: (typeof assistants)[number]; onBack: () => void }) {
   const { language, copy } = useLang();
+  const navigate = useNavigate();
   const [demoLoading, setDemoLoading] = useState<DemoMediaType | null>(null);
   const [demoNotification, setDemoNotification] = useState<string | null>(null);
   const [mediaModal, setMediaModal] = useState<DemoMediaModalState | null>(null);
@@ -1049,7 +1050,7 @@ function AssistantPage({ assistant, onBack }: { assistant: (typeof assistants)[n
 
   return (
     <section className="section">
-      <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="eyebrow">{localizedCategory}</p>
           <h1 className="mt-4 text-4xl font-black tracking-tight text-navy sm:text-5xl">
@@ -1059,9 +1060,14 @@ function AssistantPage({ assistant, onBack }: { assistant: (typeof assistants)[n
             {localizedDescription}
           </p>
         </div>
-        <button type="button" className="btn-secondary" onClick={onBack}>
-          {copy.backToHome}
-        </button>
+        <div className="flex flex-wrap gap-3">
+          <button type="button" className="btn-primary" onClick={() => navigate("/request") }>
+            {copy.requestPage.ctaButtonLabel}
+          </button>
+          <button type="button" className="btn-secondary" onClick={onBack}>
+            {copy.backToHome}
+          </button>
+        </div>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
@@ -1343,7 +1349,7 @@ function CTA() {
   );
 }
 
-function Contact() {
+function RequestPage() {
   const { copy } = useLang();
   const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const [formStatus, setFormStatus] = useState<"idle" | "success" | "error">("idle");
@@ -1547,7 +1553,7 @@ function HomePage({ navigateTo }: { navigateTo: (path: string) => void }) {
       <Portfolio />
       <Pricing />
       <CTA />
-      <Contact />
+      <RequestPage />
     </>
   );
 }
@@ -1566,7 +1572,7 @@ function AssistantRouteWrapper() {
 
 export function App() {
   const [language, setLanguage] = useState<LanguageCode>("uk");
-  const copy = assistantGalleryCopy[language] ?? assistantGalleryCopy.en;
+  const copy = assistantGalleryCopy[language] ?? assistantGalleryCopy.en ?? assistantGalleryCopy.uk;
 
   const navigate = useNavigate();
 
@@ -1576,6 +1582,7 @@ export function App() {
       <main className="page-transition">
         <Routes>
           <Route path="/" element={<HomePage navigateTo={(path) => { navigate(path); window.scrollTo({ top: 0, behavior: "smooth" }); }} />} />
+          <Route path="/request" element={<RequestPage />} />
           <Route path="/:assistantKey" element={<AssistantRouteWrapper />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

@@ -162,6 +162,30 @@ export const assistantGalleryCopy: Record<
       emailSubject: string;
       emailBodyIntro: string;
     };
+    requestPage: {
+      title: string;
+      description: string;
+      nameLabel: string;
+      businessLabel: string;
+      businessPlaceholder: string;
+      channelsLabel: string;
+      channelOptions: string[];
+      automateLabel: string;
+      automatePlaceholder: string;
+      contactLabel: string;
+      contactPlaceholder: string;
+      detailsLabel: string;
+      detailsPlaceholder: string;
+      submitButton: string;
+      successMessage: string;
+      errorMessage: string;
+      communityHeading: string;
+      communitySite: string;
+      communityTelegram: string;
+      communityX: string;
+      communityTiktok: string;
+      ctaButtonLabel: string;
+    };
     footer: {
       brandTitle: string;
       brandText: string;
@@ -303,6 +327,30 @@ export const assistantGalleryCopy: Record<
       brandTitle: "Tisgrow",
       brandText: "AI консультанти та агенти, які допомагають сучасному бізнесу зростати.",
     },
+    requestPage: {
+      title: "Форма заявки на AI-консультанта Tisgrow",
+      description: "Опишіть свій бізнес, бажані канали та завдання. Наразі форма відкриває email-запит, але структура готова до майбутнього API.",
+      nameLabel: "Ваше ім’я",
+      businessLabel: "Сфера бізнесу",
+      businessPlaceholder: "салон краси / стоматологія / магазин / інше",
+      channelsLabel: "Де ви хочете AI-консультанта?",
+      channelOptions: ["Telegram", "WhatsApp", "Instagram", "TikTok", "Сайт", "X (Twitter)"],
+      automateLabel: "Що потрібно автоматизувати?",
+      automatePlaceholder: "відповіді клієнтам, записи, консультації, FAQ, нагадування, продажі тощо",
+      contactLabel: "Ваш контакт для зв’язку",
+      contactPlaceholder: "Telegram / WhatsApp / Instagram / телефон",
+      detailsLabel: "Додатково",
+      detailsPlaceholder: "будь-які побажання або задачі",
+      submitButton: "Замовити AI-консультанта",
+      successMessage: "Запит готовий. Відкривається ваш поштовий клієнт...",
+      errorMessage: "Будь ласка, заповніть ім’я та контакт для відправки заявки.",
+      communityHeading: "Зв’язок",
+      communitySite: "Сайт",
+      communityTelegram: "Telegram",
+      communityX: "X (Twitter)",
+      communityTiktok: "TikTok",
+      ctaButtonLabel: "Замовити AI-консультанта",
+    },
   },
   en: {
     eyebrow: "AI assistants",
@@ -393,6 +441,30 @@ export const assistantGalleryCopy: Record<
     footer: {
       brandTitle: "Tisgrow",
       brandText: "AI consultants and AI agents that help modern businesses grow.",
+    },
+    requestPage: {
+      title: "Tisgrow AI consultant request form",
+      description: "Describe your business, preferred channels and automation goals. The form opens an email request for now and is ready for future API support.",
+      nameLabel: "Your name",
+      businessLabel: "Business area",
+      businessPlaceholder: "beauty salon / dental clinic / shop / other",
+      channelsLabel: "Where do you want an AI consultant?",
+      channelOptions: ["Telegram", "WhatsApp", "Instagram", "TikTok", "Website", "X (Twitter)"],
+      automateLabel: "What should be automated?",
+      automatePlaceholder: "customer replies, bookings, consultations, FAQ, reminders, sales, etc.",
+      contactLabel: "Your contact for communication",
+      contactPlaceholder: "Telegram / WhatsApp / Instagram / phone",
+      detailsLabel: "Additional details",
+      detailsPlaceholder: "any wishes or tasks",
+      submitButton: "Request an AI consultant",
+      successMessage: "Request ready. Your email client is opening...",
+      errorMessage: "Please fill in your name and contact details to submit the request.",
+      communityHeading: "Connect",
+      communitySite: "Website",
+      communityTelegram: "Telegram",
+      communityX: "X (Twitter)",
+      communityTiktok: "TikTok",
+      ctaButtonLabel: "Request an AI consultant",
     },
     homeAriaLabel: "Go to the Tisgrow homepage",
     toggleNavigation: "Toggle navigation",
@@ -531,6 +603,30 @@ export const assistantGalleryCopy: Record<
       brandTitle: "Tisgrow",
       brandText: "AI консультанты и AI агенты, которые помогают современному бизнесу расти.",
     },
+    requestPage: {
+      title: "Форма заявки на AI-консультанта Tisgrow",
+      description: "Опишите свой бизнес, желаемые каналы и задачи. Форму пока что открывает email-запрос, но структура готова к будущему API.",
+      nameLabel: "Ваше имя",
+      businessLabel: "Сфера бизнеса",
+      businessPlaceholder: "салон красоты / стоматология / магазин / другое",
+      channelsLabel: "Где вы хотите AI-консультанта?",
+      channelOptions: ["Telegram", "WhatsApp", "Instagram", "TikTok", "Сайт", "X (Twitter)"],
+      automateLabel: "Что нужно автоматизировать?",
+      automatePlaceholder: "ответы клиентам, записи, консультации, FAQ, напоминания, продажи и т.д.",
+      contactLabel: "Ваш контакт для связи",
+      contactPlaceholder: "Telegram / WhatsApp / Instagram / телефон",
+      detailsLabel: "Дополнительно",
+      detailsPlaceholder: "любые пожелания или задачи",
+      submitButton: "Заказать AI-консультанта",
+      successMessage: "Запрос готов. Открывается ваш почтовый клиент...",
+      errorMessage: "Пожалуйста, заполните имя и контакт для отправки запроса.",
+      communityHeading: "Связь",
+      communitySite: "Сайт",
+      communityTelegram: "Telegram",
+      communityX: "X (Twitter)",
+      communityTiktok: "TikTok",
+      ctaButtonLabel: "Заказать AI-консультанта",
+    },
     homeAriaLabel: "Перейти на главную страницу Tisgrow",
     toggleNavigation: "Переключить навигацию",
     heroVisual: {
@@ -667,6 +763,30 @@ export const assistantGalleryCopy: Record<
     footer: {
       brandTitle: "Tisgrow",
       brandText: "Consultores y agentes de IA que ayudan a las empresas modernas a crecer.",
+    },
+    requestPage: {
+      title: "Formulario de solicitud de consultor AI Tisgrow",
+      description: "Describe tu negocio, canales deseados y objetivos de automatización. El formulario abre una solicitud de correo electrónico por ahora y está listo para un futuro API.",
+      nameLabel: "Tu nombre",
+      businessLabel: "Área de negocio",
+      businessPlaceholder: "salón de belleza / clínica dental / tienda / otro",
+      channelsLabel: "¿Dónde quieres un consultor AI?",
+      channelOptions: ["Telegram", "WhatsApp", "Instagram", "TikTok", "Sitio web", "X (Twitter)"],
+      automateLabel: "¿Qué debe automatizarse?",
+      automatePlaceholder: "respuestas a clientes, reservas, consultas, FAQ, recordatorios, ventas, etc.",
+      contactLabel: "Tu contacto para comunicación",
+      contactPlaceholder: "Telegram / WhatsApp / Instagram / teléfono",
+      detailsLabel: "Detalles adicionales",
+      detailsPlaceholder: "cualquier deseo o tarea",
+      submitButton: "Solicitar un consultor AI",
+      successMessage: "Solicitud lista. Se está abriendo tu cliente de correo...",
+      errorMessage: "Por favor completa tu nombre y contacto para enviar la solicitud.",
+      communityHeading: "Conexión",
+      communitySite: "Sitio web",
+      communityTelegram: "Telegram",
+      communityX: "X (Twitter)",
+      communityTiktok: "TikTok",
+      ctaButtonLabel: "Solicitar un consultor AI",
     },
     homeAriaLabel: "Ir a la página principal de Tisgrow",
     toggleNavigation: "Alternar navegación",
@@ -805,6 +925,30 @@ export const assistantGalleryCopy: Record<
       brandTitle: "Tisgrow",
       brandText: "Consultants et agents IA qui aident les entreprises modernes à se développer.",
     },
+    requestPage: {
+      title: "Formulaire de demande de consultant AI Tisgrow",
+      description: "Décrivez votre entreprise, les canaux souhaités et les objectifs d'automatisation. Le formulaire ouvre une demande email pour le moment et est prêt pour un futur API.",
+      nameLabel: "Votre nom",
+      businessLabel: "Secteur d'activité",
+      businessPlaceholder: "salon de beauté / clinique dentaire / boutique / autre",
+      channelsLabel: "Où voulez-vous un consultant AI?",
+      channelOptions: ["Telegram", "WhatsApp", "Instagram", "TikTok", "Site web", "X (Twitter)"],
+      automateLabel: "Que faut-il automatiser?",
+      automatePlaceholder: "réponses clients, réservations, consultations, FAQ, rappels, ventes, etc.",
+      contactLabel: "Votre contact pour la communication",
+      contactPlaceholder: "Telegram / WhatsApp / Instagram / téléphone",
+      detailsLabel: "Informations supplémentaires",
+      detailsPlaceholder: "toutes demandes ou tâches",
+      submitButton: "Demander un consultant AI",
+      successMessage: "Demande prête. Votre client email s'ouvre...",
+      errorMessage: "Veuillez remplir votre nom et votre contact pour envoyer la demande.",
+      communityHeading: "Connexion",
+      communitySite: "Site web",
+      communityTelegram: "Telegram",
+      communityX: "X (Twitter)",
+      communityTiktok: "TikTok",
+      ctaButtonLabel: "Demander un consultant AI",
+    },
     homeAriaLabel: "Aller à la page d'accueil de Tisgrow",
     toggleNavigation: "Basculer la navigation",
     heroVisual: {
@@ -942,6 +1086,30 @@ export const assistantGalleryCopy: Record<
       brandTitle: "Tisgrow",
       brandText: "استشاريون ووكلاء الذكاء الاصطناعي الذين يساعدون الشركات الحديثة على النمو.",
     },
+    requestPage: {
+      title: "نموذج طلب مستشار AI من Tisgrow",
+      description: "صف عملك والقنوات المرغوبة وأهداف الأتمتة. يفتح النموذج طلب بريد إلكتروني الآن ويُعد لدعم API في المستقبل.",
+      nameLabel: "اسمك",
+      businessLabel: "مجال العمل",
+      businessPlaceholder: "صالون تجميل / عيادة أسنان / متجر / آخر",
+      channelsLabel: "أين تريد مستشار AI؟",
+      channelOptions: ["Telegram", "WhatsApp", "Instagram", "TikTok", "الموقع", "X (Twitter)"],
+      automateLabel: "ماذا يجب أن يتم أتمتته؟",
+      automatePlaceholder: "ردود العملاء، الحجوزات، الاستشارات، الأسئلة الشائعة، التذكيرات، المبيعات، إلخ.",
+      contactLabel: "جهة الاتصال الخاصة بك للتواصل",
+      contactPlaceholder: "Telegram / WhatsApp / Instagram / هاتف",
+      detailsLabel: "إضافي",
+      detailsPlaceholder: "أي رغبات أو مهام",
+      submitButton: "طلب مستشار AI",
+      successMessage: "الطلب جاهز. يتم فتح عميل البريد الإلكتروني الخاص بك...",
+      errorMessage: "يرجى إدخال اسمك ومعلومات الاتصال لإرسال الطلب.",
+      communityHeading: "التواصل",
+      communitySite: "الموقع",
+      communityTelegram: "Telegram",
+      communityX: "X (Twitter)",
+      communityTiktok: "TikTok",
+      ctaButtonLabel: "طلب مستشار AI",
+    },
     homeAriaLabel: "الانتقال إلى الصفحة الرئيسية لـ Tisgrow",
     toggleNavigation: "تبديل التنقل",
     heroVisual: {
@@ -1076,6 +1244,30 @@ export const assistantGalleryCopy: Record<
     footer: {
       brandTitle: "Tisgrow",
       brandText: "AI 顾问和 AI 代理，帮助现代企业成长。",
+    },
+    requestPage: {
+      title: "Tisgrow AI 顾问请求表单",
+      description: "描述您的业务、首选渠道和自动化目标。此表单目前会打开电子邮件请求，并已准备好将来连接 API。",
+      nameLabel: "您的姓名",
+      businessLabel: "业务领域",
+      businessPlaceholder: "美妆沙龙 / 牙科诊所 / 商店 / 其他",
+      channelsLabel: "您希望在哪里使用 AI 顾问？",
+      channelOptions: ["Telegram", "WhatsApp", "Instagram", "TikTok", "网站", "X (Twitter)"],
+      automateLabel: "需要自动化什么？",
+      automatePlaceholder: "客户回复、预约、咨询、FAQ、提醒、销售等",
+      contactLabel: "您的联系方式",
+      contactPlaceholder: "Telegram / WhatsApp / Instagram / 电话",
+      detailsLabel: "其他信息",
+      detailsPlaceholder: "任何愿望或任务",
+      submitButton: "申请 AI 顾问",
+      successMessage: "请求已准备好。正在打开您的邮件客户端...",
+      errorMessage: "请填写您的姓名和联系方式以提交请求。",
+      communityHeading: "联系",
+      communitySite: "网站",
+      communityTelegram: "Telegram",
+      communityX: "X (Twitter)",
+      communityTiktok: "TikTok",
+      ctaButtonLabel: "申请 AI 顾问",
     },
     homeAriaLabel: "转到 Tisgrow 主页",
     openAssistantPage: "打开助手页面",
@@ -1215,6 +1407,30 @@ export const assistantGalleryCopy: Record<
     footer: {
       brandTitle: "Tisgrow",
       brandText: "AI सलाहकार और एजेंट जो आधुनिक व्यवसायों को बढ़ने में मदद करते हैं।",
+    },
+    requestPage: {
+      title: "Tisgrow AI कंसल्टेंट अनुरोध फ़ॉर्म",
+      description: "अपने व्यवसाय, पसंदीदा चैनल और स्वचालन लक्ष्य दर्ज करें। यह फ़ॉर्म अभी के लिए एक ईमेल अनुरोध खोलता है और भविष्य में API के लिए तैयार है।",
+      nameLabel: "आपका नाम",
+      businessLabel: "व्यवसाय का क्षेत्र",
+      businessPlaceholder: "ब्यूटी सैलून / डेंटल क्लिनिक / दुकान / अन्य",
+      channelsLabel: "आप AI कंसल्टेंट कहां चाहते हैं?",
+      channelOptions: ["Telegram", "WhatsApp", "Instagram", "TikTok", "साइट", "X (Twitter)"],
+      automateLabel: "क्या स्वचालित किया जाना चाहिए?",
+      automatePlaceholder: "ग्राहक उत्तर, बुकिंग, परामर्श, FAQ, अनुस्मारक, बिक्री आदि",
+      contactLabel: "संपर्क जानकारी",
+      contactPlaceholder: "Telegram / WhatsApp / Instagram / फोन",
+      detailsLabel: "अतिरिक्त",
+      detailsPlaceholder: "कोई भी इच्छाएँ या कार्य",
+      submitButton: "AI कंसल्टेंट का अनुरोध करें",
+      successMessage: "अनुरोध तैयार है। आपका मेल क्लाइंट खुल रहा है...",
+      errorMessage: "कृपया अनुरोध भेजने के लिए अपना नाम और संपर्क भरें।",
+      communityHeading: "सम्पर्क",
+      communitySite: "साइट",
+      communityTelegram: "Telegram",
+      communityX: "X (Twitter)",
+      communityTiktok: "TikTok",
+      ctaButtonLabel: "AI कंसल्टेंट का अनुरोध करें",
     },
     homeAriaLabel: "Tisgrow होम पर जाएं",
     toggleNavigation: "नेविगेशन टॉगल करें",
