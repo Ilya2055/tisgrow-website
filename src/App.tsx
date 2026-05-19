@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { type CSSProperties, type Dispatch, type FormEvent, type SetStateAction, useEffect, useState, createContext, useContext } from "react";
+import { Routes, Route, Navigate, useParams, useNavigate } from "react-router-dom";
 import {
   assistantGalleryCopy,
   assistants,
@@ -139,6 +140,10 @@ function normalizeAssistantKey(name: string) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/gi, "-")
     .replace(/(^-|-$)/g, "");
+}
+
+function getAssistantRoutePath(assistant: any) {
+  return assistant.route ?? assistant.key ?? normalizeAssistantKey(assistant.name);
 }
 
 async function fileExists(url: string) {
@@ -760,7 +765,7 @@ function Assistants({ navigateTo }: { navigateTo: (path: string) => void }) {
               <button
                 type="button"
                 className="portal-button portal-button-secondary"
-                onClick={() => navigateTo(`/assistants/${key}`)}
+                onClick={() => navigateTo(`/${getAssistantRoutePath(assistant)}`)}
               >
                 {copy.openAssistantPage}
               </button>
@@ -1422,47 +1427,55 @@ function Footer() {
   );
 }
 
-export function App() {
-  const [language, setLanguage] = useState<LanguageCode>("uk");
-  const [routePath, setRoutePath] = useState<string>(window.location.pathname);
-  const copy = assistantGalleryCopy[language] ?? assistantGalleryCopy.en;
+function HomePage({ navigateTo }: { navigateTo: (path: string) => void }) {
+  const { language, copy } = useLang();
 
   useEffect(() => {
-    const handlePopState = () => setRoutePath(window.location.pathname);
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+    document.title = "Tisgrow AI Assistants";
+  }, [language]);
 
-  const navigateTo = (path: string) => {
-    if (path !== window.location.pathname) {
-      window.history.pushState({}, "", path);
-    }
-    setRoutePath(path);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  return (
+    <>
+      <Hero />
+      <Industries />
+      <Capabilities />
+      <Assistants navigateTo={navigateTo} />
+      <Videos />
+      <Portfolio />
+      <Pricing />
+      <CTA />
+      <Contact />
+    </>
+  );
+}
 
-  const assistantRouteKey = routePath.startsWith("/assistants/") ? routePath.split("/")[2] : null;
-  const assistantRoute = assistantRouteKey ? assistants.find((assistant) => assistant.key === assistantRouteKey) : null;
+function AssistantRouteWrapper() {
+  const { assistantKey } = useParams<{ assistantKey: string }>();
+  const navigate = useNavigate();
+  const assistant = assistantKey ? assistants.find((assistant) => getAssistantRoutePath(assistant) === assistantKey) : null;
+
+  if (!assistant) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <AssistantPage assistant={assistant} onBack={() => navigate("/")} />;
+}
+
+export function App() {
+  const [language, setLanguage] = useState<LanguageCode>("uk");
+  const copy = assistantGalleryCopy[language] ?? assistantGalleryCopy.en;
+
+  const navigate = useNavigate();
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, copy }}>
       <Header />
-      <main>
-        {assistantRoute ? (
-          <AssistantPage assistant={assistantRoute} onBack={() => navigateTo("/")} />
-        ) : (
-          <>
-            <Hero />
-            <Industries />
-            <Capabilities />
-            <Assistants navigateTo={navigateTo} />
-            <Videos />
-            <Portfolio />
-            <Pricing />
-            <CTA />
-            <Contact />
-          </>
-        )}
+      <main className="page-transition">
+        <Routes>
+          <Route path="/" element={<HomePage navigateTo={(path) => { navigate(path); window.scrollTo({ top: 0, behavior: "smooth" }); }} />} />
+          <Route path="/:assistantKey" element={<AssistantRouteWrapper />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
       <Footer />
     </LanguageContext.Provider>
