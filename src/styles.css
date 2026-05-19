@@ -58,12 +58,72 @@
     @apply rounded-lg border border-slate-200/60 bg-white/90 p-6 shadow-soft backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:border-aqua/40;
   }
 
+  .request-card {
+    @apply rounded-[2rem] border border-white/15 bg-white/75 p-8 shadow-soft backdrop-blur-2xl transition duration-300 hover:-translate-y-1 hover:border-cyan-200/40;
+  }
+
+  .request-input {
+    @apply mt-2 w-full rounded-3xl border border-slate-200 bg-slate-50/90 px-4 py-3 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-cyan-300 focus:ring-4 focus:ring-cyan-200/40;
+  }
+
+  .request-textarea {
+    @apply mt-2 w-full min-h-[11rem] rounded-3xl border border-slate-200 bg-slate-50/90 px-4 py-4 text-sm font-medium text-slate-900 outline-none resize-y transition placeholder:text-slate-400 focus:border-cyan-300 focus:ring-4 focus:ring-cyan-200/40;
+  }
+
   .field-label {
     @apply block text-sm font-bold text-navy;
   }
 
   .field {
     @apply mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-navy outline-none transition placeholder:text-slate-400 focus:border-aqua focus:ring-4 focus:ring-aqua/15;
+  }
+
+  .checkbox-field {
+    @apply flex items-center gap-3 rounded-3xl border border-slate-200/70 bg-white/90 px-4 py-3 transition duration-300 hover:border-cyan-300/70 hover:bg-cyan-50 cursor-pointer;
+  }
+
+  .checkbox-input {
+    @apply sr-only;
+  }
+
+  .checkbox-custom {
+    @apply grid h-5 w-5 place-items-center rounded-2xl border border-slate-300 bg-white text-transparent transition duration-300;
+  }
+
+  .checkbox-custom::after {
+    content: "\2713";
+    color: #0f172a;
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .checkbox-input:checked + .checkbox-custom {
+    @apply border-cyan-400 bg-gradient-to-br from-cyan-200 to-teal-200;
+  }
+
+  .checkbox-input:checked + .checkbox-custom::after {
+    opacity: 1;
+  }
+
+  .toast-card {
+    @apply rounded-3xl border px-4 py-3 text-sm font-semibold shadow-soft;
+    animation: toast-pop 260ms ease-out forwards;
+  }
+
+  .community-card {
+    @apply rounded-[1.75rem] border border-white/15 bg-white/90 p-5 text-sm text-slate-900 shadow-soft transition duration-300 hover:-translate-y-0.5 hover:border-cyan-300/60 hover:bg-cyan-50;
+  }
+
+  @keyframes toast-pop {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .contact-link {

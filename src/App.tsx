@@ -1344,63 +1344,166 @@ function CTA() {
 }
 
 function Contact() {
+  const { copy } = useLang();
+  const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
+  const [formStatus, setFormStatus] = useState<"idle" | "success" | "error">("idle");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (formStatus !== "success") {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => setFormStatus("idle"), 4800);
+    return () => window.clearTimeout(timeoutId);
+  }, [formStatus]);
+
+  function handleToggleChannel(channel: string) {
+    setSelectedChannels((current) =>
+      current.includes(channel) ? current.filter((item) => item !== channel) : [...current, channel],
+    );
+  }
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const name = String(data.get("name") || "").trim();
+    const business = String(data.get("business") || "").trim();
+    const contact = String(data.get("contact") || "").trim();
+    const automate = String(data.get("automate") || "").trim();
+    const details = String(data.get("details") || "").trim();
+
+    if (!name || !contact) {
+      setFormStatus("error");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setFormStatus("success");
+
     const emailAddress = contactLinks.email.replace(/^mailto:/, "");
     const body = [
-      "Hello Tisgrow,",
+      "Привіт Tisgrow,",
       "",
-      `Name: ${data.get("name") || ""}`,
-      `Business type: ${data.get("business") || ""}`,
-      `Messenger/contact: ${data.get("contact") || ""}`,
-      `Message: ${data.get("message") || ""}`,
+      `Ім'я: ${name}`,
+      `Сфера бізнесу: ${business || "не вказано"}`,
+      `Де хочете AI-консультанта: ${selectedChannels.length ? selectedChannels.join(", ") : "не зазначено"}`,
+      `Що потрібно автоматизувати: ${automate || "не вказано"}`,
+      `Контакт для зв'язку: ${contact}`,
+      `Додатково: ${details || "немає"}`,
     ].join("\n");
 
     window.location.href = `mailto:${emailAddress}?subject=${encodeURIComponent(
-      "Tisgrow demo request",
+      "Запит на AI-консультанта Tisgrow",
     )}&body=${encodeURIComponent(body)}`;
   }
 
-  const { copy } = useLang();
+  const channelOptions = ["Telegram", "WhatsApp", "Instagram", "TikTok", "Сайт", "X (Twitter)"];
+
   return (
-    <section id="contact" className="section">
-      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-        <div>
-          <span className="eyebrow">{copy.sections.contact.eyebrow}</span>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-navy sm:text-4xl">{copy.sections.contact.title}</h2>
-          <p className="mt-5 text-base leading-7 text-slate-600">{copy.sections.contact.text}</p>
-          <div className="mt-7 grid gap-3 text-sm font-semibold text-slate-600">
-            <a href={contactLinks.telegram} className="contact-link"><Send size={18} /> {copy.contactForm.telegram}</a>
-            <a href={contactLinks.whatsapp} className="contact-link"><Send size={18} /> {copy.contactForm.whatsapp}</a>
-            <a href={contactLinks.instagram} className="contact-link"><Send size={18} /> {copy.contactForm.instagram}</a>
-            <a href={contactLinks.email} className="contact-link"><Mail size={18} /> {copy.contactForm.email}</a>
+    <section id="contact" className="section bg-slate-950/5">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+          <div className="space-y-6">
+            <span className="eyebrow">Форма заявки</span>
+            <h2 className="text-3xl font-black tracking-tight text-navy sm:text-4xl">Форма заявки на AI-консультанта Tisgrow</h2>
+            <p className="max-w-2xl text-base leading-7 text-slate-600">
+              Налаштуйте свій AI-проєкт швидко: опишіть бізнес, бажані канали та завдання — форма наразі відкриває email, а згодом підключимо API.
+            </p>
+            <div className="rounded-[2rem] border border-white/15 bg-white/80 p-6 shadow-soft backdrop-blur-xl">
+              <p className="text-sm font-semibold uppercase tracking-wide text-cyan-700">Що ви отримаєте</p>
+              <ul className="mt-4 space-y-3 text-sm text-slate-700">
+                <li>• Підготовлену заявку на AI-консультанта</li>
+                <li>• Сучасний режим glassmorphism для бізнес-контакту</li>
+                <li>• Підготовку до майбутнього бекенду/API</li>
+              </ul>
+            </div>
           </div>
+
+          <form className="request-card" onSubmit={handleSubmit}>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="field-label">
+                Ваше ім’я
+                <input className="field request-input" name="name" placeholder="Ваше ім’я" />
+              </label>
+              <label className="field-label">
+                Сфера бізнесу
+                <input className="field request-input" name="business" placeholder="Сфера бізнесу" />
+              </label>
+            </div>
+
+            <div className="mt-5">
+              <p className="mb-3 text-sm font-bold text-navy">Де ви хочете AI-консультанта?</p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {channelOptions.map((option) => (
+                  <label key={option} className="checkbox-field">
+                    <input
+                      type="checkbox"
+                      className="checkbox-input"
+                      name="channels"
+                      value={option}
+                      checked={selectedChannels.includes(option)}
+                      onChange={() => handleToggleChannel(option)}
+                    />
+                    <span className="checkbox-custom" aria-hidden="true" />
+                    <span className="text-sm font-semibold text-slate-900">{option}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <label className="field-label mt-5">
+              Що потрібно автоматизувати?
+              <textarea className="field request-textarea" name="automate" placeholder="Що потрібно автоматизувати?" />
+            </label>
+
+            <label className="field-label mt-5">
+              Ваш контакт для зв’язку
+              <input className="field request-input" name="contact" placeholder="Ваш контакт для зв’язку" />
+            </label>
+
+            <label className="field-label mt-5">
+              Додатково
+              <textarea className="field request-textarea" name="details" placeholder="Додатково" />
+            </label>
+
+            <button type="submit" disabled={isSubmitting} className="btn-primary mt-6 w-full justify-center">
+              {copy.contactForm.sendButton} <ArrowRight size={18} />
+            </button>
+
+            <div className="mt-5 space-y-3">
+              {formStatus === "success" && (
+                <div className="toast-card border-cyan-200/70 bg-cyan-50/90 text-cyan-950" role="status" aria-live="polite">
+                  Запит готовий. Відкривається ваш поштовий клієнт...
+                </div>
+              )}
+              {formStatus === "error" && (
+                <div className="toast-card border-rose-200/70 bg-rose-50/90 text-rose-900" role="alert">
+                  Будь ласка, заповніть ім’я та контакт для відправки заявки.
+                </div>
+              )}
+            </div>
+          </form>
         </div>
 
-        <form className="soft-card" onSubmit={handleSubmit}>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <label className="field-label">
-              {copy.contactForm.nameLabel}
-              <input className="field" name="name" placeholder={copy.contactForm.nameLabel} />
-            </label>
-            <label className="field-label">
-              {copy.contactForm.businessLabel}
-              <input className="field" name="business" placeholder={copy.contactForm.businessLabel} />
-            </label>
-          </div>
-          <label className="field-label mt-4">
-            {copy.contactForm.contactLabel}
-            <input className="field" name="contact" placeholder={copy.contactForm.contactLabel} />
-          </label>
-          <label className="field-label mt-4">
-            {copy.contactForm.messageLabel}
-            <textarea className="field min-h-36 resize-y" name="message" placeholder={copy.contactForm.messageLabel} />
-          </label>
-          <button type="submit" className="btn-primary mt-5 w-full justify-center">
-            {copy.contactForm.sendButton} <ArrowRight size={18} />
-          </button>
-        </form>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <a href="https://tisgrow-website.vercel.app" className="community-card">
+            <p className="text-sm font-semibold uppercase tracking-wide text-cyan-700">Сайт</p>
+            <p className="mt-2 text-base font-black text-navy">tisgrow-website.vercel.app</p>
+          </a>
+          <a href="https://t.me/ai_ilua" className="community-card">
+            <p className="text-sm font-semibold uppercase tracking-wide text-cyan-700">Telegram</p>
+            <p className="mt-2 text-base font-black text-navy">@ai_ilua</p>
+          </a>
+          <a href="https://x.com/Ilyaciberarch" className="community-card">
+            <p className="text-sm font-semibold uppercase tracking-wide text-cyan-700">X (Twitter)</p>
+            <p className="mt-2 text-base font-black text-navy">@Ilyaciberarch</p>
+          </a>
+          <a href="https://tiktok.com/@ilyazhcreator" className="community-card">
+            <p className="text-sm font-semibold uppercase tracking-wide text-cyan-700">TikTok</p>
+            <p className="mt-2 text-base font-black text-navy">@ilyazhcreator</p>
+          </a>
+        </div>
       </div>
     </section>
   );
