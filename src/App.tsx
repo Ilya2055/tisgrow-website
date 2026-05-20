@@ -358,20 +358,17 @@ function DemoMediaModal({
 
 function HeroVisual() {
   return (
-    <div className="relative mx-auto w-full max-w-xl animate-float lg:max-w-none">
-      <div className="hero-visual-card min-h-[380px] md:min-h-[520px]">
-        <picture className="absolute inset-0 block h-full w-full">
-          <source srcSet="/media/hero/hero-desktop.webp" media="(min-width: 768px)" />
-          <source srcSet="/media/hero/hero-mobile.webp" media="(max-width: 767px)" />
-          <img
-            src="/media/hero/hero-desktop.webp"
-            alt="Premium Tisgrow hero visual"
-            className="block h-full w-full object-cover object-center"
-            loading="eager"
-          />
-        </picture>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-      </div>
+    <div className="w-full overflow-hidden">
+      <picture className="block w-full">
+        <source srcSet="/media/hero/hero-desktop.webp" media="(min-width: 768px)" />
+        <source srcSet="/media/hero/hero-mobile.webp" media="(max-width: 767px)" />
+        <img
+          src="/media/hero/hero-desktop.webp"
+          alt="Premium Tisgrow hero visual"
+          className="block w-full h-auto object-contain"
+          loading="eager"
+        />
+      </picture>
     </div>
   );
 }
@@ -448,73 +445,41 @@ function Hero() {
   }, []);
 
   return (
-    <section id="home" className={`relative overflow-hidden pt-28 sm:pt-32 ${isScrolled ? "hero-scroll-dark" : ""}`}>
-      <div className="hero-background absolute inset-0 -z-20 h-full min-h-[520px] overflow-hidden sm:min-h-[620px] lg:min-h-[680px]">
-        <img
-          src="/media/hero/hero-desktop.webp"
-          alt="Premium Tisgrow hero visual"
-          className="absolute inset-0 hidden h-full w-full object-cover object-center md:block"
-          loading="eager"
-        />
-        <img
-          src="/media/hero/hero-mobile.webp"
-          alt="Premium Tisgrow hero visual"
-          className="absolute inset-0 block h-full w-full object-cover object-center md:hidden"
-          loading="eager"
-        />
-
-        <div className="absolute inset-0 bg-slate-950/10" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-teal-700/10 to-slate-950/40" aria-hidden="true" />
-
-        <div className="hero-animation-layer" aria-hidden="true">
-          <div className="hero-holo-glow hidden sm:block" />
-          <div className="particle-field" aria-hidden="true">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <span key={index} style={{ "--i": index } as CSSProperties} />
-            ))}
-          </div>
-          <div className="hero-floating-card hero-card-one hidden sm:block">
-            <p className="text-[10px] uppercase tracking-[0.35em] text-cyan-100/80">AI insight</p>
-            <p className="mt-3 text-sm font-black text-white">Conversion pulse</p>
-            <div className="mt-3 flex items-center justify-between gap-2 rounded-3xl bg-white/10 px-3 py-2 text-[11px] text-slate-200">
-              <span>+21.4% uplift</span>
-              <span className="rounded-full bg-aqua/20 px-2 py-1 text-[10px] font-bold text-aqua">Live</span>
-            </div>
-          </div>
-          <div className="hero-floating-card hero-card-two hidden sm:block">
-            <p className="text-[10px] uppercase tracking-[0.35em] text-slate-200/70">Secure growth</p>
-            <h3 className="mt-3 text-sm font-black text-white">Tisgrow Command</h3>
-            <div className="mt-3 flex items-center gap-2 text-[11px] text-slate-300">
-              <span className="inline-flex h-2 w-2 rounded-full bg-aqua" />
-              <span>Realtime orchestration</span>
-            </div>
-          </div>
-        </div>
+    <section id="home" className="relative overflow-hidden pt-28 sm:pt-32">
+      <div className="w-full overflow-hidden">
+        <picture className="block w-full">
+          <source srcSet="/media/hero/hero-desktop.webp" media="(min-width: 768px)" />
+          <source srcSet="/media/hero/hero-mobile.webp" media="(max-width: 767px)" />
+          <img
+            src="/media/hero/hero-desktop.webp"
+            alt="Premium Tisgrow hero visual"
+            className="block w-full h-auto object-contain"
+            loading="eager"
+          />
+        </picture>
       </div>
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(20,211,197,0.18),transparent_30%),linear-gradient(180deg,#ffffff_0%,#eefaff_60%,#ffffff_100%)]" />
-      <div className="mx-auto grid max-w-7xl items-start gap-12 px-4 pb-20 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pb-28">
-        <div className="relative z-10 max-w-3xl">
+      <div className="mx-auto max-w-5xl px-4 pb-20 pt-10 sm:px-6 lg:px-8 lg:pb-28">
+        <div className="mx-auto text-center max-w-3xl">
           <span className="eyebrow">{copy.hero.eyebrow}</span>
           <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight text-navy sm:text-5xl lg:text-6xl">
             {copy.hero.title}
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
+          <p className="mt-6 text-lg leading-8 text-slate-600 sm:text-xl">
             {copy.hero.text}
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:justify-center">
             <HeroActionButton href="/request">{copy.requestPage.ctaButtonLabel} <ArrowRight size={18} /></HeroActionButton>
             <HeroActionButton href="#assistants" variant="secondary">
               {copy.hero.secondary} <ChevronRight size={18} />
             </HeroActionButton>
           </div>
-          <p className="mt-6 max-w-2xl text-sm font-medium leading-6 text-slate-500">
+          <p className="mt-6 text-sm font-medium leading-6 text-slate-500">
             {copy.text}
           </p>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500">
+          <p className="mt-3 text-sm leading-6 text-slate-500">
             {copy.cta?.title ?? copy.text}
           </p>
         </div>
-        <HeroVisual />
       </div>
     </section>
   );
