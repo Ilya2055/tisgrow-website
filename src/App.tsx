@@ -359,14 +359,14 @@ function DemoMediaModal({
 function HeroVisual() {
   return (
     <div className="relative mx-auto w-full max-w-xl animate-float lg:max-w-none">
-      <div className="relative overflow-hidden rounded-3xl border border-white/70 bg-slate-950/5 shadow-glow min-h-[380px] md:min-h-[520px]">
-        <picture className="block h-full w-full">
+      <div className="hero-visual-card min-h-[380px] md:min-h-[520px]">
+        <picture className="absolute inset-0 block h-full w-full">
           <source srcSet="/media/hero/hero-desktop.webp" media="(min-width: 768px)" />
           <source srcSet="/media/hero/hero-mobile.webp" media="(max-width: 767px)" />
           <img
             src="/media/hero/hero-desktop.webp"
             alt="Premium Tisgrow hero visual"
-            className="h-full w-full object-cover object-center"
+            className="block h-full w-full object-cover object-center"
             loading="eager"
           />
         </picture>
@@ -492,7 +492,7 @@ function Hero() {
         </div>
       </div>
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(20,211,197,0.18),transparent_30%),linear-gradient(180deg,#ffffff_0%,#eefaff_60%,#ffffff_100%)]" />
-      <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-20 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pb-28">
+      <div className="mx-auto grid max-w-7xl items-start gap-12 px-4 pb-20 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pb-28">
         <div className="relative z-10 max-w-3xl">
           <span className="eyebrow">{copy.hero.eyebrow}</span>
           <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight text-navy sm:text-5xl lg:text-6xl">

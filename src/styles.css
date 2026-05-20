@@ -352,6 +352,25 @@
     @apply border-aqua/60 bg-cyan-50 text-navy;
   }
 
+  .hero-visual-card {
+    @apply relative overflow-hidden rounded-3xl border border-white/70 bg-slate-950/5 shadow-glow;
+  }
+
+  .hero-visual-card::before {
+    content: "";
+    @apply absolute inset-0 pointer-events-none;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(56, 189, 248, 0.16), transparent 24%),
+      radial-gradient(circle at 78% 78%, rgba(56, 189, 248, 0.1), transparent 18%);
+    mix-blend-mode: screen;
+  }
+
+  .hero-visual-card::after {
+    content: "";
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.22), rgba(15, 23, 42, 0.4) 48%, rgba(15, 23, 42, 0.6));
+  }
+
   .hero-animation-layer {
     @apply absolute inset-0 pointer-events-none overflow-hidden;
   }
