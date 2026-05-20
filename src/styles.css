@@ -356,6 +356,12 @@
     @apply absolute inset-0 pointer-events-none overflow-hidden;
   }
 
+  .hero-background::after {
+    content: "";
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(180deg, rgba(7, 23, 47, 0.22), rgba(8, 26, 50, 0.72) 45%, rgba(9, 55, 64, 0.72));
+  }
+
   .hero-holo-glow {
     @apply absolute left-10 top-32 h-44 w-44 rounded-full bg-cyan-200/25 blur-3xl opacity-90 shadow-glow;
     animation: glow-pulse 5s ease-in-out infinite;

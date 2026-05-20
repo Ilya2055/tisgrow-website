@@ -482,7 +482,7 @@ function Hero() {
 
   return (
     <section id="home" className={`relative overflow-hidden pt-28 sm:pt-32 ${isScrolled ? "hero-scroll-dark" : ""}`}>
-      <div className="absolute inset-0 -z-20 h-full min-h-[520px] overflow-hidden sm:min-h-[620px] lg:min-h-[680px]">
+      <div className="hero-background absolute inset-0 -z-20 h-full min-h-[520px] overflow-hidden sm:min-h-[620px] lg:min-h-[680px]">
         <picture className="absolute inset-0 block h-full w-full">
           <source srcSet="/media/hero/hero-desktop.webp" media="(min-width: 768px)" />
           <img
@@ -494,7 +494,7 @@ function Hero() {
         </picture>
 
         <div className="absolute inset-0 bg-slate-950/18 mix-blend-color-burn" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/10 to-slate-950/40" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/95 via-teal-700/10 to-slate-950/70 opacity-90" aria-hidden="true" />
 
         <div className="hero-animation-layer" aria-hidden="true">
           <div className="hero-holo-glow hidden sm:block" />
@@ -523,7 +523,7 @@ function Hero() {
       </div>
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(20,211,197,0.18),transparent_30%),linear-gradient(180deg,#ffffff_0%,#eefaff_60%,#ffffff_100%)]" />
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-20 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pb-28">
-        <div className="max-w-3xl">
+        <div className="relative z-10 max-w-3xl">
           <span className="eyebrow">{copy.hero.eyebrow}</span>
           <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight text-navy sm:text-5xl lg:text-6xl">
             {copy.hero.title}
