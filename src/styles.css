@@ -139,12 +139,36 @@
   }
 
   .ai-card-grid {
-    @apply grid gap-5 sm:grid-cols-2 xl:grid-cols-5;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  /* Compact responsive grid: 1 / 2 / 4 / 5 columns depending on width */
+  @media (min-width: 640px) {
+    .ai-card-grid {
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .ai-card-grid {
+      grid-template-columns: repeat(4, minmax(220px, 1fr));
+    }
+  }
+
+  @media (min-width: 1400px) {
+    .ai-card-grid {
+      grid-template-columns: repeat(5, minmax(220px, 1fr));
+    }
   }
 
   .ai-assistant-card {
-    @apply relative flex min-h-[500px] flex-col overflow-visible rounded-2xl border border-white/10 bg-white/10 p-4 shadow-soft backdrop-blur-xl transition duration-500;
+    @apply relative flex flex-col overflow-visible rounded-2xl border border-white/10 bg-white/10 p-4 shadow-soft backdrop-blur-xl transition duration-500;
     animation: float 7s ease-in-out infinite;
+    max-width: 360px;
+    width: 100%;
+    margin: 0 auto;
   }
 
   .ai-assistant-card:nth-child(2n) {
@@ -189,8 +213,17 @@
   }
 
   .assistant-media {
-    @apply relative z-10 h-64 overflow-hidden rounded-xl border border-white/15 shadow-glow sm:h-72;
-    min-height: 280px;
+    @apply relative z-10 overflow-hidden rounded-xl border border-white/15 shadow-glow;
+    height: 16rem; /* ~256px - compact desktop height */
+    min-height: 0;
+  }
+
+  /* Preserve mobile sizing and maintain current mobile behavior */
+  @media (max-width: 640px) {
+    .assistant-media {
+      height: 20rem; /* keep existing mobile height behavior */
+      min-height: 300px;
+    }
   }
 
   .assistant-image {
