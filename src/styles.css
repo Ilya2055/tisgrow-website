@@ -352,6 +352,99 @@
     @apply border-aqua/60 bg-cyan-50 text-navy;
   }
 
+  .hero-animation-layer {
+    @apply absolute inset-0 pointer-events-none overflow-hidden;
+  }
+
+  .hero-holo-glow {
+    @apply absolute left-10 top-32 h-44 w-44 rounded-full bg-cyan-200/25 blur-3xl opacity-90 shadow-glow;
+    animation: glow-pulse 5s ease-in-out infinite;
+  }
+
+  .hero-floating-card {
+    @apply pointer-events-none absolute rounded-[1.75rem] border border-white/15 bg-slate-950/25 p-4 text-white shadow-glow backdrop-blur-xl transition duration-500;
+    animation: card-float 10s ease-in-out infinite;
+    min-width: 13rem;
+  }
+
+  .hero-card-one {
+    @apply left-6 top-14 w-56;
+  }
+
+  .hero-card-two {
+    @apply right-6 bottom-12 w-48;
+  }
+
+  .hero-scroll-dark .hero-holo-glow {
+    @apply bg-cyan-100/15 opacity-90;
+  }
+
+  .hero-scroll-dark .hero-floating-card {
+    @apply border-white/10 bg-slate-950/40;
+  }
+
+  .hero-action-button {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-2xl transition duration-300 will-change-transform;
+  }
+
+  .hero-action-button-secondary {
+    @apply border-slate-200/70 bg-white px-5 py-3 text-sm font-black text-navy shadow-sm;
+  }
+
+  .hero-action-button:hover {
+    @apply shadow-glow;
+  }
+
+  .hero-action-button:active {
+    @apply scale-[0.98];
+  }
+
+  .hero-button-burst {
+    @apply pointer-events-none absolute h-2 w-2 rounded-full bg-white/90 opacity-0 shadow-glow;
+    animation: burst-pop 360ms ease-out forwards;
+  }
+
+  .hero-button-burst:nth-child(odd) {
+    background: rgba(56, 189, 248, 0.9);
+  }
+
+  .hero-button-burst:nth-child(even) {
+    background: rgba(56, 189, 248, 0.55);
+  }
+
+  @keyframes glow-pulse {
+    0%,
+    100% {
+      opacity: 0.82;
+      transform: scale(0.95);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+  }
+
+  @keyframes burst-pop {
+    0% {
+      opacity: 1;
+      transform: scale(0.4);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.8);
+    }
+  }
+
+  @keyframes card-float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
   @keyframes demo-splash {
     0% {
       transform: scale(1) rotate(0deg);

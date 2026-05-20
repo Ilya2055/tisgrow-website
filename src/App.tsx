@@ -10,7 +10,7 @@ import {
   Send,
   X,
 } from "lucide-react";
-import { type CSSProperties, type Dispatch, type FormEvent, type SetStateAction, useEffect, useState, createContext, useContext } from "react";
+import { type CSSProperties, type Dispatch, type FormEvent, type ReactNode, type SetStateAction, useEffect, useState, createContext, useContext } from "react";
 import { Routes, Route, Navigate, useParams, useNavigate } from "react-router-dom";
 import {
   assistantGalleryCopy,
@@ -409,12 +409,80 @@ function HeroVisual() {
   );
 }
 
-function Hero() {
-  const { copy } = useLang();
+type HeroBurst = { id: number; left: number; top: number };
+
+function HeroActionButton({
+  href,
+  children,
+  variant = "primary",
+}: {
+  href: string;
+  children: ReactNode;
+  variant?: "primary" | "secondary";
+}) {
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [bursts, setBursts] = useState<HeroBurst[]>([]);
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLAnchorElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left - rect.width / 2) / 10;
+    const y = (event.clientY - rect.top - rect.height / 2) / 12;
+    setOffset({ x, y });
+  };
+
+  const handlePointerLeave = () => {
+    setOffset({ x: 0, y: 0 });
+  };
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLAnchorElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const left = event.clientX - rect.left;
+    const top = event.clientY - rect.top;
+    const id = Date.now();
+    setBursts((current) => [...current, { id, left, top }]);
+    window.setTimeout(() => {
+      setBursts((current) => current.filter((burst) => burst.id !== id));
+    }, 360);
+  };
 
   return (
-    <section id="home" className="relative overflow-hidden pt-28 sm:pt-32">
-      <div className="absolute inset-0 -z-20 h-full min-h-[520px] sm:min-h-[620px] lg:min-h-[680px] overflow-hidden">
+    <a
+      href={href}
+      className={`${variant === "primary" ? "btn-primary hero-action-button" : "btn-secondary hero-action-button hero-action-button-secondary"}`}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      onPointerDown={handlePointerDown}
+      style={{ transform: `translate3d(${offset.x}px, ${offset.y}px, 0)` }}
+    >
+      {children}
+      {bursts.map((burst) => (
+        <span
+          key={burst.id}
+          className="hero-button-burst"
+          style={{ left: burst.left, top: burst.top }}
+        />
+      ))}
+    </a>
+  );
+}
+
+function Hero() {
+  const { copy } = useLang();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setIsScrolled(window.scrollY > 140);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <section id="home" className={`relative overflow-hidden pt-28 sm:pt-32 ${isScrolled ? "hero-scroll-dark" : ""}`}>
+      <div className="absolute inset-0 -z-20 h-full min-h-[520px] overflow-hidden sm:min-h-[620px] lg:min-h-[680px]">
         <picture className="absolute inset-0 block h-full w-full">
           <source srcSet="/media/hero/hero-desktop.webp" media="(min-width: 768px)" />
           <img
@@ -424,8 +492,34 @@ function Hero() {
             loading="eager"
           />
         </picture>
+
         <div className="absolute inset-0 bg-slate-950/18 mix-blend-color-burn" aria-hidden="true" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/10 to-slate-950/40" aria-hidden="true" />
+
+        <div className="hero-animation-layer" aria-hidden="true">
+          <div className="hero-holo-glow hidden sm:block" />
+          <div className="particle-field" aria-hidden="true">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <span key={index} style={{ "--i": index } as CSSProperties} />
+            ))}
+          </div>
+          <div className="hero-floating-card hero-card-one hidden sm:block">
+            <p className="text-[10px] uppercase tracking-[0.35em] text-cyan-100/80">AI insight</p>
+            <p className="mt-3 text-sm font-black text-white">Conversion pulse</p>
+            <div className="mt-3 flex items-center justify-between gap-2 rounded-3xl bg-white/10 px-3 py-2 text-[11px] text-slate-200">
+              <span>+21.4% uplift</span>
+              <span className="rounded-full bg-aqua/20 px-2 py-1 text-[10px] font-bold text-aqua">Live</span>
+            </div>
+          </div>
+          <div className="hero-floating-card hero-card-two hidden sm:block">
+            <p className="text-[10px] uppercase tracking-[0.35em] text-slate-200/70">Secure growth</p>
+            <h3 className="mt-3 text-sm font-black text-white">Tisgrow Command</h3>
+            <div className="mt-3 flex items-center gap-2 text-[11px] text-slate-300">
+              <span className="inline-flex h-2 w-2 rounded-full bg-aqua" />
+              <span>Realtime orchestration</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(20,211,197,0.18),transparent_30%),linear-gradient(180deg,#ffffff_0%,#eefaff_60%,#ffffff_100%)]" />
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-20 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pb-28">
@@ -438,12 +532,10 @@ function Hero() {
             {copy.hero.text}
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href="/request" className="btn-primary">
-              {copy.requestPage.ctaButtonLabel} <ArrowRight size={18} />
-            </a>
-            <a href="#assistants" className="btn-secondary">
+            <HeroActionButton href="/request">{copy.requestPage.ctaButtonLabel} <ArrowRight size={18} /></HeroActionButton>
+            <HeroActionButton href="#assistants" variant="secondary">
               {copy.hero.secondary} <ChevronRight size={18} />
-            </a>
+            </HeroActionButton>
           </div>
           <p className="mt-6 max-w-2xl text-sm font-medium leading-6 text-slate-500">
             {copy.text}
