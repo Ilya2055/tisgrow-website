@@ -359,51 +359,18 @@ function DemoMediaModal({
 function HeroVisual() {
   return (
     <div className="relative mx-auto w-full max-w-xl animate-float lg:max-w-none">
-      <div className="absolute -inset-5 rounded-2xl bg-aqua/15 blur-3xl" />
-      <div className="relative overflow-hidden rounded-lg border border-white/70 bg-white/75 p-4 shadow-glow backdrop-blur-xl sm:p-5">
-        <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-4">
-          <div>
-            <p className="text-sm font-bold text-navy">AI consultant online</p>
-            <p className="text-xs text-slate-500">Website chat + messengers</p>
-          </div>
-          <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">
-            Active
-          </span>
-        </div>
-
-        <div className="space-y-3">
-          {visualMessages.map((message, index) => (
-            <div
-              key={`${message.from}-${message.text}`}
-              className={`flex ${message.from === "AI Consultant" ? "justify-end" : "justify-start"}`}
-              style={{ animationDelay: `${index * 120}ms` }}
-            >
-              <div
-                className={`max-w-[82%] rounded-lg px-4 py-3 text-sm shadow-sm ${
-                  message.from === "AI Consultant"
-                    ? "bg-navy text-white"
-                    : "border border-slate-100 bg-white text-slate-700"
-                } animate-rise`}
-              >
-                <p className="mb-1 text-[11px] font-bold uppercase tracking-wide opacity-70">
-                  {message.from}
-                </p>
-                <p>{message.text}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-3">
-          {heroStats.map((stat) => (
-            <div key={stat.label} className="min-w-0 rounded-lg bg-skysoft p-3 text-center">
-              <p className="text-lg font-black text-navy">{stat.value}</p>
-              <p className="text-[10px] leading-snug break-words whitespace-normal font-medium text-slate-500 sm:text-[11px] sm:leading-normal">
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </div>
+      <div className="relative overflow-hidden rounded-3xl border border-white/70 bg-slate-950/5 shadow-glow min-h-[380px] md:min-h-[520px]">
+        <picture className="block h-full w-full">
+          <source srcSet="/media/hero/hero-desktop.webp" media="(min-width: 768px)" />
+          <source srcSet="/media/hero/hero-mobile.webp" media="(max-width: 767px)" />
+          <img
+            src="/media/hero/hero-desktop.webp"
+            alt="Premium Tisgrow hero visual"
+            className="h-full w-full object-cover object-center"
+            loading="eager"
+          />
+        </picture>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
       </div>
     </div>
   );
