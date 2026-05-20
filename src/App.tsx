@@ -483,18 +483,21 @@ function Hero() {
   return (
     <section id="home" className={`relative overflow-hidden pt-28 sm:pt-32 ${isScrolled ? "hero-scroll-dark" : ""}`}>
       <div className="hero-background absolute inset-0 -z-20 h-full min-h-[520px] overflow-hidden sm:min-h-[620px] lg:min-h-[680px]">
-        <picture className="absolute inset-0 block h-full w-full">
-          <source srcSet="/media/hero/hero-desktop.webp" media="(min-width: 768px)" />
-          <img
-            src="/media/hero/hero-mobile.webp"
-            alt="Premium Tisgrow hero visual"
-            className="h-full w-full object-cover object-center"
-            loading="eager"
-          />
-        </picture>
+        <img
+          src="/media/hero/hero-desktop.webp"
+          alt="Premium Tisgrow hero visual"
+          className="absolute inset-0 hidden h-full w-full object-cover object-center md:block"
+          loading="eager"
+        />
+        <img
+          src="/media/hero/hero-mobile.webp"
+          alt="Premium Tisgrow hero visual"
+          className="absolute inset-0 block h-full w-full object-cover object-center md:hidden"
+          loading="eager"
+        />
 
-        <div className="absolute inset-0 bg-slate-950/18 mix-blend-color-burn" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/95 via-teal-700/10 to-slate-950/70 opacity-90" aria-hidden="true" />
+        <div className="absolute inset-0 bg-slate-950/10" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-teal-700/10 to-slate-950/40" aria-hidden="true" />
 
         <div className="hero-animation-layer" aria-hidden="true">
           <div className="hero-holo-glow hidden sm:block" />
