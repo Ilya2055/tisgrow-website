@@ -414,6 +414,19 @@ function Hero() {
 
   return (
     <section id="home" className="relative overflow-hidden pt-28 sm:pt-32">
+      <div className="absolute inset-0 -z-20 h-full min-h-[520px] sm:min-h-[620px] lg:min-h-[680px] overflow-hidden">
+        <picture className="absolute inset-0 block h-full w-full">
+          <source srcSet="/media/hero/hero-desktop.webp" media="(min-width: 768px)" />
+          <img
+            src="/media/hero/hero-mobile.webp"
+            alt="Premium Tisgrow hero visual"
+            className="h-full w-full object-cover object-center"
+            loading="eager"
+          />
+        </picture>
+        <div className="absolute inset-0 bg-slate-950/18 mix-blend-color-burn" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/10 to-slate-950/40" aria-hidden="true" />
+      </div>
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(20,211,197,0.18),transparent_30%),linear-gradient(180deg,#ffffff_0%,#eefaff_60%,#ffffff_100%)]" />
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-20 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pb-28">
         <div className="max-w-3xl">
